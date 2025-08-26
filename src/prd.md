@@ -1,35 +1,42 @@
 # Savory - Restaurant Menu Management System
 
+# Savory - Multi-Tier Restaurant Menu Management System
+
 ## Core Purpose & Success
-- **Mission Statement**: A dual-purpose web application that displays restaurant menu items beautifully for customers while providing restaurant staff with admin tools to manage menu content in real-time.
-- **Success Indicators**: Customers can easily browse and view menu items, while administrators can efficiently add, edit, and remove menu items with immediate updates.
-- **Experience Qualities**: Professional, intuitive, and elegant - creating a premium dining experience digitally.
+- **Mission Statement**: A sophisticated web application that displays restaurant menu items with dynamic pricing across three service types (Dine-in Non-AC, Dine-in AC, Take Away) while providing restaurant staff with admin tools to manage menu content in real-time.
+- **Success Indicators**: Customers can easily browse menu items with appropriate pricing for their chosen service type, while administrators can efficiently manage base prices that automatically calculate across all service tiers.
+- **Experience Qualities**: Professional, intuitive, and elegant - creating a premium dining experience digitally with transparent pricing across service levels.
 
 ## Project Classification & Approach
-- **Complexity Level**: Light Application (multiple features with basic state management)
+- **Complexity Level**: Light Application (multiple features with dynamic pricing logic and state management)
 - **Primary User Activity**: 
-  - **Customers**: Consuming (browsing menu items by category)
-  - **Administrators**: Acting (managing menu content through admin panel)
+  - **Customers**: Consuming (browsing menu items by category and service type)
+  - **Administrators**: Acting (managing menu content and base pricing through admin panel)
 
 ## Thought Process for Feature Selection
-- **Core Problem Analysis**: Restaurants need an efficient way to display their menu digitally while maintaining the ability to update items, prices, and availability without technical expertise.
-- **User Context**: Customers access this during dining or pre-visit planning; staff use it for daily menu management and updates.
+- **Core Problem Analysis**: Restaurants need an efficient way to display their menu digitally with different pricing for various service types while maintaining centralized base price management.
+- **User Context**: Customers select their service type first, then browse categories with appropriate pricing; staff manage base prices that automatically adjust across all service tiers.
 - **Critical Path**: 
-  - Customer: Browse categories → View items → Make dining decisions
-  - Admin: Login → Add/edit items → Update availability → Logout
-- **Key Moments**: Category selection, item detail viewing, and seamless admin content management.
+  - Customer: Select service type → Browse categories → View items with tier-appropriate pricing
+  - Admin: Login → Manage base prices → Monitor tier pricing calculations → Update availability
+- **Key Moments**: Service type selection, transparent pricing display, and seamless base price management.
 
 ## Essential Features
 
-### Menu Display System
-- **What it does**: Displays menu items in an organized grid with category filtering
-- **Why it matters**: Customers need to easily browse and understand menu offerings
-- **Success criteria**: Items load quickly, categories filter correctly, information is clear and appetizing
+### Multi-Tier Pricing System
+- **What it does**: Displays menu items with dynamic pricing based on selected service type (Dine-in Non-AC: 10% off, Dine-in AC: base price, Take Away: 20% off)
+- **Why it matters**: Customers get transparent pricing for their chosen service level while restaurants maintain simple base price management
+- **Success criteria**: Pricing calculations are accurate, service type changes update all prices instantly, admin sees both base and calculated prices
 
-### Admin Authentication & Management
-- **What it does**: Secure login system with full CRUD operations for menu items
-- **Why it matters**: Restaurant staff need secure access to update menu content without technical knowledge
-- **Success criteria**: Simple login process, intuitive item management, changes persist across sessions
+### Menu Display System
+- **What it does**: Displays menu items in an organized grid with category filtering and service type selection
+- **Why it matters**: Customers need to easily browse and understand menu offerings with appropriate pricing
+- **Success criteria**: Items load quickly, categories filter correctly, service type switching is seamless, pricing is clear and consistent
+
+### Admin Base Price Management
+- **What it does**: Secure admin system for managing base prices that automatically calculate across all service tiers
+- **Why it matters**: Restaurant staff need simple base price management without calculating multiple pricing tiers manually
+- **Success criteria**: Single base price input generates all service tier prices, admin can preview pricing across tiers, changes persist and update immediately
 
 ### Real-time Content Updates
 - **What it does**: Changes made in admin panel immediately reflect in customer view

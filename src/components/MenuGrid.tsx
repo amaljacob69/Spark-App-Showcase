@@ -1,14 +1,16 @@
-import { MenuItem } from '../App'
+import { MenuItem, MenuType } from '../App'
 import { MenuItemCard } from './MenuItemCard'
 
 interface MenuGridProps {
   items: MenuItem[]
+  menuType: MenuType
+  getItemPrice: (basePrice: number, menuType: MenuType) => number
   isAdmin: boolean
   onEditItem: (id: string, updates: Partial<MenuItem>) => void
   onDeleteItem: (id: string) => void
 }
 
-export function MenuGrid({ items, isAdmin, onEditItem, onDeleteItem }: MenuGridProps) {
+export function MenuGrid({ items, menuType, getItemPrice, isAdmin, onEditItem, onDeleteItem }: MenuGridProps) {
   if (items.length === 0) {
     return (
       <div className="text-center py-16">
@@ -31,6 +33,8 @@ export function MenuGrid({ items, isAdmin, onEditItem, onDeleteItem }: MenuGridP
         <MenuItemCard
           key={item.id}
           item={item}
+          menuType={menuType}
+          getItemPrice={getItemPrice}
           isAdmin={isAdmin}
           onEdit={onEditItem}
           onDelete={onDeleteItem}

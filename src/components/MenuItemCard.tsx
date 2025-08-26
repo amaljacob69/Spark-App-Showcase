@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MenuItem } from '../App'
+import { MenuItem, MenuType } from '../App'
 import { Card, CardContent } from './ui/card'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
@@ -10,12 +10,14 @@ import { toast } from 'sonner'
 
 interface MenuItemCardProps {
   item: MenuItem
+  menuType: MenuType
+  getItemPrice: (basePrice: number, menuType: MenuType) => number
   isAdmin: boolean
   onEdit: (id: string, updates: Partial<MenuItem>) => void
   onDelete: (id: string) => void
 }
 
-export function MenuItemCard({ item, isAdmin, onEdit, onDelete }: MenuItemCardProps) {
+export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, onDelete }: MenuItemCardProps) {
   const [showEditDialog, setShowEditDialog] = useState(false)
 
   const handleToggleAvailability = () => {
@@ -54,8 +56,13 @@ export function MenuItemCard({ item, isAdmin, onEdit, onDelete }: MenuItemCardPr
             </div>
             <div className="ml-4 text-right">
               <div className="font-bold text-accent text-lg">
-                ${item.price.toFixed(2)}
+                ${getItemPrice(item.basePrice, menuType).toFixed(2)}
               </div>
+              {isAdmin && (
+                <div className="text-xs text-muted-foreground">
+                  Base: ${item.basePrice.toFixed(2)}
+                </div>
+              )}
             </div>
           </div>
 

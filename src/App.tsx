@@ -10,10 +10,18 @@ export interface MenuItem {
   id: string
   name: string
   description: string
-  price: number
+  basePrice: number
   category: string
   available: boolean
   image?: string
+}
+
+export type MenuType = 'dinein-non-ac' | 'dinein-ac' | 'takeaway'
+
+export interface MenuPricing {
+  'dinein-non-ac': number
+  'dinein-ac': number
+  'takeaway': number
 }
 
 const sampleMenuItems: MenuItem[] = [
@@ -21,7 +29,7 @@ const sampleMenuItems: MenuItem[] = [
     id: "1",
     name: "Truffle Risotto",
     description: "Creamy Arborio rice with wild mushrooms, black truffle shavings, and aged Parmesan",
-    price: 28,
+    basePrice: 28,
     category: "Mains",
     available: true
   },
@@ -29,7 +37,7 @@ const sampleMenuItems: MenuItem[] = [
     id: "2", 
     name: "Pan-Seared Salmon",
     description: "Atlantic salmon with lemon herb butter, roasted vegetables, and quinoa pilaf",
-    price: 32,
+    basePrice: 32,
     category: "Mains",
     available: true
   },
@@ -37,7 +45,7 @@ const sampleMenuItems: MenuItem[] = [
     id: "3",
     name: "Burrata Caprese",
     description: "Fresh burrata cheese with heirloom tomatoes, basil oil, and balsamic reduction",
-    price: 18,
+    basePrice: 18,
     category: "Appetizers",
     available: true
   },
@@ -45,7 +53,7 @@ const sampleMenuItems: MenuItem[] = [
     id: "4",
     name: "Chocolate Lava Cake",
     description: "Warm chocolate cake with molten center, vanilla bean ice cream, and berry coulis",
-    price: 12,
+    basePrice: 12,
     category: "Desserts",
     available: true
   },
@@ -53,7 +61,7 @@ const sampleMenuItems: MenuItem[] = [
     id: "5",
     name: "Craft Caesar Salad",
     description: "Crisp romaine lettuce, house-made croutons, aged Parmesan, and garlic aioli",
-    price: 14,
+    basePrice: 14,
     category: "Salads",
     available: true
   },
@@ -61,15 +69,27 @@ const sampleMenuItems: MenuItem[] = [
     id: "6",
     name: "Wagyu Beef Tenderloin",
     description: "Premium wagyu with roasted fingerling potatoes, seasonal vegetables, and red wine jus",
-    price: 48,
+    basePrice: 48,
     category: "Mains",
     available: true
   }
 ]
 
+// Price multipliers for different menu types
+const PRICE_MULTIPLIERS = {
+  'dinein-non-ac': 0.9,  // 10% discount for non-AC dining
+  'dinein-ac': 1.0,      // Base price for AC dining
+  'takeaway': 0.8        // 20% discount for takeaway
+}
+
+const getItemPrice = (basePrice: number, menuType: MenuType): number => {
+  return Math.round(basePrice * PRICE_MULTIPLIERS[menuType])
+}
+
 function App() {
   const [menuItems, setMenuItems] = useKV<MenuItem[]>("menu-items", sampleMenuItems)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [selectedMenuType, setSelectedMenuType] = useKV<MenuType>("selected-menu-type", 'dinein-ac')
   const [isAdmin, setIsAdmin] = useKV<boolean>("admin-session", false)
   const [showLoginDialog, setShowLoginDialog] = useState(false)
 
@@ -117,11 +137,15 @@ function App() {
         categories={categories}
         selectedCategory={selectedCategory}
         onCategorySelect={setSelectedCategory}
+        menuType={selectedMenuType}
+        onMenuTypeSelect={setSelectedMenuType}
       />
       
       <main className="container mx-auto px-4 py-8">
         <MenuGrid 
           items={filteredItems}
+          menuType={selectedMenuType}
+          getItemPrice={getItemPrice}
           isAdmin={isAdmin}
           onEditItem={handleEditItem}
           onDeleteItem={handleDeleteItem}
@@ -142,5 +166,7 @@ function App() {
     </div>
   )
 }
+
+export { getItemPrice, PRICE_MULTIPLIERS }
 
 export default App

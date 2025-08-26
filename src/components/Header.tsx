@@ -1,6 +1,8 @@
-import { ChefHat, UserCheck, LogOut } from '@phosphor-icons/react'
+import { ChefHat, UserCheck, LogOut, House, AirConditioner, Package } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { CategoryFilter } from './CategoryFilter'
+import { MenuTypeSelector } from './MenuTypeSelector'
+import { MenuType } from '../App'
 
 interface HeaderProps {
   isAdmin: boolean
@@ -9,6 +11,8 @@ interface HeaderProps {
   categories: string[]
   selectedCategory: string
   onCategorySelect: (category: string) => void
+  menuType: MenuType
+  onMenuTypeSelect: (type: MenuType) => void
 }
 
 export function Header({ 
@@ -17,7 +21,9 @@ export function Header({
   onLogout, 
   categories, 
   selectedCategory, 
-  onCategorySelect 
+  onCategorySelect,
+  menuType,
+  onMenuTypeSelect
 }: HeaderProps) {
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50">
@@ -63,7 +69,11 @@ export function Header({
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <MenuTypeSelector 
+            selectedType={menuType}
+            onTypeSelect={onMenuTypeSelect}
+          />
           <CategoryFilter 
             categories={categories}
             selectedCategory={selectedCategory}

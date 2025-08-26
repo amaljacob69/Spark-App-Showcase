@@ -24,7 +24,7 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    price: '',
+    basePrice: '',
     category: '',
     available: true
   })
@@ -32,13 +32,13 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.name || !formData.description || !formData.price || !formData.category) {
+    if (!formData.name || !formData.description || !formData.basePrice || !formData.category) {
       toast.error('Please fill in all fields')
       return
     }
 
-    const price = parseFloat(formData.price)
-    if (isNaN(price) || price <= 0) {
+    const basePrice = parseFloat(formData.basePrice)
+    if (isNaN(basePrice) || basePrice <= 0) {
       toast.error('Please enter a valid price')
       return
     }
@@ -46,15 +46,15 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
     onAddItem({
       name: formData.name.trim(),
       description: formData.description.trim(),
-      price: price,
-      category: formData.category.trim().toLowerCase(),
+      basePrice: basePrice,
+      category: formData.category.trim(),
       available: formData.available
     })
 
     setFormData({
       name: '',
       description: '',
-      price: '',
+      basePrice: '',
       category: '',
       available: true
     })
@@ -114,17 +114,20 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="price">Price ($) *</Label>
+              <Label htmlFor="basePrice">Base Price ($) *</Label>
               <Input
-                id="price"
+                id="basePrice"
                 type="number"
                 step="0.01"
                 min="0"
-                value={formData.price}
-                onChange={(e) => handleChange('price', e.target.value)}
+                value={formData.basePrice}
+                onChange={(e) => handleChange('basePrice', e.target.value)}
                 placeholder="24.99"
                 required
               />
+              <p className="text-xs text-muted-foreground">
+                This price will be adjusted based on menu type selection
+              </p>
             </div>
             <div className="flex items-center justify-between pt-7">
               <Label htmlFor="available" className="text-sm font-medium">
