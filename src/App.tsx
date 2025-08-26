@@ -119,29 +119,42 @@ function App() {
   const [isDirectLink, setIsDirectLink] = useState(false)
 
   // Handle URL parameters to set menu type directly
-  // Example URLs:
-  // - ?menu=dinein-non-ac (Direct link to Non-AC menu - locks menu type)
-  // - ?menu=dinein-ac (Direct link to AC menu)  
-  // - ?menu=takeaway (Direct link to Takeaway menu)
+  // QR Code URLs for each menu type:
+  // - ?menu=dinein-non-ac (QR for Non-AC dining area - shows only Non-AC menu)
+  // - ?menu=dinein-ac (QR for AC dining area - shows only AC menu)  
+  // - ?menu=takeaway (QR for takeaway counter - shows only Takeaway menu)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const menuParam = urlParams.get('menu') as MenuType
     
     if (menuParam && ['dinein-non-ac', 'dinein-ac', 'takeaway'].includes(menuParam)) {
       setSelectedMenuType(menuParam)
+      setIsDirectLink(true) // Lock menu type for all direct QR code access
       
-      // If accessing dine-in non-AC directly, lock the menu type
-      if (menuParam === 'dinein-non-ac') {
-        setIsDirectLink(true)
-        setTimeout(() => {
-          // Only import toast dynamically to avoid issues
-          import('sonner').then(({ toast }) => {
-            toast.success('Viewing Dine-in Non-AC Menu', {
+      setTimeout(() => {
+        // Show appropriate message based on menu type
+        import('sonner').then(({ toast }) => {
+          const messages = {
+            'dinein-non-ac': {
+              title: 'Dine-in Non-AC Menu',
               description: 'Showing Non-AC pricing only'
-            })
+            },
+            'dinein-ac': {
+              title: 'Dine-in AC Menu', 
+              description: 'Showing AC pricing only'
+            },
+            'takeaway': {
+              title: 'Takeaway Menu',
+              description: 'Showing takeaway pricing only'
+            }
+          }
+          
+          const message = messages[menuParam]
+          toast.success(message.title, {
+            description: message.description
           })
-        }, 500)
-      }
+        })
+      }, 500)
     }
   }, [])
 

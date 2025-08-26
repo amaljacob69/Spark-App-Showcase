@@ -23,20 +23,25 @@
 
 ## Essential Features
 
-### Multi-Tier Pricing System
-- **What it does**: Displays menu items with dynamic pricing based on selected service type (Dine-in Non-AC: 10% off, Dine-in AC: base price, Take Away: 20% off)
-- **Why it matters**: Customers get transparent pricing for their chosen service level while restaurants maintain simple base price management
-- **Success criteria**: Pricing calculations are accurate, service type changes update all prices instantly, admin sees both base and calculated prices
+### QR Code Menu Isolation System
+- **What it does**: Generates unique QR codes for each menu type (Non-AC, AC, Takeaway) that lock customers into viewing only their respective menu with appropriate pricing
+- **Why it matters**: Customers scanning a QR code in the Non-AC area only see Non-AC pricing, eliminating confusion and ensuring they see the correct prices for their dining location
+- **Success criteria**: Each QR code URL parameter locks the menu type, hides menu type selector, displays only relevant pricing, shows clear indicator of locked menu type
+
+### Multi-Tier Pricing Display
+- **What it does**: Shows menu items with different pricing for Dine-in Non-AC, Dine-in AC, and Takeaway service types
+- **Why it matters**: Transparent pricing allows customers to understand costs for their specific service choice
+- **Success criteria**: Pricing is accurate for each service type, calculations are consistent, price changes update across all menu types
 
 ### Menu Display System
-- **What it does**: Displays menu items in an organized grid with category filtering and service type selection
-- **Why it matters**: Customers need to easily browse and understand menu offerings with appropriate pricing
-- **Success criteria**: Items load quickly, categories filter correctly, service type switching is seamless, pricing is clear and consistent
+- **What it does**: Displays menu items in an organized grid with category filtering
+- **Why it matters**: Customers need to easily browse menu offerings with clear organization
+- **Success criteria**: Items load quickly, categories filter correctly, responsive across devices
 
-### Admin Base Price Management
-- **What it does**: Secure admin system for managing base prices that automatically calculate across all service tiers
-- **Why it matters**: Restaurant staff need simple base price management without calculating multiple pricing tiers manually
-- **Success criteria**: Single base price input generates all service tier prices, admin can preview pricing across tiers, changes persist and update immediately
+### Admin Menu Management
+- **What it does**: Secure admin system for adding, editing, and managing menu items with three-tier pricing input
+- **Why it matters**: Restaurant staff need simple tools to maintain current menu information and pricing
+- **Success criteria**: Admin can set prices for all three tiers simultaneously, changes persist immediately, secure authentication
 
 ### Real-time Content Updates
 - **What it does**: Changes made in admin panel immediately reflect in customer view
@@ -116,8 +121,16 @@
 
 ## Implementation Considerations
 - **Scalability Needs**: Architecture supports easy addition of features like order management or table reservations
-- **Testing Focus**: Admin authentication flow, data persistence, responsive design across devices
-- **Critical Questions**: How to handle menu item images, backup/restore functionality for menu data
+- **Testing Focus**: QR code URL parameters, menu type isolation, admin authentication flow, data persistence
+- **Critical Questions**: QR code generation workflow, menu type switching restrictions for direct links
+
+### QR Code Implementation
+- **URL Structure**: 
+  - Non-AC Menu: `?menu=dinein-non-ac`
+  - AC Menu: `?menu=dinein-ac` 
+  - Takeaway Menu: `?menu=takeaway`
+- **Isolation Logic**: Direct QR access locks menu type selection and shows only relevant pricing
+- **Admin Tools**: Dedicated QR code management panel for generating and copying QR links
 
 ## Reflection
 This approach creates a professional dual-purpose application that serves both customer browsing and restaurant management needs. The elegant design reinforces the restaurant's premium positioning while the intuitive admin tools ensure staff can maintain current, accurate menu information without technical barriers. The focus on typography and visual hierarchy makes menu items appetizing and easy to navigate, while the secure admin system provides necessary management capabilities.

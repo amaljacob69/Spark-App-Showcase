@@ -1,10 +1,8 @@
-import { ChefHat, UserCheck, LogOut, House, AirConditioner, Package, Link, Check } from '@phosphor-icons/react'
+import { ChefHat, UserCheck, LogOut, House, AirConditioner, Package } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { CategoryFilter } from './CategoryFilter'
 import { MenuTypeSelector } from './MenuTypeSelector'
 import { MenuType } from '../App'
-import { useState } from 'react'
-import { toast } from 'sonner'
 
 interface HeaderProps {
   isAdmin: boolean
@@ -29,19 +27,25 @@ export function Header({
   onMenuTypeSelect,
   isDirectLink
 }: HeaderProps) {
-  const [linkCopied, setLinkCopied] = useState(false)
+  const getMenuTypeIcon = (type: MenuType) => {
+    switch (type) {
+      case 'dinein-non-ac':
+        return <House size={16} />
+      case 'dinein-ac':
+        return <AirConditioner size={16} />
+      case 'takeaway':
+        return <Package size={16} />
+    }
+  }
 
-  const handleCopyNonACLink = async () => {
-    const baseUrl = window.location.origin + window.location.pathname
-    const nonACUrl = `${baseUrl}?menu=dinein-non-ac`
-    
-    try {
-      await navigator.clipboard.writeText(nonACUrl)
-      setLinkCopied(true)
-      toast.success('Dine-in Non-AC menu link copied!')
-      setTimeout(() => setLinkCopied(false), 2000)
-    } catch (error) {
-      toast.error('Failed to copy link')
+  const getMenuTypeName = (type: MenuType) => {
+    switch (type) {
+      case 'dinein-non-ac':
+        return 'Dine-in Non-AC Menu'
+      case 'dinein-ac':
+        return 'Dine-in AC Menu'
+      case 'takeaway':
+        return 'Takeaway Menu'
     }
   }
   return (
@@ -59,26 +63,6 @@ export function Header({
           </div>
 
           <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleCopyNonACLink}
-              className="gap-2"
-              disabled={linkCopied}
-            >
-              {linkCopied ? (
-                <>
-                  <Check size={16} />
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <Link size={16} />
-                  Get Non-AC Link
-                </>
-              )}
-            </Button>
-            
             {isAdmin ? (
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -109,18 +93,19 @@ export function Header({
         </div>
 
         <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          {/* Only show menu type selector if not accessing via direct non-AC link */}
+          {/* Only show menu type selector if not accessing via direct QR link */}
           {!isDirectLink && (
             <MenuTypeSelector 
               selectedType={menuType}
               onTypeSelect={onMenuTypeSelect}
             />
           )}
-          {/* Show fixed menu type indicator for direct links */}
+          {/* Show fixed menu type indicator for QR code direct access */}
           {isDirectLink && (
             <div className="flex items-center gap-2 px-3 py-2 bg-accent/10 text-accent-foreground rounded-md border">
-              <House size={16} />
-              <span className="text-sm font-medium">Dine-in Non-AC Menu</span>
+              {getMenuTypeIcon(menuType)}
+              <span className="text-sm font-medium">{getMenuTypeName(menuType)}</span>
+              <span className="text-xs opacity-75">(QR Access)</span>
             </div>
           )}
           <CategoryFilter 

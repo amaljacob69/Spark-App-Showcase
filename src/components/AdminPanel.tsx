@@ -3,6 +3,7 @@ import { Plus } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { AddItemDialog } from './AddItemDialog'
+import { QRCodeManager } from './QRCodeManager'
 import { MenuItem } from '../App'
 
 interface AdminPanelProps {
@@ -34,6 +35,8 @@ export function AdminPanel({ onAddItem }: AdminPanelProps) {
           </Button>
         </CardContent>
       </Card>
+
+      <QRCodeManager />
 
       <AddItemDialog
         open={showAddDialog}
