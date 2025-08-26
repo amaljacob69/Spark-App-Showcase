@@ -16,8 +16,59 @@ export interface MenuItem {
   image?: string
 }
 
+const sampleMenuItems: MenuItem[] = [
+  {
+    id: "1",
+    name: "Truffle Risotto",
+    description: "Creamy Arborio rice with wild mushrooms, black truffle shavings, and aged Parmesan",
+    price: 28,
+    category: "Mains",
+    available: true
+  },
+  {
+    id: "2", 
+    name: "Pan-Seared Salmon",
+    description: "Atlantic salmon with lemon herb butter, roasted vegetables, and quinoa pilaf",
+    price: 32,
+    category: "Mains",
+    available: true
+  },
+  {
+    id: "3",
+    name: "Burrata Caprese",
+    description: "Fresh burrata cheese with heirloom tomatoes, basil oil, and balsamic reduction",
+    price: 18,
+    category: "Appetizers",
+    available: true
+  },
+  {
+    id: "4",
+    name: "Chocolate Lava Cake",
+    description: "Warm chocolate cake with molten center, vanilla bean ice cream, and berry coulis",
+    price: 12,
+    category: "Desserts",
+    available: true
+  },
+  {
+    id: "5",
+    name: "Craft Caesar Salad",
+    description: "Crisp romaine lettuce, house-made croutons, aged Parmesan, and garlic aioli",
+    price: 14,
+    category: "Salads",
+    available: true
+  },
+  {
+    id: "6",
+    name: "Wagyu Beef Tenderloin",
+    description: "Premium wagyu with roasted fingerling potatoes, seasonal vegetables, and red wine jus",
+    price: 48,
+    category: "Mains",
+    available: true
+  }
+]
+
 function App() {
-  const [menuItems, setMenuItems] = useKV<MenuItem[]>("menu-items", [])
+  const [menuItems, setMenuItems] = useKV<MenuItem[]>("menu-items", sampleMenuItems)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [isAdmin, setIsAdmin] = useKV<boolean>("admin-session", false)
   const [showLoginDialog, setShowLoginDialog] = useState(false)
