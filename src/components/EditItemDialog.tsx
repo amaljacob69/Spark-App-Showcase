@@ -25,17 +25,25 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    basePrice: '',
+    prices: {
+      'dinein-non-ac': '',
+      'dinein-ac': '',
+      'takeaway': ''
+    },
     category: '',
     available: true
   })
 
   useEffect(() => {
-    if (item && item.basePrice !== undefined) {
+    if (item && item.prices) {
       setFormData({
         name: item.name || '',
         description: item.description || '',
-        basePrice: item.basePrice.toString(),
+        prices: {
+          'dinein-non-ac': item.prices['dinein-non-ac']?.toString() || '',
+          'dinein-ac': item.prices['dinein-ac']?.toString() || '',
+          'takeaway': item.prices['takeaway']?.toString() || ''
+        },
         category: item.category || '',
         available: item.available ?? true
       })
@@ -45,28 +53,49 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.name || !formData.description || !formData.basePrice || !formData.category) {
+    if (!formData.name || !formData.description || !formData.category || 
+        !formData.prices['dinein-non-ac'] || !formData.prices['dinein-ac'] || !formData.prices['takeaway']) {
       toast.error('Please fill in all fields')
       return
     }
 
-    const basePrice = parseFloat(formData.basePrice)
-    if (isNaN(basePrice) || basePrice <= 0) {
-      toast.error('Please enter a valid price')
+    const nonAcPrice = parseFloat(formData.prices['dinein-non-ac'])
+    const acPrice = parseFloat(formData.prices['dinein-ac'])
+    const takeawayPrice = parseFloat(formData.prices['takeaway'])
+
+    if (isNaN(nonAcPrice) || nonAcPrice <= 0 || 
+        isNaN(acPrice) || acPrice <= 0 || 
+        isNaN(takeawayPrice) || takeawayPrice <= 0) {
+      toast.error('Please enter valid prices for all menu types')
       return
     }
 
     onSave({
       name: formData.name.trim(),
       description: formData.description.trim(),
-      basePrice: basePrice,
+      prices: {
+        'dinein-non-ac': nonAcPrice,
+        'dinein-ac': acPrice,
+        'takeaway': takeawayPrice
+      },
       category: formData.category.trim(),
       available: formData.available
     })
   }
 
   const handleChange = (field: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    if (field.startsWith('price-')) {
+      const menuType = field.replace('price-', '') as keyof typeof formData.prices
+      setFormData(prev => ({ 
+        ...prev, 
+        prices: { 
+          ...prev.prices, 
+          [menuType]: value as string 
+        } 
+      }))
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }))
+    }
   }
 
   return (
@@ -115,24 +144,58 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-basePrice">Base Price ($) *</Label>
-              <Input
-                id="edit-basePrice"
-                type="number"
-                step="0.01"
-                min="0"
-                value={formData.basePrice}
-                onChange={(e) => handleChange('basePrice', e.target.value)}
-                placeholder="24.99"
-                required
-              />
-              <p className="text-xs text-muted-foreground">
-                This price will be adjusted based on menu type selection
-              </p>
+              <Label className="text-sm font-medium">Pricing ($) *</Label>
+              <div className="grid grid-cols-1 gap-3">
+                <div className="space-y-1">
+                  <Label htmlFor="edit-price-dinein-non-ac" className="text-xs text-muted-foreground">
+                    Dine-in (Non-AC)
+                  </Label>
+                  <Input
+                    id="edit-price-dinein-non-ac"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={formData.prices['dinein-non-ac']}
+                    onChange={(e) => handleChange('price-dinein-non-ac', e.target.value)}
+                    placeholder="22.99"
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="edit-price-dinein-ac" className="text-xs text-muted-foreground">
+                    Dine-in (AC)
+                  </Label>
+                  <Input
+                    id="edit-price-dinein-ac"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={formData.prices['dinein-ac']}
+                    onChange={(e) => handleChange('price-dinein-ac', e.target.value)}
+                    placeholder="24.99"
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="edit-price-takeaway" className="text-xs text-muted-foreground">
+                    Take Away
+                  </Label>
+                  <Input
+                    id="edit-price-takeaway"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={formData.prices['takeaway']}
+                    onChange={(e) => handleChange('price-takeaway', e.target.value)}
+                    placeholder="19.99"
+                    required
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex items-center justify-between pt-7">
+            <div className="flex items-center justify-between">
               <Label htmlFor="edit-available" className="text-sm font-medium">
                 Available
               </Label>

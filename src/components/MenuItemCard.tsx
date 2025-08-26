@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 interface MenuItemCardProps {
   item: MenuItem
   menuType: MenuType
-  getItemPrice: (basePrice: number, menuType: MenuType) => number
+  getItemPrice: (item: MenuItem, menuType: MenuType) => number
   isAdmin: boolean
   onEdit: (id: string, updates: Partial<MenuItem>) => void
   onDelete: (id: string) => void
@@ -61,11 +61,11 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
             </div>
             <div className="ml-4 text-right">
               <div className="font-bold text-accent text-lg">
-                ${item.basePrice ? getItemPrice(item.basePrice, menuType).toFixed(2) : '0.00'}
+                ${item.prices ? getItemPrice(item, menuType).toFixed(2) : '0.00'}
               </div>
               {isAdmin && (
                 <div className="text-xs text-muted-foreground">
-                  Base: ${item.basePrice ? item.basePrice.toFixed(2) : '0.00'}
+                  AC: ${item.prices ? item.prices['dinein-ac'].toFixed(2) : '0.00'}
                 </div>
               )}
             </div>

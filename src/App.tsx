@@ -10,7 +10,11 @@ export interface MenuItem {
   id: string
   name: string
   description: string
-  basePrice: number
+  prices: {
+    'dinein-non-ac': number
+    'dinein-ac': number
+    'takeaway': number
+  }
   category: string
   available: boolean
   image?: string
@@ -29,7 +33,11 @@ const sampleMenuItems: MenuItem[] = [
     id: "1",
     name: "Truffle Risotto",
     description: "Creamy Arborio rice with wild mushrooms, black truffle shavings, and aged Parmesan",
-    basePrice: 28,
+    prices: {
+      'dinein-non-ac': 25,
+      'dinein-ac': 28,
+      'takeaway': 22
+    },
     category: "Mains",
     available: true
   },
@@ -37,7 +45,11 @@ const sampleMenuItems: MenuItem[] = [
     id: "2", 
     name: "Pan-Seared Salmon",
     description: "Atlantic salmon with lemon herb butter, roasted vegetables, and quinoa pilaf",
-    basePrice: 32,
+    prices: {
+      'dinein-non-ac': 29,
+      'dinein-ac': 32,
+      'takeaway': 26
+    },
     category: "Mains",
     available: true
   },
@@ -45,7 +57,11 @@ const sampleMenuItems: MenuItem[] = [
     id: "3",
     name: "Burrata Caprese",
     description: "Fresh burrata cheese with heirloom tomatoes, basil oil, and balsamic reduction",
-    basePrice: 18,
+    prices: {
+      'dinein-non-ac': 16,
+      'dinein-ac': 18,
+      'takeaway': 14
+    },
     category: "Appetizers",
     available: true
   },
@@ -53,7 +69,11 @@ const sampleMenuItems: MenuItem[] = [
     id: "4",
     name: "Chocolate Lava Cake",
     description: "Warm chocolate cake with molten center, vanilla bean ice cream, and berry coulis",
-    basePrice: 12,
+    prices: {
+      'dinein-non-ac': 11,
+      'dinein-ac': 12,
+      'takeaway': 10
+    },
     category: "Desserts",
     available: true
   },
@@ -61,7 +81,11 @@ const sampleMenuItems: MenuItem[] = [
     id: "5",
     name: "Craft Caesar Salad",
     description: "Crisp romaine lettuce, house-made croutons, aged Parmesan, and garlic aioli",
-    basePrice: 14,
+    prices: {
+      'dinein-non-ac': 13,
+      'dinein-ac': 14,
+      'takeaway': 11
+    },
     category: "Salads",
     available: true
   },
@@ -69,24 +93,21 @@ const sampleMenuItems: MenuItem[] = [
     id: "6",
     name: "Wagyu Beef Tenderloin",
     description: "Premium wagyu with roasted fingerling potatoes, seasonal vegetables, and red wine jus",
-    basePrice: 48,
+    prices: {
+      'dinein-non-ac': 43,
+      'dinein-ac': 48,
+      'takeaway': 38
+    },
     category: "Mains",
     available: true
   }
 ]
 
-// Price multipliers for different menu types
-const PRICE_MULTIPLIERS = {
-  'dinein-non-ac': 0.9,  // 10% discount for non-AC dining
-  'dinein-ac': 1.0,      // Base price for AC dining
-  'takeaway': 0.8        // 20% discount for takeaway
-}
-
-const getItemPrice = (basePrice: number, menuType: MenuType): number => {
-  if (!basePrice || typeof basePrice !== 'number' || isNaN(basePrice)) {
+const getItemPrice = (item: MenuItem, menuType: MenuType): number => {
+  if (!item?.prices || typeof item.prices[menuType] !== 'number' || isNaN(item.prices[menuType])) {
     return 0
   }
-  return Math.round(basePrice * PRICE_MULTIPLIERS[menuType])
+  return item.prices[menuType]
 }
 
 function App() {
@@ -115,7 +136,11 @@ function App() {
     const newItem: MenuItem = {
       name: item.name || '',
       description: item.description || '',
-      basePrice: item.basePrice || 0,
+      prices: item.prices || {
+        'dinein-non-ac': 0,
+        'dinein-ac': 0,
+        'takeaway': 0
+      },
       category: item.category || 'Other',
       available: item.available ?? true,
       id: Date.now().toString()
@@ -193,6 +218,6 @@ function App() {
   )
 }
 
-export { getItemPrice, PRICE_MULTIPLIERS }
+export { getItemPrice }
 
 export default App

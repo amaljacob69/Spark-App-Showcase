@@ -4,7 +4,7 @@ import { MenuItemCard } from './MenuItemCard'
 interface MenuGridProps {
   items: MenuItem[]
   menuType: MenuType
-  getItemPrice: (basePrice: number, menuType: MenuType) => number
+  getItemPrice: (item: MenuItem, menuType: MenuType) => number
   isAdmin: boolean
   onEditItem: (id: string, updates: Partial<MenuItem>) => void
   onDeleteItem: (id: string) => void
