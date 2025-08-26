@@ -1,8 +1,10 @@
-import { ChefHat, UserCheck, LogOut, House, AirConditioner, Package } from '@phosphor-icons/react'
+import { ChefHat, UserCheck, LogOut, House, AirConditioner, Package, Link, Check } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { CategoryFilter } from './CategoryFilter'
 import { MenuTypeSelector } from './MenuTypeSelector'
 import { MenuType } from '../App'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 interface HeaderProps {
   isAdmin: boolean
@@ -25,6 +27,21 @@ export function Header({
   menuType,
   onMenuTypeSelect
 }: HeaderProps) {
+  const [linkCopied, setLinkCopied] = useState(false)
+
+  const handleCopyNonACLink = async () => {
+    const baseUrl = window.location.origin + window.location.pathname
+    const nonACUrl = `${baseUrl}?menu=dinein-non-ac`
+    
+    try {
+      await navigator.clipboard.writeText(nonACUrl)
+      setLinkCopied(true)
+      toast.success('Dine-in Non-AC menu link copied!')
+      setTimeout(() => setLinkCopied(false), 2000)
+    } catch (error) {
+      toast.error('Failed to copy link')
+    }
+  }
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
@@ -40,6 +57,26 @@ export function Header({
           </div>
 
           <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCopyNonACLink}
+              className="gap-2"
+              disabled={linkCopied}
+            >
+              {linkCopied ? (
+                <>
+                  <Check size={16} />
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <Link size={16} />
+                  Get Non-AC Link
+                </>
+              )}
+            </Button>
+            
             {isAdmin ? (
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">

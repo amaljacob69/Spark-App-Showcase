@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useKV } from '@github/spark/hooks'
 import { Header } from './components/Header'
 import { MenuGrid } from './components/MenuGrid'
@@ -116,6 +116,32 @@ function App() {
   const [selectedMenuType, setSelectedMenuType] = useKV<MenuType>("selected-menu-type", 'dinein-ac')
   const [isAdmin, setIsAdmin] = useKV<boolean>("admin-session", false)
   const [showLoginDialog, setShowLoginDialog] = useState(false)
+
+  // Handle URL parameters to set menu type directly
+  // Example URLs:
+  // - ?menu=dinein-non-ac (Direct link to Non-AC menu)
+  // - ?menu=dinein-ac (Direct link to AC menu)  
+  // - ?menu=takeaway (Direct link to Takeaway menu)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const menuParam = urlParams.get('menu') as MenuType
+    
+    if (menuParam && ['dinein-non-ac', 'dinein-ac', 'takeaway'].includes(menuParam)) {
+      setSelectedMenuType(menuParam)
+      
+      // Show a subtle notification when accessing via direct link
+      if (menuParam === 'dinein-non-ac') {
+        setTimeout(() => {
+          // Only import toast dynamically to avoid issues
+          import('sonner').then(({ toast }) => {
+            toast.success('Viewing Dine-in Non-AC Menu', {
+              description: 'Special pricing for non-AC dining area'
+            })
+          })
+        }, 500)
+      }
+    }
+  }, [])
 
   // Memoize categories to avoid recalculation on every render
   const categories = useMemo(() => 
