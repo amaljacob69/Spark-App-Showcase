@@ -116,10 +116,11 @@ function App() {
   const [selectedMenuType, setSelectedMenuType] = useKV<MenuType>("selected-menu-type", 'dinein-ac')
   const [isAdmin, setIsAdmin] = useKV<boolean>("admin-session", false)
   const [showLoginDialog, setShowLoginDialog] = useState(false)
+  const [isDirectLink, setIsDirectLink] = useState(false)
 
   // Handle URL parameters to set menu type directly
   // Example URLs:
-  // - ?menu=dinein-non-ac (Direct link to Non-AC menu)
+  // - ?menu=dinein-non-ac (Direct link to Non-AC menu - locks menu type)
   // - ?menu=dinein-ac (Direct link to AC menu)  
   // - ?menu=takeaway (Direct link to Takeaway menu)
   useEffect(() => {
@@ -129,13 +130,14 @@ function App() {
     if (menuParam && ['dinein-non-ac', 'dinein-ac', 'takeaway'].includes(menuParam)) {
       setSelectedMenuType(menuParam)
       
-      // Show a subtle notification when accessing via direct link
+      // If accessing dine-in non-AC directly, lock the menu type
       if (menuParam === 'dinein-non-ac') {
+        setIsDirectLink(true)
         setTimeout(() => {
           // Only import toast dynamically to avoid issues
           import('sonner').then(({ toast }) => {
             toast.success('Viewing Dine-in Non-AC Menu', {
-              description: 'Special pricing for non-AC dining area'
+              description: 'Showing Non-AC pricing only'
             })
           })
         }, 500)
@@ -214,6 +216,7 @@ function App() {
         onCategorySelect={setSelectedCategory}
         menuType={selectedMenuType}
         onMenuTypeSelect={setSelectedMenuType}
+        isDirectLink={isDirectLink}
         role="banner"
         aria-label="Restaurant header with menu navigation"
       />

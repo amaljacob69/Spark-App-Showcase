@@ -15,6 +15,7 @@ interface HeaderProps {
   onCategorySelect: (category: string) => void
   menuType: MenuType
   onMenuTypeSelect: (type: MenuType) => void
+  isDirectLink: boolean
 }
 
 export function Header({ 
@@ -25,7 +26,8 @@ export function Header({
   selectedCategory, 
   onCategorySelect,
   menuType,
-  onMenuTypeSelect
+  onMenuTypeSelect,
+  isDirectLink
 }: HeaderProps) {
   const [linkCopied, setLinkCopied] = useState(false)
 
@@ -107,10 +109,20 @@ export function Header({
         </div>
 
         <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <MenuTypeSelector 
-            selectedType={menuType}
-            onTypeSelect={onMenuTypeSelect}
-          />
+          {/* Only show menu type selector if not accessing via direct non-AC link */}
+          {!isDirectLink && (
+            <MenuTypeSelector 
+              selectedType={menuType}
+              onTypeSelect={onMenuTypeSelect}
+            />
+          )}
+          {/* Show fixed menu type indicator for direct links */}
+          {isDirectLink && (
+            <div className="flex items-center gap-2 px-3 py-2 bg-accent/10 text-accent-foreground rounded-md border">
+              <House size={16} />
+              <span className="text-sm font-medium">Dine-in Non-AC Menu</span>
+            </div>
+          )}
           <CategoryFilter 
             categories={categories}
             selectedCategory={selectedCategory}

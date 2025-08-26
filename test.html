@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu Links Test</title>
+</head>
+<body>
+    <h2>Test Direct Menu Links:</h2>
+    
+    <h3>1. Dine-in Non-AC Menu (Locked to Non-AC prices only):</h3>
+    <a href="/?menu=dinein-non-ac" target="_blank">
+        Open Non-AC Menu (should show only non-AC prices and hide menu type selector)
+    </a>
+    
+    <h3>2. Regular Menu (All options available):</h3>
+    <a href="/" target="_blank">
+        Open Regular Menu (should show all menu types with selector)
+    </a>
+    
+    <h3>3. Dine-in AC Menu (for comparison):</h3>
+    <a href="/?menu=dinein-ac" target="_blank">
+        Open AC Menu (should show AC prices with selector available)
+    </a>
+    
+    <h3>4. Takeaway Menu (for comparison):</h3>
+    <a href="/?menu=takeaway" target="_blank">
+        Open Takeaway Menu (should show takeaway prices with selector available)
+    </a>
+
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        a { color: blue; text-decoration: underline; }
+        h3 { margin-top: 30px; margin-bottom: 10px; }
+    </style>
+</body>
+</html>
