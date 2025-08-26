@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { useKV } from '@github/spark/hooks'
 import { Header } from './components/Header'
 import { MenuGrid } from './components/MenuGrid'
@@ -93,55 +93,74 @@ function App() {
   const [isAdmin, setIsAdmin] = useKV<boolean>("admin-session", false)
   const [showLoginDialog, setShowLoginDialog] = useState(false)
 
-  const categories = ['all', ...Array.from(new Set(menuItems.map(item => item.category)))]
+  // Memoize categories to avoid recalculation on every render
+  const categories = useMemo(() => 
+    ['all', ...Array.from(new Set(menuItems.map(item => item.category)))], 
+    [menuItems]
+  )
 
-  const filteredItems = selectedCategory === 'all' 
-    ? menuItems 
-    : menuItems.filter(item => item.category === selectedCategory)
+  // Memoize filtered items to avoid recalculation on every render
+  const filteredItems = useMemo(() => 
+    selectedCategory === 'all' 
+      ? menuItems 
+      : menuItems.filter(item => item.category === selectedCategory),
+    [menuItems, selectedCategory]
+  )
 
-  const handleAddItem = (item: Omit<MenuItem, 'id'>) => {
+  // Memoize handlers to prevent unnecessary re-renders
+  const handleAddItem = useCallback((item: Omit<MenuItem, 'id'>) => {
     const newItem: MenuItem = {
       ...item,
       id: Date.now().toString()
     }
     setMenuItems(current => [...current, newItem])
-  }
+  }, [setMenuItems])
 
-  const handleEditItem = (id: string, updates: Partial<MenuItem>) => {
+  const handleEditItem = useCallback((id: string, updates: Partial<MenuItem>) => {
     setMenuItems(current => 
       current.map(item => 
         item.id === id ? { ...item, ...updates } : item
       )
     )
-  }
+  }, [setMenuItems])
 
-  const handleDeleteItem = (id: string) => {
+  const handleDeleteItem = useCallback((id: string) => {
     setMenuItems(current => current.filter(item => item.id !== id))
-  }
+  }, [setMenuItems])
 
-  const handleLogin = () => {
+  const handleLogin = useCallback(() => {
     setIsAdmin(true)
     setShowLoginDialog(false)
-  }
+  }, [setIsAdmin])
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     setIsAdmin(false)
-  }
+  }, [setIsAdmin])
+
+  const handleShowLoginDialog = useCallback(() => {
+    setShowLoginDialog(true)
+  }, [])
+
+  const handleCloseLoginDialog = useCallback((open: boolean) => {
+    setShowLoginDialog(open)
+  }, [])
 
   return (
     <div className="min-h-screen bg-background">
       <Header 
         isAdmin={isAdmin}
-        onLogin={() => setShowLoginDialog(true)}
+        onLogin={handleShowLoginDialog}
         onLogout={handleLogout}
         categories={categories}
         selectedCategory={selectedCategory}
         onCategorySelect={setSelectedCategory}
         menuType={selectedMenuType}
         onMenuTypeSelect={setSelectedMenuType}
+        role="banner"
+        aria-label="Restaurant header with menu navigation"
       />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8" role="main" aria-label="Restaurant menu content">
         <MenuGrid 
           items={filteredItems}
           menuType={selectedMenuType}
@@ -158,7 +177,7 @@ function App() {
 
       <LoginDialog 
         open={showLoginDialog}
-        onOpenChange={setShowLoginDialog}
+        onOpenChange={handleCloseLoginDialog}
         onLogin={handleLogin}
       />
 
