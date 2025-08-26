@@ -31,13 +31,13 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
   })
 
   useEffect(() => {
-    if (item) {
+    if (item && item.basePrice !== undefined) {
       setFormData({
-        name: item.name,
-        description: item.description,
+        name: item.name || '',
+        description: item.description || '',
         basePrice: item.basePrice.toString(),
-        category: item.category,
-        available: item.available
+        category: item.category || '',
+        available: item.available ?? true
       })
     }
   }, [item])

@@ -83,6 +83,9 @@ const PRICE_MULTIPLIERS = {
 }
 
 const getItemPrice = (basePrice: number, menuType: MenuType): number => {
+  if (!basePrice || typeof basePrice !== 'number' || isNaN(basePrice)) {
+    return 0
+  }
   return Math.round(basePrice * PRICE_MULTIPLIERS[menuType])
 }
 
@@ -110,7 +113,11 @@ function App() {
   // Memoize handlers to prevent unnecessary re-renders
   const handleAddItem = useCallback((item: Omit<MenuItem, 'id'>) => {
     const newItem: MenuItem = {
-      ...item,
+      name: item.name || '',
+      description: item.description || '',
+      basePrice: item.basePrice || 0,
+      category: item.category || 'Other',
+      available: item.available ?? true,
       id: Date.now().toString()
     }
     setMenuItems(current => [...current, newItem])

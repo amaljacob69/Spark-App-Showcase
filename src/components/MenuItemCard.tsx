@@ -20,6 +20,11 @@ interface MenuItemCardProps {
 export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, onDelete }: MenuItemCardProps) {
   const [showEditDialog, setShowEditDialog] = useState(false)
 
+  // Safety check to ensure item has required properties
+  if (!item || !item.id || !item.name) {
+    return null
+  }
+
   const handleToggleAvailability = () => {
     onEdit(item.id, { available: !item.available })
     toast.success(`${item.name} ${!item.available ? 'made available' : 'made unavailable'}`)
@@ -56,11 +61,11 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
             </div>
             <div className="ml-4 text-right">
               <div className="font-bold text-accent text-lg">
-                ${getItemPrice(item.basePrice, menuType).toFixed(2)}
+                ${item.basePrice ? getItemPrice(item.basePrice, menuType).toFixed(2) : '0.00'}
               </div>
               {isAdmin && (
                 <div className="text-xs text-muted-foreground">
-                  Base: ${item.basePrice.toFixed(2)}
+                  Base: ${item.basePrice ? item.basePrice.toFixed(2) : '0.00'}
                 </div>
               )}
             </div>
