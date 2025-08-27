@@ -56,12 +56,24 @@ export const loadMenuItems = async (): Promise<MenuItem[]> => {
   }
 }
 
+// Admin user type
+export interface AdminUser {
+  email: string
+  addedAt: Date
+  isActive: boolean
+}
+
 // Admin users management
 export const checkAdminAccess = async (email: string): Promise<boolean> => {
   try {
     const adminRef = doc(db, 'admins', email)
     const adminSnap = await getDoc(adminRef)
-    return adminSnap.exists()
+    
+    if (adminSnap.exists()) {
+      const data = adminSnap.data()
+      return data.isActive === true
+    }
+    return false
   } catch (error) {
     console.error('Error checking admin access:', error)
     return false
@@ -78,6 +90,45 @@ export const addAdminUser = async (email: string) => {
     })
   } catch (error) {
     console.error('Error adding admin user:', error)
+    throw error
+  }
+}
+
+export const removeAdminUser = async (email: string) => {
+  try {
+    const adminRef = doc(db, 'admins', email)
+    await deleteDoc(adminRef)
+  } catch (error) {
+    console.error('Error removing admin user:', error)
+    throw error
+  }
+}
+
+export const getAdminUsers = async (): Promise<AdminUser[]> => {
+  try {
+    const adminsRef = collection(db, 'admins')
+    const adminsSnap = await getDocs(adminsRef)
+    
+    return adminsSnap.docs.map(doc => {
+      const data = doc.data()
+      return {
+        email: data.email,
+        addedAt: data.addedAt?.toDate() || new Date(),
+        isActive: data.isActive ?? true
+      }
+    })
+  } catch (error) {
+    console.error('Error getting admin users:', error)
+    throw error
+  }
+}
+
+export const toggleAdminStatus = async (email: string, isActive: boolean) => {
+  try {
+    const adminRef = doc(db, 'admins', email)
+    await updateDoc(adminRef, { isActive })
+  } catch (error) {
+    console.error('Error toggling admin status:', error)
     throw error
   }
 }
