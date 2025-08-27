@@ -1,22 +1,106 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow public read access to restaurant menu
+    
+    // ==========================================
+    // RESTAURANT MENU DATA
+    // ==========================================
+    
+    // Public read access to menu items, admin write access only
     match /restaurant/menu {
-      allow read: true;
-      allow write: if isAdmin();
+      // Anyone can read the menu (for customers)
+      allow read: if true;
+      
+      // Only authenticated admins can write menu data
+      allow write: if isValidAdmin() && isValidMenuData();
     }
     
-    // Admin users collection - only admins can read/write
+    // ==========================================
+    // ADMIN USERS MANAGEMENT
+    // ==========================================
+    
+    // Admin users collection - strict access control
     match /admins/{email} {
-      allow read, write: if isAdmin() || request.auth.token.email == email;
+      // Only admins can read admin list, or users can read their own record
+      allow read: if isValidAdmin() || 
+                     (request.auth != null && request.auth.token.email == email);
+      
+      // Only existing admins can manage other admin accounts
+      allow create: if isValidAdmin() && isValidAdminData(email);
+      allow update: if isValidAdmin() && isValidAdminData(email);
+      allow delete: if isValidAdmin() && email != request.auth.token.email; // Can't delete self
     }
     
-    // Helper function to check if user is admin
-    function isAdmin() {
+    // ==========================================
+    // SECURITY FUNCTIONS
+    // ==========================================
+    
+    // Check if user is a valid authenticated admin
+    function isValidAdmin() {
       return request.auth != null && 
-             request.auth.token.email != null && 
-             exists(/databases/$(database)/documents/admins/$(request.auth.token.email));
+             request.auth.token.email != null &&
+             request.auth.token.email_verified == true &&
+             exists(/databases/$(database)/documents/admins/$(request.auth.token.email)) &&
+             get(/databases/$(database)/documents/admins/$(request.auth.token.email)).data.isActive == true;
+    }
+    
+    // Validate menu data structure and content
+    function isValidMenuData() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['items', 'updatedAt']) &&
+             data.items is list &&
+             data.items.size() <= 100 && // Limit menu items
+             data.updatedAt is timestamp &&
+             isValidMenuItems(data.items);
+    }
+    
+    // Validate individual menu items structure
+    function isValidMenuItems(items) {
+      return items.size() <= 100 &&
+             items.toSet().hasAll(['id', 'name', 'description', 'prices', 'category', 'available'].toSet()) &&
+             isValidMenuItemsPrices(items);
+    }
+    
+    // Validate menu item prices structure
+    function isValidMenuItemsPrices(items) {
+      return items.size() == 0 || 
+             (items[0].prices.keys().hasAll(['dinein-non-ac', 'dinein-ac', 'takeaway']) &&
+              items[0].prices['dinein-non-ac'] is number &&
+              items[0].prices['dinein-ac'] is number &&
+              items[0].prices.takeaway is number &&
+              items[0].prices['dinein-non-ac'] >= 0 &&
+              items[0].prices['dinein-ac'] >= 0 &&
+              items[0].prices.takeaway >= 0 &&
+              items[0].prices['dinein-non-ac'] <= 10000 &&
+              items[0].prices['dinein-ac'] <= 10000 &&
+              items[0].prices.takeaway <= 10000);
+    }
+    
+    // Validate admin user data structure
+    function isValidAdminData(email) {
+      let data = request.resource.data;
+      return data.keys().hasAll(['email', 'addedAt', 'isActive']) &&
+             data.email == email &&
+             data.email.matches('.*@.*\\..*') && // Basic email validation
+             data.addedAt is timestamp &&
+             data.isActive is bool;
+    }
+    
+    // Rate limiting helper (basic implementation)
+    function isValidRequestRate() {
+      // This is a basic check - for production consider using Firebase Extensions
+      // or external rate limiting solutions
+      return request.time > resource.data.lastRequest + duration.fromMinutes(1);
+    }
+    
+    // ==========================================
+    // FALLBACK RULE
+    // ==========================================
+    
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
