@@ -1,4 +1,4 @@
-import { House, AirConditioner, Package, Palette } from '@phosphor-icons/react'
+import { House, Snowflake, Package, Palette } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { MenuType } from '../App'
 import { menuThemes } from '../hooks/useTheme'
@@ -20,7 +20,7 @@ const menuTypes = [
   {
     type: 'dinein-ac' as MenuType,
     label: 'Dine-in AC',
-    icon: AirConditioner,
+    icon: Snowflake,
     description: 'Standard pricing',
     themeColor: 'bg-blue-500'
   },

@@ -11,7 +11,7 @@ import {
   FileText, 
   Database,
   CheckCircle,
-  AlertTriangle,
+  Warning,
   Copy
 } from '@phosphor-icons/react'
 import { toast } from 'sonner'
@@ -176,7 +176,7 @@ export function BackupRestore({ menuItems, onRestoreItems, className }: BackupRe
       case 'success':
         return <CheckCircle className="text-green-600" size={16} />
       case 'error':
-        return <AlertTriangle className="text-red-600" size={16} />
+        return <Warning className="text-red-600" size={16} />
       default:
         return null
     }
@@ -335,7 +335,7 @@ export function BackupRestore({ menuItems, onRestoreItems, className }: BackupRe
                               </>
                             ) : (
                               <div className="flex items-center gap-2 text-red-600 font-medium">
-                                <AlertTriangle size={14} />
+                                <Warning size={14} />
                                 {validation.error}
                               </div>
                             )
@@ -377,7 +377,7 @@ export function BackupRestore({ menuItems, onRestoreItems, className }: BackupRe
         {/* Warning */}
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
           <div className="flex items-center gap-2 text-yellow-800 text-sm">
-            <AlertTriangle size={16} />
+            <Warning size={16} />
             <span className="font-medium">Important:</span>
           </div>
           <p className="text-yellow-700 text-sm mt-1">

@@ -1,7 +1,8 @@
-import { ChefHat, UserCheck, LogOut, House, AirConditioner, Package, Palette } from '@phosphor-icons/react'
+import { ChefHat, UserCheck, SignOut, House, Snowflake, Package, Palette } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { CategoryFilter } from './CategoryFilter'
 import { MenuTypeSelector } from './MenuTypeSelector'
+import { SearchBar } from './SearchBar'
 import { MenuType } from '../App'
 import { toast } from 'sonner'
 import { menuThemes } from '../hooks/useTheme'
@@ -16,6 +17,8 @@ interface HeaderProps {
   menuType: MenuType
   onMenuTypeSelect: (type: MenuType) => void
   isDirectLink: boolean
+  onSearch: (query: string) => void
+  searchQuery: string
 }
 
 export function Header({ 
@@ -27,7 +30,9 @@ export function Header({
   onCategorySelect,
   menuType,
   onMenuTypeSelect,
-  isDirectLink
+  isDirectLink,
+  onSearch,
+  searchQuery
 }: HeaderProps) {
 
 
@@ -37,7 +42,7 @@ export function Header({
       case 'dinein-non-ac':
         return <House size={16} />
       case 'dinein-ac':
-        return <AirConditioner size={16} />
+        return <Snowflake size={16} />
       case 'takeaway':
         return <Package size={16} />
     }
@@ -89,7 +94,7 @@ export function Header({
                     onClick={onAdminLogout}
                     className="gap-1 sm:gap-2 px-2 sm:px-3"
                   >
-                    <LogOut size={14} className="sm:size-4" />
+                    <SignOut size={14} className="sm:size-4" />
                     <span className="hidden sm:inline">Logout</span>
                   </Button>
                 </div>
@@ -109,37 +114,48 @@ export function Header({
           )}
         </div>
 
-          <div className="mt-3 sm:mt-4 flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
-            {/* Only show menu type selector if not accessing via direct QR link */}
-            {!isDirectLink && (
-              <div className="order-2 lg:order-1">
-                <MenuTypeSelector 
-                  selectedType={menuType}
-                  onTypeSelect={onMenuTypeSelect}
-                />
-              </div>
-            )}
-            {/* Show fixed menu type indicator for QR code direct access */}
-            {isDirectLink && (
-              <div className="order-2 lg:order-1">
-                <div className="flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary-foreground rounded-md border border-primary/20 shadow-sm">
-                  {getMenuTypeIcon(menuType)}
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">{getMenuTypeName(menuType)}</span>
-                    <span className="text-xs opacity-75">{menuThemes[menuType].name} Theme</span>
-                  </div>
-                  <span className="text-xs opacity-75 hidden sm:inline ml-2">(QR Access)</span>
-                </div>
-              </div>
-            )}
-            <div className="order-1 lg:order-2">
-              <CategoryFilter 
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onCategorySelect={onCategorySelect}
+          <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4">
+            {/* Search Bar */}
+            <div className="w-full">
+              <SearchBar 
+                onSearch={onSearch}
+                className="w-full max-w-md mx-auto lg:mx-0"
+                placeholder="Search dishes, ingredients, or categories..."
               />
             </div>
-        </div>
+
+            <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
+              {/* Only show menu type selector if not accessing via direct QR link */}
+              {!isDirectLink && (
+                <div className="order-2 lg:order-1">
+                  <MenuTypeSelector 
+                    selectedType={menuType}
+                    onTypeSelect={onMenuTypeSelect}
+                  />
+                </div>
+              )}
+              {/* Show fixed menu type indicator for QR code direct access */}
+              {isDirectLink && (
+                <div className="order-2 lg:order-1">
+                  <div className="flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary-foreground rounded-md border border-primary/20 shadow-sm">
+                    {getMenuTypeIcon(menuType)}
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium">{getMenuTypeName(menuType)}</span>
+                      <span className="text-xs opacity-75">{menuThemes[menuType].name} Theme</span>
+                    </div>
+                    <span className="text-xs opacity-75 hidden sm:inline ml-2">(QR Access)</span>
+                  </div>
+                </div>
+              )}
+              <div className="order-1 lg:order-2">
+                <CategoryFilter 
+                  categories={categories}
+                  selectedCategory={selectedCategory}
+                  onCategorySelect={onCategorySelect}
+                />
+              </div>
+            </div>
+          </div>
       </div>
     </header>
   )

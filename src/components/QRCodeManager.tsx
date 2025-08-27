@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { House, AirConditioner, Package, Link, Check, QrCode } from '@phosphor-icons/react'
+import React, { useState } from 'react'
+import { House, Snowflake, Package, Link, Check, QrCode } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { toast } from 'sonner'
@@ -13,7 +13,7 @@ interface MenuTypeConfig {
   type: MenuType
   name: string
   description: string
-  icon: JSX.Element
+  icon: React.ReactElement
   color: string
 }
 
@@ -29,7 +29,7 @@ const menuConfigs: MenuTypeConfig[] = [
     type: 'dinein-ac',
     name: 'Dine-in AC',
     description: 'For customers in AC dining area',
-    icon: <AirConditioner size={20} />,
+    icon: <Snowflake size={20} />,
     color: 'text-green-600'
   },
   {

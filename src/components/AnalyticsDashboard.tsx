@@ -6,11 +6,11 @@ import { Badge } from './ui/badge'
 import { useKV } from '@github/spark/hooks'
 import { MenuItem, MenuType } from '../App'
 import { 
-  TrendingUp, 
-  TrendingDown, 
+  TrendUp, 
+  TrendDown, 
   Star, 
   Users, 
-  DollarSign,
+  CurrencyDollar,
   Eye,
   ChartBar,
   Clock,
@@ -186,7 +186,7 @@ export function AnalyticsDashboard({ menuItems, className }: AnalyticsDashboardP
                         {analytics.totalItems - analytics.availableItems}
                       </p>
                     </div>
-                    <TrendingDown className="text-orange-600" size={20} />
+                    <TrendDown className="text-orange-600" size={20} />
                   </div>
                 </CardContent>
               </Card>
@@ -204,7 +204,7 @@ export function AnalyticsDashboard({ menuItems, className }: AnalyticsDashboardP
                         <h4 className="font-medium text-sm">
                           {menuType.replace('-', ' ').toUpperCase()}
                         </h4>
-                        <DollarSign className="text-primary" size={16} />
+                        <CurrencyDollar className="text-primary" size={16} />
                       </div>
                       
                       <div className="space-y-2">
@@ -288,7 +288,7 @@ export function AnalyticsDashboard({ menuItems, className }: AnalyticsDashboardP
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <DollarSign className="text-green-600" size={20} />
+                    <CurrencyDollar className="text-green-600" size={20} />
                     Budget Friendly
                   </CardTitle>
                 </CardHeader>
@@ -310,7 +310,7 @@ export function AnalyticsDashboard({ menuItems, className }: AnalyticsDashboardP
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <TrendingUp className="text-purple-600" size={20} />
+                    <TrendUp className="text-purple-600" size={20} />
                     Premium Items
                   </CardTitle>
                 </CardHeader>
