@@ -1,12 +1,19 @@
-# Paradise Family Restaurant Menu
+# 🍽️ Paradise Family Restaurant Menu
 
 A modern restaurant menu application with Firebase integration, admin panel, and different pricing tiers for dine-in AC, non-AC, and takeaway options.
 
-## 📂 Save to GitHub
+![Restaurant Menu App](https://img.shields.io/badge/React-18.x-61DAFB?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript)
+![Firebase](https://img.shields.io/badge/Firebase-Latest-FFCA28?style=flat-square&logo=firebase)
+![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=flat-square&logo=vite)
 
-**Ready to save your project to GitHub?** 
-- 📋 Follow the complete guide: **[GITHUB-SETUP.md](./GITHUB-SETUP.md)**
-- ⚡ Quick setup script: **[github-setup.sh](./github-setup.sh)**
+## 📂 Save to GitHub Repository
+
+**Ready to save your project to GitHub?** Choose your preferred method:
+
+- 🚀 **Quick Start**: [GIT-QUICK-START.md](./GIT-QUICK-START.md) - *Fastest way with copy-paste commands*
+- 📋 **Complete Guide**: [GITHUB-SETUP.md](./GITHUB-SETUP.md) - *Detailed explanation with tips*  
+- ⚡ **Setup Script**: [github-setup.sh](./github-setup.sh) - *All commands in one script*
 
 ## 🚀 Getting Started
 

@@ -1,11 +1,23 @@
 {
-    "name": "spark-template",
-    "private": true,
-    "version": "0.0.0",
+    "name": "paradise-family-restaurant-menu",
+    "description": "Modern restaurant menu application with Firebase integration, admin panel, and different pricing tiers for dine-in AC, non-AC, and takeaway options",
+    "version": "1.0.0",
     "type": "module",
+    "keywords": ["restaurant", "menu", "firebase", "react", "typescript", "vite", "restaurant-menu", "qr-menu"],
+    "author": "Paradise Family Restaurant",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/YOUR_USERNAME/paradise-family-restaurant-menu.git"
+    },
+    "bugs": {
+        "url": "https://github.com/YOUR_USERNAME/paradise-family-restaurant-menu/issues"
+    },
+    "homepage": "https://paradise-family.web.app",
     "scripts": {
         "dev": "vite",
-        "kill": "fuser -k 5000/tcp",
+        "start": "npm run dev",
+        "type-check": "tsc --noEmit",
         "build": "tsc -b --noCheck && vite build",
         "lint": "eslint .",
         "optimize": "vite optimize",
