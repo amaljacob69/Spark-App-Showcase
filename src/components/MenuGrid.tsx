@@ -11,9 +11,10 @@ interface MenuGridProps {
   onDeleteItem: (id: string) => void
   searchQuery?: string
   selectedCategory?: string
+  onAddToCart?: (item: MenuItem, menuType: MenuType) => void
 }
 
-export function MenuGrid({ items, menuType, getItemPrice, isAdmin, onEditItem, onDeleteItem, searchQuery, selectedCategory }: MenuGridProps) {
+export function MenuGrid({ items, menuType, getItemPrice, isAdmin, onEditItem, onDeleteItem, searchQuery, selectedCategory, onAddToCart }: MenuGridProps) {
   if (items.length === 0) {
     return (
       <div className="text-center py-12 sm:py-16 lg:py-20">
@@ -65,6 +66,7 @@ export function MenuGrid({ items, menuType, getItemPrice, isAdmin, onEditItem, o
           isAdmin={isAdmin}
           onEdit={onEditItem}
           onDelete={onDeleteItem}
+          onAddToCart={onAddToCart}
         />
       ))}
     </div>

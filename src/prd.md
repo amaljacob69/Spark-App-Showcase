@@ -28,6 +28,11 @@
 - **Why it matters**: Customers scanning a QR code in the Non-AC area only see Non-AC pricing, eliminating confusion and ensuring they see the correct prices for their dining location
 - **Success criteria**: Each QR code URL parameter locks the menu type, hides menu type selector, displays only relevant pricing, shows clear indicator of locked menu type
 
+### Floating Action Button & Cart System
+- **What it does**: Provides customers with a floating action button for quick access to Google Reviews, Instagram, and shopping cart functionality
+- **Why it matters**: Enhances customer engagement by allowing easy access to social platforms and order management without disrupting menu browsing
+- **Success criteria**: Button remains accessible while scrolling, cart badge shows item count, social links open correctly, cart allows order management and WhatsApp ordering
+
 ### Advanced Search & Filtering System
 - **What it does**: Provides comprehensive search with text queries and advanced dietary preference filtering (vegetarian, egg, chicken, meat, fish)
 - **Why it matters**: Customers can quickly find dishes that match their dietary needs and preferences, improving user experience and accessibility

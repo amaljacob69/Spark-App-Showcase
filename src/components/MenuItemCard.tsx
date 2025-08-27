@@ -5,7 +5,7 @@ import { Card, CardContent } from './ui/card'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { EditItemDialog } from './EditItemDialog'
-import { PencilSimple, Trash, Eye, EyeSlash, Leaf, Egg, Bird, Cow, Fish } from '@phosphor-icons/react'
+import { PencilSimple, Trash, Eye, EyeSlash, Leaf, Egg, Bird, Cow, Fish, Plus } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -16,6 +16,7 @@ interface MenuItemCardProps {
   isAdmin: boolean
   onEdit: (id: string, updates: Partial<MenuItem>) => void
   onDelete: (id: string) => void
+  onAddToCart?: (item: MenuItem, menuType: MenuType) => void
 }
 
 const dietaryIcons = {
@@ -26,12 +27,18 @@ const dietaryIcons = {
   fish: { icon: Fish, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' }
 }
 
-export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, onDelete }: MenuItemCardProps) {
+export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, onDelete, onAddToCart }: MenuItemCardProps) {
   const [showEditDialog, setShowEditDialog] = useState(false)
 
   // Safety check to ensure item has required properties
   if (!item || !item.id || !item.name) {
     return null
+  }
+
+  const handleAddToCart = () => {
+    if (onAddToCart && item.available) {
+      onAddToCart(item, menuType)
+    }
   }
 
   const handleToggleAvailability = () => {
@@ -133,6 +140,21 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
                     )
                   })}
                 </div>
+              </div>
+            )}
+
+            {/* Add to Cart button for customers */}
+            {!isAdmin && onAddToCart && (
+              <div className="pt-3 border-t border-border/50">
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={!item.available}
+                  className="w-full touch-target hover-lift"
+                  size="sm"
+                >
+                  <Plus size={16} className="mr-2" />
+                  Add to Cart
+                </Button>
               </div>
             )}
 

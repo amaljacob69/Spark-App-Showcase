@@ -6,6 +6,8 @@ import { AdminPanel } from './components/AdminPanel'
 import { LoginDialog } from './components/LoginDialog'
 import { ThemePreview } from './components/ThemePreview'
 import { DietaryFilter, type DietaryPreference } from './components/DietaryFilter'
+import { FloatingActionButton } from './components/FloatingActionButton'
+import { CartDialog, useCart } from './components/CartDialog'
 import { Button } from './components/ui/button'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
@@ -266,6 +268,10 @@ function AppContent() {
   const [showLoginDialog, setShowLoginDialog] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [selectedDietaryFilters, setSelectedDietaryFilters] = useKV<DietaryPreference[]>('dietary-filters', [])
+  const [showCartDialog, setShowCartDialog] = useState(false)
+
+  // Cart functionality
+  const { cartItems, addToCart, updateQuantity, removeFromCart, clearCart, getCartItemCount } = useCart()
 
   // Apply theme based on selected menu type
   const currentTheme = useTheme(selectedMenuType || 'dinein-ac')
@@ -404,6 +410,14 @@ function AppContent() {
     }
   }, [searchQuery, selectedDietaryFilters, setSelectedDietaryFilters])
 
+  const handleAddToCart = useCallback((item: MenuItem, menuType: MenuType) => {
+    addToCart(item, menuType, 1)
+  }, [addToCart])
+
+  const handleCartClick = useCallback(() => {
+    setShowCartDialog(true)
+  }, [])
+
   return (
     <div className="min-h-screen bg-background safe-area-top safe-area-bottom">
       <ThemePreview menuType={safeSelectedMenuType} />
@@ -505,6 +519,7 @@ function AppContent() {
           onDeleteItem={handleDeleteItem}
           searchQuery={searchQuery}
           selectedCategory={selectedCategory}
+          onAddToCart={!safeIsAdmin ? handleAddToCart : undefined}
         />
         
         {safeIsAdmin && (
@@ -513,6 +528,24 @@ function AppContent() {
           </div>
         )}
       </main>
+
+      {/* Floating Action Button - only show for non-admin users */}
+      {!safeIsAdmin && (
+        <FloatingActionButton
+          cartItemCount={getCartItemCount()}
+          onCartClick={handleCartClick}
+        />
+      )}
+
+      {/* Cart Dialog */}
+      <CartDialog
+        open={showCartDialog}
+        onOpenChange={setShowCartDialog}
+        cartItems={cartItems}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeFromCart}
+        onClearCart={clearCart}
+      />
 
       {showLoginDialog && (
         <LoginDialog 
