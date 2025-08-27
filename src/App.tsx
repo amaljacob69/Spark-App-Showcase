@@ -5,6 +5,7 @@ import { MenuGrid } from './components/MenuGrid'
 import { AdminPanel } from './components/AdminPanel'
 import { LoginDialog } from './components/LoginDialog'
 import { ThemePreview } from './components/ThemePreview'
+import { DietaryFilter, type DietaryPreference } from './components/DietaryFilter'
 import { Button } from './components/ui/button'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
@@ -22,6 +23,7 @@ export interface MenuItem {
   category: string
   available: boolean
   image?: string
+  dietary: DietaryPreference[]
 }
 
 export type MenuType = 'dinein-non-ac' | 'dinein-ac' | 'takeaway'
@@ -44,7 +46,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 16
     },
     category: "Chicken",
-    available: true
+    available: true,
+    dietary: ["chicken"]
   },
   {
     id: "2",
@@ -56,7 +59,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 20
     },
     category: "Chicken",
-    available: true
+    available: true,
+    dietary: ["chicken"]
   },
   {
     id: "3",
@@ -68,7 +72,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 13
     },
     category: "Chicken",
-    available: true
+    available: true,
+    dietary: ["chicken"]
   },
   // Meat Dishes
   {
@@ -81,7 +86,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 38
     },
     category: "Meat",
-    available: true
+    available: true,
+    dietary: ["meat"]
   },
   {
     id: "5",
@@ -93,7 +99,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 34
     },
     category: "Meat",
-    available: true
+    available: true,
+    dietary: ["meat"]
   },
   {
     id: "6",
@@ -105,7 +112,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 24
     },
     category: "Meat",
-    available: true
+    available: true,
+    dietary: ["meat"]
   },
   // Fish & Seafood
   {
@@ -118,7 +126,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 26
     },
     category: "Fish",
-    available: true
+    available: true,
+    dietary: ["fish"]
   },
   {
     id: "8",
@@ -130,7 +139,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 29
     },
     category: "Fish",
-    available: true
+    available: true,
+    dietary: ["fish"]
   },
   {
     id: "9",
@@ -142,7 +152,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 40
     },
     category: "Fish",
-    available: true
+    available: true,
+    dietary: ["fish"]
   },
   {
     id: "10",
@@ -154,9 +165,10 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 17
     },
     category: "Fish",
-    available: true
+    available: true,
+    dietary: ["fish"]
   },
-  // Other Categories
+  // Vegetarian & Other Categories
   {
     id: "11",
     name: "Truffle Risotto",
@@ -167,7 +179,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 22
     },
     category: "Vegetarian",
-    available: true
+    available: true,
+    dietary: ["vegetarian"]
   },
   {
     id: "12",
@@ -179,7 +192,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 14
     },
     category: "Appetizers",
-    available: true
+    available: true,
+    dietary: ["vegetarian"]
   },
   {
     id: "13",
@@ -191,7 +205,8 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 11
     },
     category: "Salads",
-    available: true
+    available: true,
+    dietary: ["vegetarian", "egg"]
   },
   {
     id: "14",
@@ -203,7 +218,35 @@ const sampleMenuItems: MenuItem[] = [
       'takeaway': 10
     },
     category: "Desserts",
-    available: true
+    available: true,
+    dietary: ["vegetarian", "egg"]
+  },
+  // Additional items to showcase variety
+  {
+    id: "15",
+    name: "Chicken Carbonara",
+    description: "Creamy pasta with grilled chicken, bacon, parmesan, and fresh herbs",
+    prices: {
+      'dinein-non-ac': 20,
+      'dinein-ac': 22,
+      'takeaway': 18
+    },
+    category: "Pasta",
+    available: true,
+    dietary: ["chicken", "egg", "meat"]
+  },
+  {
+    id: "16",
+    name: "Vegetable Spring Rolls",
+    description: "Crispy spring rolls filled with fresh vegetables, served with sweet and sour sauce",
+    prices: {
+      'dinein-non-ac': 12,
+      'dinein-ac': 13,
+      'takeaway': 10
+    },
+    category: "Appetizers",
+    available: true,
+    dietary: ["vegetarian"]
   }
 ]
 
@@ -222,6 +265,7 @@ function AppContent() {
   const [isDirectLink, setIsDirectLink] = useState(false)
   const [showLoginDialog, setShowLoginDialog] = useState(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
+  const [selectedDietaryFilters, setSelectedDietaryFilters] = useKV<DietaryPreference[]>('dietary-filters', [])
 
   // Apply theme based on selected menu type
   const currentTheme = useTheme(selectedMenuType || 'dinein-ac')
@@ -296,18 +340,29 @@ function AppContent() {
       items = items.filter(item => item.category === selectedCategory)
     }
 
+    // Filter by dietary preferences
+    if (selectedDietaryFilters && selectedDietaryFilters.length > 0) {
+      items = items.filter(item => {
+        // Item must have at least one of the selected dietary preferences
+        return selectedDietaryFilters.some(filter => 
+          item.dietary && item.dietary.includes(filter)
+        )
+      })
+    }
+
     // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim()
       items = items.filter(item => 
         item.name.toLowerCase().includes(query) ||
         item.description.toLowerCase().includes(query) ||
-        item.category.toLowerCase().includes(query)
+        item.category.toLowerCase().includes(query) ||
+        (item.dietary && item.dietary.some(d => d.toLowerCase().includes(query)))
       )
     }
 
     return items
-  }, [safeMenuItems, selectedCategory, searchQuery])
+  }, [safeMenuItems, selectedCategory, selectedDietaryFilters, searchQuery])
 
   const handleAddItem = useCallback((item: Omit<MenuItem, 'id'>) => {
     const newItem: MenuItem = {
@@ -320,6 +375,7 @@ function AppContent() {
       },
       category: item.category || 'Other',
       available: item.available ?? true,
+      dietary: item.dietary || [],
       id: Date.now().toString()
     }
     setMenuItems(current => [...(current || []), newItem])
@@ -339,11 +395,14 @@ function AppContent() {
 
   const handleCategorySelect = useCallback((category: string) => {
     setSelectedCategory(category)
-    // Clear search when changing categories for better UX
+    // Clear search and dietary filters when changing categories for better UX
     if (searchQuery) {
       setSearchQuery('')
     }
-  }, [searchQuery])
+    if (selectedDietaryFilters && selectedDietaryFilters.length > 0) {
+      setSelectedDietaryFilters([])
+    }
+  }, [searchQuery, selectedDietaryFilters, setSelectedDietaryFilters])
 
   return (
     <div className="min-h-screen bg-background">
@@ -363,29 +422,79 @@ function AppContent() {
       />
       
       <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 lg:py-8" role="main" aria-label="Restaurant menu content">
-        {searchQuery && (
+        {/* Search and Filter Results Display */}
+        {(searchQuery || (selectedDietaryFilters && selectedDietaryFilters.length > 0)) && (
           <div className="mb-4 sm:mb-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 p-3 bg-muted/50 rounded-lg border">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">
-                  Search results for: 
-                </span>
-                <span className="font-medium text-foreground">"{searchQuery}"</span>
+            <div className="flex flex-col gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg border">
+              {/* Search Results */}
+              {searchQuery && (
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">
+                      Search results for: 
+                    </span>
+                    <span className="font-medium text-foreground">"{searchQuery}"</span>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setSearchQuery('')}
+                    className="text-xs h-7 px-2 whitespace-nowrap"
+                  >
+                    Clear search
+                  </Button>
+                </div>
+              )}
+              
+              {/* Dietary Filter Results */}
+              {selectedDietaryFilters && selectedDietaryFilters.length > 0 && (
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">
+                      Filtered by dietary preferences
+                    </span>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setSelectedDietaryFilters([])}
+                    className="text-xs h-7 px-2 whitespace-nowrap"
+                  >
+                    Clear filters
+                  </Button>
+                </div>
+              )}
+              
+              {/* Results count */}
+              <div className="flex items-center justify-between">
                 <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                  {filteredItems.length} found
+                  {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'} found
                 </span>
+                {(searchQuery || (selectedDietaryFilters && selectedDietaryFilters.length > 0)) && (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => {
+                      setSearchQuery('')
+                      setSelectedDietaryFilters([])
+                    }}
+                    className="text-xs h-7 px-2"
+                  >
+                    Clear all
+                  </Button>
+                )}
               </div>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => setSearchQuery('')}
-                className="text-xs h-7 px-2 whitespace-nowrap"
-              >
-                Clear search
-              </Button>
             </div>
           </div>
         )}
+
+        {/* Dietary Filters */}
+        <div className="mb-4 sm:mb-6">
+          <DietaryFilter
+            selectedFilters={selectedDietaryFilters || []}
+            onFiltersChange={setSelectedDietaryFilters}
+          />
+        </div>
         
         <MenuGrid 
           items={filteredItems}

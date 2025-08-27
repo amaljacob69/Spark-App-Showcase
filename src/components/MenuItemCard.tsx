@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { MenuItem, MenuType } from '../App'
+import { DietaryPreference } from './DietaryFilter'
 import { Card, CardContent } from './ui/card'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { EditItemDialog } from './EditItemDialog'
-import { PencilSimple, Trash, Eye, EyeSlash } from '@phosphor-icons/react'
+import { PencilSimple, Trash, Eye, EyeSlash, Leaf, Egg, Bird, Cow, Fish } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -15,6 +16,14 @@ interface MenuItemCardProps {
   isAdmin: boolean
   onEdit: (id: string, updates: Partial<MenuItem>) => void
   onDelete: (id: string) => void
+}
+
+const dietaryIcons = {
+  vegetarian: { icon: Leaf, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
+  egg: { icon: Egg, color: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-200' },
+  chicken: { icon: Bird, color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-200' },
+  meat: { icon: Cow, color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-200' },
+  fish: { icon: Fish, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' }
 }
 
 export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, onDelete }: MenuItemCardProps) {
@@ -90,6 +99,32 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
               >
                 {item.available ? 'Available' : 'Unavailable'}
               </Badge>
+              
+              {/* Dietary preferences indicators */}
+              {item.dietary && item.dietary.length > 0 && (
+                <div className="flex items-center gap-1">
+                  {item.dietary.map((dietary) => {
+                    const iconInfo = dietaryIcons[dietary]
+                    if (!iconInfo) return null
+                    
+                    const Icon = iconInfo.icon
+                    return (
+                      <div
+                        key={dietary}
+                        className={cn(
+                          "flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-200",
+                          iconInfo.bg,
+                          iconInfo.border,
+                          "hover:scale-110"
+                        )}
+                        title={dietary.charAt(0).toUpperCase() + dietary.slice(1)}
+                      >
+                        <Icon size={12} className={iconInfo.color} />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
 
             {isAdmin && (

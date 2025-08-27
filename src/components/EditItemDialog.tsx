@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { MenuItem } from '../App'
+import { DietaryPreference } from './DietaryFilter'
 import {
   Dialog,
   DialogContent,
@@ -12,7 +13,10 @@ import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Textarea } from './ui/textarea'
 import { Switch } from './ui/switch'
+import { Checkbox } from './ui/checkbox'
+import { Leaf, Egg, Bird, Cow, Fish } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 
 interface EditItemDialogProps {
   open: boolean
@@ -20,6 +24,14 @@ interface EditItemDialogProps {
   item: MenuItem
   onSave: (updates: Partial<MenuItem>) => void
 }
+
+const dietaryOptions = [
+  { key: 'vegetarian' as DietaryPreference, label: 'Vegetarian', icon: Leaf, color: 'text-green-600' },
+  { key: 'egg' as DietaryPreference, label: 'Contains Egg', icon: Egg, color: 'text-yellow-600' },
+  { key: 'chicken' as DietaryPreference, label: 'Chicken', icon: Bird, color: 'text-amber-600' },
+  { key: 'meat' as DietaryPreference, label: 'Meat', icon: Cow, color: 'text-red-600' },
+  { key: 'fish' as DietaryPreference, label: 'Fish & Seafood', icon: Fish, color: 'text-blue-600' },
+]
 
 export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDialogProps) {
   const [formData, setFormData] = useState({
@@ -31,7 +43,8 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
       'takeaway': ''
     },
     category: '',
-    available: true
+    available: true,
+    dietary: [] as DietaryPreference[]
   })
 
   useEffect(() => {
@@ -45,7 +58,8 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
           'takeaway': item.prices['takeaway']?.toString() || ''
         },
         category: item.category || '',
-        available: item.available ?? true
+        available: item.available ?? true,
+        dietary: item.dietary || []
       })
     }
   }, [item])
@@ -79,7 +93,8 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
         'takeaway': takeawayPrice
       },
       category: formData.category.trim(),
-      available: formData.available
+      available: formData.available,
+      dietary: formData.dietary
     })
   }
 
@@ -96,6 +111,15 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
     } else {
       setFormData(prev => ({ ...prev, [field]: value }))
     }
+  }
+
+  const handleDietaryChange = (dietary: DietaryPreference, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      dietary: checked 
+        ? [...prev.dietary, dietary]
+        : prev.dietary.filter(d => d !== dietary)
+    }))
   }
 
   return (
@@ -197,6 +221,35 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
                 </div>
               </div>
             </div>
+
+            {/* Dietary Preferences */}
+            <div className="space-y-3">
+              <Label className="text-sm font-medium">Dietary Information</Label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {dietaryOptions.map((option) => {
+                  const Icon = option.icon
+                  const isChecked = formData.dietary.includes(option.key)
+                  
+                  return (
+                    <div key={option.key} className="flex items-center space-x-3">
+                      <Checkbox
+                        id={`edit-dietary-${option.key}`}
+                        checked={isChecked}
+                        onCheckedChange={(checked) => handleDietaryChange(option.key, checked as boolean)}
+                      />
+                      <Label 
+                        htmlFor={`edit-dietary-${option.key}`}
+                        className="flex items-center gap-2 text-sm cursor-pointer"
+                      >
+                        <Icon size={14} className={cn(option.color, isChecked ? '' : 'opacity-50')} />
+                        {option.label}
+                      </Label>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
             <div className="flex items-center justify-between">
               <Label htmlFor="edit-available" className="text-sm font-medium">
                 Available

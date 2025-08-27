@@ -28,20 +28,25 @@
 - **Why it matters**: Customers scanning a QR code in the Non-AC area only see Non-AC pricing, eliminating confusion and ensuring they see the correct prices for their dining location
 - **Success criteria**: Each QR code URL parameter locks the menu type, hides menu type selector, displays only relevant pricing, shows clear indicator of locked menu type
 
+### Advanced Search & Filtering System
+- **What it does**: Provides comprehensive search with text queries and advanced dietary preference filtering (vegetarian, egg, chicken, meat, fish)
+- **Why it matters**: Customers can quickly find dishes that match their dietary needs and preferences, improving user experience and accessibility
+- **Success criteria**: Search responds instantly to text queries, dietary filters work independently or in combination, clear visual indicators show applied filters, results update in real-time
+
 ### Multi-Tier Pricing Display
 - **What it does**: Shows menu items with different pricing for Dine-in Non-AC, Dine-in AC, and Takeaway service types
 - **Why it matters**: Transparent pricing allows customers to understand costs for their specific service choice
 - **Success criteria**: Pricing is accurate for each service type, calculations are consistent, price changes update across all menu types
 
 ### Menu Display System
-- **What it does**: Displays menu items in an organized grid with category filtering
-- **Why it matters**: Customers need to easily browse menu offerings with clear organization
-- **Success criteria**: Items load quickly, categories filter correctly, responsive across devices
+- **What it does**: Displays menu items in an organized grid with category filtering, text search, and dietary preference filters with visual indicators
+- **Why it matters**: Customers need to easily browse menu offerings with clear organization and the ability to filter by their specific dietary needs
+- **Success criteria**: Items load quickly, categories filter correctly, search responds instantly, dietary badges are clearly visible, responsive across devices
 
 ### Admin Menu Management
-- **What it does**: Secure admin system for adding, editing, and managing menu items with three-tier pricing input
-- **Why it matters**: Restaurant staff need simple tools to maintain current menu information and pricing
-- **Success criteria**: Admin can set prices for all three tiers simultaneously, changes persist immediately, secure authentication
+- **What it does**: Secure admin system for adding, editing, and managing menu items with three-tier pricing input and dietary preference assignment
+- **Why it matters**: Restaurant staff need simple tools to maintain current menu information, pricing, and accurately categorize dietary information
+- **Success criteria**: Admin can set prices for all three tiers simultaneously, assign multiple dietary preferences, changes persist immediately, secure authentication
 
 ### Real-time Content Updates
 - **What it does**: Changes made in admin panel immediately reflect in customer view
@@ -92,16 +97,18 @@
 
 ### UI Elements & Component Selection
 - **Component Usage**: 
-  - Cards for menu items with clear typography hierarchy
-  - Dialog modals for admin functions (login, add/edit items)
+  - Cards for menu items with clear typography hierarchy and dietary preference indicators
+  - Dialog modals for admin functions (login, add/edit items) with dietary selection checkboxes
+  - Advanced filter popover with visual dietary preference selection
   - Button variants for different action priorities
   - Form inputs with clear labeling for admin panel
-- **Component Customization**: Tailored shadcn components with restaurant-appropriate styling
-- **Component States**: Clear hover, active, and focus states for all interactive elements
-- **Icon Selection**: Phosphor icons for admin functions (edit, delete, add) and navigation
-- **Component Hierarchy**: Primary actions (admin login) prominent, secondary actions subtle but discoverable
+  - Badge components for dietary indicators with color-coded icons
+- **Component Customization**: Tailored shadcn components with restaurant-appropriate styling and dietary preference theming
+- **Component States**: Clear hover, active, and focus states for all interactive elements including dietary filters
+- **Icon Selection**: Phosphor icons for admin functions and dietary indicators (Leaf, Egg, Bird, Cow, Fish)
+- **Component Hierarchy**: Primary actions prominent, dietary filters easily discoverable, secondary actions subtle but accessible
 - **Spacing System**: Consistent use of Tailwind spacing scale for rhythm and alignment
-- **Mobile Adaptation**: Responsive component sizing and touch-friendly interactive elements
+- **Mobile Adaptation**: Responsive component sizing, touch-friendly interactive elements, collapsible filter interface
 
 ### Visual Consistency Framework
 - **Design System Approach**: Component-based design with consistent styling patterns
@@ -115,14 +122,14 @@
 - **Screen Reader Support**: Semantic HTML and proper ARIA labels for all interactive elements
 
 ## Edge Cases & Problem Scenarios
-- **Potential Obstacles**: Empty menu state, network issues during admin updates, concurrent admin sessions
-- **Edge Case Handling**: Graceful empty states, loading indicators, conflict resolution for simultaneous edits
-- **Technical Constraints**: Browser storage limitations, image handling for menu items
+- **Potential Obstacles**: Empty menu state, network issues during admin updates, concurrent admin sessions, dietary information accuracy, filter combination complexity
+- **Edge Case Handling**: Graceful empty states, loading indicators, conflict resolution for simultaneous edits, clear dietary preference management, intuitive filter combination logic
+- **Technical Constraints**: Browser storage limitations, image handling for menu items, dietary data consistency across existing menu items
 
 ## Implementation Considerations
-- **Scalability Needs**: Architecture supports easy addition of features like order management or table reservations
-- **Testing Focus**: QR code URL parameters, menu type isolation, admin authentication flow, data persistence
-- **Critical Questions**: QR code generation workflow, menu type switching restrictions for direct links
+- **Scalability Needs**: Architecture supports easy addition of features like order management or table reservations, extensible dietary preference system
+- **Testing Focus**: QR code URL parameters, menu type isolation, admin authentication flow, data persistence, dietary filter accuracy, search performance
+- **Critical Questions**: QR code generation workflow, menu type switching restrictions for direct links, dietary information data migration for existing items
 
 ### QR Code Implementation
 - **URL Structure**: 
@@ -133,4 +140,4 @@
 - **Admin Tools**: Dedicated QR code management panel for generating and copying QR links
 
 ## Reflection
-This approach creates a professional dual-purpose application that serves both customer browsing and restaurant management needs. The elegant design reinforces the restaurant's premium positioning while the intuitive admin tools ensure staff can maintain current, accurate menu information without technical barriers. The focus on typography and visual hierarchy makes menu items appetizing and easy to navigate, while the secure admin system provides necessary management capabilities.
+This approach creates a professional dual-purpose application that serves both customer browsing and restaurant management needs with comprehensive dietary preference support. The elegant design reinforces the restaurant's premium positioning while the intuitive admin tools ensure staff can maintain current, accurate menu information including detailed dietary classifications without technical barriers. The advanced filtering system makes the menu accessible to customers with specific dietary needs, while the search functionality allows for quick discovery of specific dishes. The focus on typography and visual hierarchy makes menu items appetizing and easy to navigate, while the secure admin system provides necessary management capabilities including comprehensive dietary preference management.
