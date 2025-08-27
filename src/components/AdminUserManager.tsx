@@ -177,26 +177,32 @@ export function AdminUserManager({ onClose }: AdminUserManagerProps) {
             )}
           </div>
 
-          {/* Firebase Console Instructions */}
+          {/* Setup Instructions */}
           <div className="border-t pt-4">
             <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide mb-3">
-              Alternative: Firebase Console Method
+              First Time Setup
             </h3>
-            <div className="text-sm space-y-2 text-muted-foreground">
-              <p>You can also add admin users directly through the Firebase Console:</p>
-              <ol className="list-decimal list-inside space-y-1 ml-4">
-                <li>Go to <a href="https://console.firebase.google.com/project/paradise-family/firestore" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Firebase Console → Firestore</a></li>
-                <li>Navigate to the <code className="bg-muted px-1 rounded">admins</code> collection</li>
-                <li>Click "Add document"</li>
-                <li>Set Document ID to the user's email address</li>
-                <li>Add fields:
-                  <ul className="list-disc list-inside ml-4 mt-1">
-                    <li><code className="bg-muted px-1 rounded">email</code> (string): User's email</li>
-                    <li><code className="bg-muted px-1 rounded">isActive</code> (boolean): true</li>
-                    <li><code className="bg-muted px-1 rounded">addedAt</code> (timestamp): Current date</li>
-                  </ul>
-                </li>
-              </ol>
+            <div className="text-sm space-y-3 text-muted-foreground">
+              <div className="bg-muted/50 p-3 rounded-lg">
+                <p className="font-medium text-foreground mb-2">🔧 Quick Setup Script</p>
+                <p>For the first admin user, use the browser console script:</p>
+                <ol className="list-decimal list-inside space-y-1 ml-4 mt-2">
+                  <li>Sign in with Google (if not already signed in)</li>
+                  <li>Open browser dev tools (F12) → Console tab</li>
+                  <li>Copy/paste the content from <code className="bg-muted px-1 rounded">setup-admin.js</code></li>
+                  <li>Press Enter and refresh the page</li>
+                </ol>
+              </div>
+              
+              <div>
+                <p className="font-medium text-foreground mb-2">🛠️ Manual Firebase Console Method</p>
+                <ol className="list-decimal list-inside space-y-1 ml-4">
+                  <li>Go to <a href="https://console.firebase.google.com/project/paradise-family/firestore" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Firebase Console → Firestore</a></li>
+                  <li>Create <code className="bg-muted px-1 rounded">admins</code> collection</li>
+                  <li>Add document with ID as your email</li>
+                  <li>Add fields: <code className="bg-muted px-1 rounded">email</code>, <code className="bg-muted px-1 rounded">isActive: true</code>, <code className="bg-muted px-1 rounded">addedAt</code></li>
+                </ol>
+              </div>
             </div>
           </div>
         </CardContent>
