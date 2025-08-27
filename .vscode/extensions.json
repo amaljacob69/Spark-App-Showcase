@@ -1,13 +1,14 @@
 {
   "recommendations": [
-    "bradlc.vscode-tailwindcss",
-    "ms-vscode.vscode-typescript-next",
     "esbenp.prettier-vscode",
-    "ms-vscode.vscode-json",
+    "bradlc.vscode-tailwindcss", 
+    "ms-vscode.vscode-typescript-next",
     "formulahendry.auto-rename-tag",
     "christian-kohler.path-intellisense",
-    "ms-vscode.vscode-eslint",
-    "firefox-devtools.vscode-firefox-debug",
-    "ms-vscode.js-debug"
+    "ms-vscode.vscode-json",
+    "toba.vsfire",
+    "ms-vscode.live-server",
+    "ritwickdey.liveserver",
+    "ms-vscode-remote.remote-containers"
   ]
 }
