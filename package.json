@@ -12,7 +12,11 @@
         "preview": "vite preview",
         "deploy": "npm run build && firebase deploy",
         "deploy:hosting": "npm run build && firebase deploy --only hosting",
-        "deploy:rules": "firebase deploy --only firestore:rules"
+        "deploy:rules": "firebase deploy --only firestore:rules",
+        "emulator:start": "npx firebase emulators:start",
+        "emulator:stop": "npx firebase emulators:stop",
+        "test:rules": "node test-security-rules.js",
+        "test:emulator": "bash test-emulator.sh"
     },
     "dependencies": {
         "@github/spark": "^0.39.0",
@@ -80,6 +84,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.21.0",
+        "@firebase/rules-unit-testing": "^5.0.0",
         "@tailwindcss/postcss": "^4.1.8",
         "@types/react": "^19.0.10",
         "@types/react-dom": "^19.0.4",
