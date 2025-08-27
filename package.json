@@ -16,7 +16,8 @@
         "emulator:start": "npx firebase emulators:start",
         "emulator:stop": "npx firebase emulators:stop",
         "test:rules": "node test-security-rules.js",
-        "test:emulator": "bash test-emulator.sh"
+        "test:emulator": "bash test-emulator.sh",
+        "test:dashboard": "echo 'Open testing-dashboard.html in your browser to view testing guide'"
     },
     "dependencies": {
         "@github/spark": "^0.39.0",
