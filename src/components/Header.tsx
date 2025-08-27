@@ -74,29 +74,29 @@ export function Header({
   return (
     <>
       <header className="bg-card border-b border-border sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <ChefHat size={32} className="text-primary" />
-              <div>
-                <h1 className="font-display font-bold text-2xl text-foreground">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+              <ChefHat size={28} className="text-primary flex-shrink-0 sm:size-8" />
+              <div className="min-w-0 flex-1">
+                <h1 className="font-display font-bold text-lg sm:text-2xl text-foreground truncate">
                   Paradise Family Restaurant
                 </h1>
-                <p className="text-sm text-muted-foreground">Fine Dining Experience</p>
+                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Fine Dining Experience</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
               {user ? (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   {user.photoURL && (
                     <img 
                       src={user.photoURL} 
                       alt={user.displayName || 'User'} 
-                      className="w-8 h-8 rounded-full"
+                      className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex-shrink-0"
                     />
                   )}
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
                     <UserCheck size={16} />
                     {isAdmin ? 'Admin' : 'User'}: {user.displayName || user.email}
                   </div>
@@ -105,56 +105,64 @@ export function Header({
                       variant="ghost" 
                       size="sm"
                       onClick={() => setShowAdminSettings(true)}
-                      className="gap-2"
+                      className="gap-1 sm:gap-2 px-2 sm:px-3"
                     >
-                      <Settings size={16} />
-                      Settings
+                      <Settings size={14} className="sm:size-4" />
+                      <span className="hidden sm:inline">Settings</span>
                     </Button>
                   )}
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={handleLogout}
-                    className="gap-2"
+                    className="gap-1 sm:gap-2 px-2 sm:px-3"
                   >
-                    <LogOut size={16} />
-                    Logout
+                    <LogOut size={14} className="sm:size-4" />
+                    <span className="hidden sm:inline">Logout</span>
                   </Button>
                 </div>
               ) : (
                 <Button 
                   variant="outline"
                   onClick={handleLogin}
-                  className="gap-2"
+                  className="gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4"
+                  size="sm"
                 >
-                  <UserCheck size={16} />
-                  Admin Login
+                  <UserCheck size={14} className="sm:size-4" />
+                  <span className="hidden xs:inline">Admin Login</span>
+                  <span className="xs:hidden">Login</span>
                 </Button>
               )}
             </div>
           </div>
 
-          <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-3 sm:mt-4 flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
             {/* Only show menu type selector if not accessing via direct QR link */}
             {!isDirectLink && (
-              <MenuTypeSelector 
-                selectedType={menuType}
-                onTypeSelect={onMenuTypeSelect}
-              />
+              <div className="order-2 lg:order-1">
+                <MenuTypeSelector 
+                  selectedType={menuType}
+                  onTypeSelect={onMenuTypeSelect}
+                />
+              </div>
             )}
             {/* Show fixed menu type indicator for QR code direct access */}
             {isDirectLink && (
-              <div className="flex items-center gap-2 px-3 py-2 bg-accent/10 text-accent-foreground rounded-md border">
-                {getMenuTypeIcon(menuType)}
-                <span className="text-sm font-medium">{getMenuTypeName(menuType)}</span>
-                <span className="text-xs opacity-75">(QR Access)</span>
+              <div className="order-2 lg:order-1">
+                <div className="flex items-center gap-2 px-3 py-2 bg-accent/10 text-accent-foreground rounded-md border">
+                  {getMenuTypeIcon(menuType)}
+                  <span className="text-sm font-medium">{getMenuTypeName(menuType)}</span>
+                  <span className="text-xs opacity-75 hidden sm:inline">(QR Access)</span>
+                </div>
               </div>
             )}
-            <CategoryFilter 
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onCategorySelect={onCategorySelect}
-            />
+            <div className="order-1 lg:order-2">
+              <CategoryFilter 
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onCategorySelect={onCategorySelect}
+              />
+            </div>
           </div>
         </div>
       </header>

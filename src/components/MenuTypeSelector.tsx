@@ -30,22 +30,22 @@ const menuTypes = [
 
 export function MenuTypeSelector({ selectedType, onTypeSelect }: MenuTypeSelectorProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-2">
-      <span className="text-sm font-medium text-muted-foreground self-center mb-2 sm:mb-0 sm:mr-3">
+    <div className="flex flex-col gap-2 sm:gap-3">
+      <span className="text-sm font-medium text-muted-foreground">
         Menu Type:
       </span>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {menuTypes.map(({ type, label, icon: Icon, description }) => (
           <Button
             key={type}
             variant={selectedType === type ? "default" : "outline"}
             size="sm"
             onClick={() => onTypeSelect(type)}
-            className="gap-2 text-xs"
+            className="gap-1.5 text-xs px-2.5 py-1.5 min-w-0 flex-1 sm:flex-initial sm:px-3 sm:py-2"
             title={description}
           >
-            <Icon size={16} />
-            {label}
+            <Icon size={14} className="flex-shrink-0" />
+            <span className="truncate text-xs sm:text-sm">{label}</span>
           </Button>
         ))}
       </div>

@@ -13,6 +13,60 @@
   .font-display {
     font-family: 'Playfair Display', serif;
   }
+  
+  /* Mobile-specific optimizations */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+    
+    /* Improve touch scrolling on iOS */
+    body {
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Better button tap experience on mobile */
+    button, 
+    [role="button"],
+    input[type="submit"],
+    input[type="button"] {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    
+    /* Prevent zooming on form inputs */
+    input, 
+    select, 
+    textarea {
+      font-size: 16px;
+    }
+  }
+}
+
+/* Custom mobile breakpoint utilities */
+@layer utilities {
+  .text-mobile-sm {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .text-mobile-base {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  /* Touch-friendly minimum sizes */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better text wrapping for mobile */
+  .break-anywhere {
+    overflow-wrap: anywhere;
+  }
 }
 
 :root {

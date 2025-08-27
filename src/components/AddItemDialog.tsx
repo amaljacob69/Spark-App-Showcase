@@ -97,40 +97,42 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto mx-2 sm:mx-0">
         <DialogHeader>
-          <DialogTitle>Add New Menu Item</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-lg sm:text-xl">Add New Menu Item</DialogTitle>
+          <DialogDescription className="text-sm">
             Fill in the details for your new menu item.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Item Name *</Label>
+              <Label htmlFor="name" className="text-sm font-medium">Item Name *</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
                 placeholder="Grilled Salmon"
                 required
+                className="w-full"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="category">Category *</Label>
+              <Label htmlFor="category" className="text-sm font-medium">Category *</Label>
               <Input
                 id="category"
                 value={formData.category}
                 onChange={(e) => handleChange('category', e.target.value)}
                 placeholder="mains, appetizers, desserts..."
                 required
+                className="w-full"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description *</Label>
+            <Label htmlFor="description" className="text-sm font-medium">Description *</Label>
             <Textarea
               id="description"
               value={formData.description}
@@ -138,6 +140,7 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
               placeholder="Fresh Atlantic salmon grilled to perfection with seasonal vegetables..."
               rows={3}
               required
+              className="w-full resize-none"
             />
           </div>
 

@@ -23,40 +23,40 @@ export function AdminPanel({ onAddItem }: AdminPanelProps) {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
         <Card className="border-dashed border-2 border-muted-foreground/25">
-          <CardHeader>
-            <CardTitle className="font-display text-center">Add New Menu Item</CardTitle>
+          <CardHeader className="pb-3 sm:pb-6">
+            <CardTitle className="font-display text-center text-base sm:text-lg">Add New Menu Item</CardTitle>
           </CardHeader>
-          <CardContent className="text-center">
+          <CardContent className="text-center pt-0">
             <Button 
               onClick={() => setShowAddDialog(true)}
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto"
               size="lg"
             >
-              <Plus size={20} />
+              <Plus size={18} className="sm:size-5" />
               Add Item
             </Button>
           </CardContent>
         </Card>
 
         <Card className="border-dashed border-2 border-muted-foreground/25">
-          <CardHeader>
-            <CardTitle className="font-display text-center">Firebase Setup</CardTitle>
+          <CardHeader className="pb-3 sm:pb-6">
+            <CardTitle className="font-display text-center text-base sm:text-lg">Firebase Setup</CardTitle>
           </CardHeader>
-          <CardContent className="text-center">
+          <CardContent className="text-center pt-0">
             <Dialog open={showSetupDialog} onOpenChange={setShowSetupDialog}>
               <DialogTrigger asChild>
                 <Button 
                   variant="outline"
-                  className="gap-2"
+                  className="gap-2 w-full sm:w-auto"
                   size="lg"
                 >
-                  <Gear size={20} />
+                  <Gear size={18} className="sm:size-5" />
                   Configure Firebase
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto mx-2">
                 <DialogHeader>
                   <DialogTitle>Firebase Authentication Setup</DialogTitle>
                 </DialogHeader>

@@ -237,7 +237,7 @@ function AppContent() {
         aria-label="Restaurant header with menu navigation"
       />
       
-      <main className="container mx-auto px-4 py-8" role="main" aria-label="Restaurant menu content">
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 lg:py-8" role="main" aria-label="Restaurant menu content">
         <MenuGrid 
           items={filteredItems}
           menuType={selectedMenuType}
@@ -252,7 +252,15 @@ function AppContent() {
         )}
       </main>
 
-      <Toaster />
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          style: {
+            fontSize: '14px',
+          },
+          className: 'sm:text-base text-sm',
+        }}
+      />
     </div>
   )
 }

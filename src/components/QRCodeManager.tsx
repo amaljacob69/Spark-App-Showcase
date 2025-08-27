@@ -71,48 +71,48 @@ export function QRCodeManager({ isVisible = true }: QRCodeManagerProps) {
   if (!isVisible) return null
 
   return (
-    <Card className="mt-6">
+    <Card className="mt-4 sm:mt-6">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <QrCode size={24} className="text-primary" />
-          QR Code Management
+        <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+          <QrCode size={20} className="text-primary sm:size-6" />
+          <span className="text-base sm:text-xl">QR Code Management</span>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-sm">
           Generate QR codes for each menu type. Each QR code will show only the respective menu with appropriate pricing.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {menuConfigs.map((config) => {
             const isCopied = copiedLinks.has(config.type)
             
             return (
               <div 
                 key={config.type}
-                className="flex flex-col items-center p-4 border border-border rounded-lg bg-card/50 hover:bg-card/80 transition-colors"
+                className="flex flex-col items-center p-3 sm:p-4 border border-border rounded-lg bg-card/50 hover:bg-card/80 transition-colors"
               >
-                <div className={`mb-3 ${config.color}`}>
+                <div className={`mb-2 sm:mb-3 ${config.color}`}>
                   {config.icon}
                 </div>
-                <h3 className="font-medium text-center mb-1">{config.name}</h3>
-                <p className="text-sm text-muted-foreground text-center mb-4">
+                <h3 className="font-medium text-center mb-1 text-sm sm:text-base">{config.name}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground text-center mb-3 sm:mb-4">
                   {config.description}
                 </p>
                 <Button
                   variant={isCopied ? "secondary" : "outline"}
                   size="sm"
                   onClick={() => handleCopyMenuLink(config.type, config.name)}
-                  className="gap-2 w-full"
+                  className="gap-1.5 sm:gap-2 w-full text-xs sm:text-sm"
                   disabled={isCopied}
                 >
                   {isCopied ? (
                     <>
-                      <Check size={16} />
+                      <Check size={14} className="sm:size-4" />
                       Link Copied!
                     </>
                   ) : (
                     <>
-                      <Link size={16} />
+                      <Link size={14} className="sm:size-4" />
                       Copy QR Link
                     </>
                   )}
@@ -122,9 +122,9 @@ export function QRCodeManager({ isVisible = true }: QRCodeManagerProps) {
           })}
         </div>
         
-        <div className="mt-6 p-4 bg-muted/50 rounded-lg">
+        <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-muted/50 rounded-lg">
           <h4 className="font-medium text-sm mb-2">Instructions:</h4>
-          <ol className="text-sm text-muted-foreground space-y-1">
+          <ol className="text-xs sm:text-sm text-muted-foreground space-y-1">
             <li>1. Copy the link for each menu type above</li>
             <li>2. Use a QR code generator (like qr-code-generator.com) to create QR codes</li>
             <li>3. Print and place QR codes in respective areas:</li>

@@ -100,40 +100,42 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto mx-2 sm:mx-0">
         <DialogHeader>
-          <DialogTitle>Edit Menu Item</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-lg sm:text-xl">Edit Menu Item</DialogTitle>
+          <DialogDescription className="text-sm">
             Update the details for this menu item.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-name">Item Name *</Label>
+              <Label htmlFor="edit-name" className="text-sm font-medium">Item Name *</Label>
               <Input
                 id="edit-name"
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
                 placeholder="Grilled Salmon"
                 required
+                className="w-full"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-category">Category *</Label>
+              <Label htmlFor="edit-category" className="text-sm font-medium">Category *</Label>
               <Input
                 id="edit-category"
                 value={formData.category}
                 onChange={(e) => handleChange('category', e.target.value)}
                 placeholder="mains, appetizers, desserts..."
                 required
+                className="w-full"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="edit-description">Description *</Label>
+            <Label htmlFor="edit-description" className="text-sm font-medium">Description *</Label>
             <Textarea
               id="edit-description"
               value={formData.description}
