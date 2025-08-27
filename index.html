@@ -22,6 +22,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="/src/main.css" rel="stylesheet" />
+    
+    <!-- Deployment verification helper -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                window.verifyDeployment = function() {
+                    console.log('🔍 Paradise Family Restaurant - Deployment Check');
+                    console.log('Run the verify-deployment.js script for full verification');
+                    console.log('Direct menu URLs:');
+                    console.log('- Non-AC:', window.location.origin + '?menu=dinein-non-ac');
+                    console.log('- AC:', window.location.origin + '?menu=dinein-ac'); 
+                    console.log('- Takeaway:', window.location.origin + '?menu=takeaway');
+                };
+            }
+        });
+    </script>
 </head>
 
 <body>
