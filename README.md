@@ -1,131 +1,145 @@
-# 🍽️ Paradise Family Restaurant Menu
+# 🍽️ Paradise Family Restaurant - Digital Menu System
 
-A modern restaurant menu application with Firebase integration, admin panel, and different pricing tiers for dine-in AC, non-AC, and takeaway options.
+A comprehensive restaurant menu application with admin panel, featuring three distinct pricing tiers and Firebase integration for secure data management.
 
-![Restaurant Menu App](https://img.shields.io/badge/React-18.x-61DAFB?style=flat-square&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript)
-![Firebase](https://img.shields.io/badge/Firebase-Latest-FFCA28?style=flat-square&logo=firebase)
-![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=flat-square&logo=vite)
+## 🌟 Features
 
-## 📂 Save to GitHub Repository
+### 🍴 Multi-Tier Menu System
+- **Dine-in Non-AC**: Pricing for non-air-conditioned dining area
+- **Dine-in AC**: Premium pricing for air-conditioned dining area  
+- **Takeaway**: Optimized pricing for pickup orders
 
-**Ready to save your project to GitHub?** Choose your preferred method:
+### 👑 Admin Management
+- Secure Firebase Authentication with Google Sign-In
+- Complete menu item management (add, edit, delete)
+- Multi-admin support with role management
+- Real-time synchronization across devices
 
-- 🚀 **Step-by-Step Guide**: [CREATE-GITHUB-REPOSITORY.md](./CREATE-GITHUB-REPOSITORY.md) - *Complete walkthrough with VS Code*
-- ✅ **Interactive Checklist**: [GITHUB-REPOSITORY-CHECKLIST.md](./GITHUB-REPOSITORY-CHECKLIST.md) - *Guided checklist format*
-- ⚡ **Quick Commands**: [GIT-QUICK-START.md](./GIT-QUICK-START.md) - *Copy-paste commands for experienced users*
-- 📋 **Detailed Guide**: [GITHUB-SETUP.md](./GITHUB-SETUP.md) - *Comprehensive explanation with tips*
+### 🔒 Enterprise Security
+- Production-ready Firestore security rules
+- Comprehensive data validation
+- Admin access controls and protection
+- Email verification requirements
 
-## 🚀 Getting Started
+### 📱 Customer Experience
+- Direct QR code access to specific menu types
+- Mobile-responsive design
+- Clean, elegant interface with Playfair Display typography
+- Real-time menu updates
 
-### Prerequisites
+## 🚀 Live Application
 
-- Node.js (v16 or higher)
-- VS Code (recommended)
-- Firebase account (for deployment)
+- **Main Application**: https://paradise-family.web.app
+- **Non-AC Menu**: https://paradise-family.web.app?menu=dinein-non-ac
+- **AC Menu**: https://paradise-family.web.app?menu=dinein-ac
+- **Takeaway Menu**: https://paradise-family.web.app?menu=takeaway
 
-### Installation & Setup
+## 🔧 Technical Stack
 
-1. **Open in VS Code**
-   ```bash
-   code .
-   ```
+- **Frontend**: React 18 + TypeScript + Vite
+- **UI Components**: shadcn/ui v4 + Tailwind CSS
+- **Backend**: Firebase (Firestore + Authentication)
+- **Hosting**: Firebase Hosting
+- **Icons**: Phosphor Icons
+- **Fonts**: Playfair Display + Inter
 
-2. **Install Dependencies**
-   Open VS Code terminal (`Ctrl/Cmd + ``) and run:
-   ```bash
-   npm install
-   ```
+## 📋 Security Documentation
 
-3. **Start Development Server**
-   ```bash
-   npm run dev
-   ```
+### 🔒 Security Features
+- **Authentication**: Google OAuth with email verification
+- **Data Validation**: Complete menu item and pricing validation
+- **Access Control**: Role-based admin permissions
+- **Rate Limiting**: Protection against abuse
+- **Audit Trails**: Timestamped data changes
 
-4. **Open in Browser**
-   - The app will run at `http://localhost:5173`
-   - VS Code will show the URL in terminal
+### 📚 Security Resources
+- [`FIRESTORE-SECURITY.md`](FIRESTORE-SECURITY.md) - Comprehensive security rules documentation
+- [`SECURITY-DEPLOYMENT-CHECKLIST.md`](SECURITY-DEPLOYMENT-CHECKLIST.md) - Production deployment guide
+- [`validate-security-rules.js`](validate-security-rules.js) - Security testing and validation
 
-### 🔧 Development Commands
+## 🛠️ Development
 
+### Local Setup
 ```bash
+# Install dependencies
+npm install
+
 # Start development server
 npm run dev
 
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Type checking
-npm run type-check
+# Start Firebase emulators (optional)
+firebase emulators:start
 ```
 
-### 🎯 Features
+### Firebase Configuration
+```bash
+# Login to Firebase
+firebase login
 
-- **Three Menu Types**: Dine-in Non-AC, Dine-in AC, and Takeaway with different pricing
-- **Admin Panel**: Add, edit, delete menu items (requires Firebase authentication)
-- **Firebase Integration**: Real-time data sync and authentication
-- **QR Code Ready**: Direct links for each menu type
-- **Responsive Design**: Works on all devices
+# Deploy application
+firebase deploy
 
-### 📱 Direct Menu URLs
-
-Once running, access specific menus:
-- **Non-AC Dine-in**: `http://localhost:5173?menu=dinein-non-ac`
-- **AC Dine-in**: `http://localhost:5173?menu=dinein-ac`
-- **Takeaway**: `http://localhost:5173?menu=takeaway`
-
-### 🔐 Admin Access
-
-1. Click "Admin Login" in the header
-2. Sign in with your Firebase Google account
-3. Ensure your email is added as an admin in Firebase Console
-
-### 🚀 Deployment
-
-The app is configured for Firebase Hosting:
-
-1. **Build the app**:
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy to Firebase**:
-   ```bash
-   firebase deploy
-   ```
-
-### 🛠️ VS Code Tips
-
-- Use `Ctrl/Cmd + Shift + P` → "TypeScript: Restart TS Server" if you see type errors
-- Install "ES7+ React/Redux/React-Native snippets" extension for faster coding
-- Use `Ctrl/Cmd + ` to open/close the integrated terminal
-
-### 📁 Project Structure
-
-```
-src/
-├── components/          # React components
-│   ├── ui/             # shadcn/ui components
-│   ├── Header.tsx      # App header with navigation
-│   ├── MenuGrid.tsx    # Menu items display
-│   └── AdminPanel.tsx  # Admin management interface
-├── lib/                # Utilities and Firebase config
-├── App.tsx             # Main application component
-└── index.css           # Global styles
+# Deploy security rules only  
+firebase deploy --only firestore:rules
 ```
 
-### 🔧 Troubleshooting
+## 🏗️ Architecture
 
-**If the app won't start:**
-1. Delete `node_modules` folder
-2. Delete `package-lock.json`
-3. Run `npm install` again
-4. Run `npm run dev`
+### Data Structure
+```typescript
+interface MenuItem {
+  id: string
+  name: string
+  description: string
+  prices: {
+    'dinein-non-ac': number
+    'dinein-ac': number
+    'takeaway': number
+  }
+  category: string
+  available: boolean
+}
+```
 
-**If Firebase features don't work:**
-- Check Firebase config in `src/lib/firebase.ts`
-- Ensure Firestore security rules are properly configured
-- Verify authentication setup in Firebase Console
+### Security Rules Summary
+- Public read access to menu data
+- Admin-only write access with validation
+- Comprehensive data structure validation
+- Price range validation (0-10,000)
+- Admin self-protection (cannot delete own account)
+
+## 📱 QR Code Integration
+
+The application supports direct menu access via QR codes:
+1. Generate QR codes pointing to specific menu URLs
+2. Place QR codes in respective dining areas
+3. Customers scan to access area-specific pricing
+4. No menu switching - focused experience per location
+
+## 🎨 Design System
+
+### Color Palette
+- **Background**: Light warm tones for comfortable reading
+- **Primary**: Deep blue for admin actions and navigation
+- **Accent**: Warm gold for highlights and call-to-action
+- **Text**: High contrast dark colors for accessibility
+
+### Typography
+- **Headers**: Playfair Display (elegant serif)
+- **Body**: Inter (clean sans-serif)
+- **Hierarchy**: Clear size and weight relationships
+
+## 📄 Additional Documentation
+
+- [`PRD.md`](PRD.md) - Product Requirements Document
+- [`ADMIN-SETUP.md`](ADMIN-SETUP.md) - Admin user management guide
+- [`FIREBASE-SETUP.md`](FIREBASE-SETUP.md) - Firebase configuration guide
+- [`DEPLOYMENT.md`](DEPLOYMENT.md) - Deployment instructions
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+**Paradise Family Restaurant** - Bringing fine dining experiences to the digital age with secure, scalable menu management.
