@@ -19,7 +19,6 @@ const defaultTheme = {
   },
   extend: {
     screens: {
-      xs: "475px", // Add extra small breakpoint for mobile
       coarse: { raw: "(pointer: coarse)" },
       fine: { raw: "(pointer: fine)" },
       pwa: { raw: "(display-mode: standalone)" },
