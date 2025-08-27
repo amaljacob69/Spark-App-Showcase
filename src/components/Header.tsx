@@ -67,36 +67,39 @@ export function Header({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-            {isAdmin ? (
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-                  <UserCheck size={16} />
-                  Admin Access
+          {/* Hide admin controls when accessed via QR direct links */}
+          {!isDirectLink && (
+            <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+              {isAdmin ? (
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
+                    <UserCheck size={16} />
+                    Admin Access
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={onAdminLogout}
+                    className="gap-1 sm:gap-2 px-2 sm:px-3"
+                  >
+                    <LogOut size={14} className="sm:size-4" />
+                    <span className="hidden sm:inline">Logout</span>
+                  </Button>
                 </div>
+              ) : (
                 <Button 
-                  variant="outline" 
+                  variant="outline"
+                  onClick={onAdminLogin}
+                  className="gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4"
                   size="sm"
-                  onClick={onAdminLogout}
-                  className="gap-1 sm:gap-2 px-2 sm:px-3"
                 >
-                  <LogOut size={14} className="sm:size-4" />
-                  <span className="hidden sm:inline">Logout</span>
+                  <UserCheck size={14} className="sm:size-4" />
+                  <span className="hidden xs:inline">Admin Login</span>
+                  <span className="xs:hidden">Login</span>
                 </Button>
-              </div>
-            ) : (
-              <Button 
-                variant="outline"
-                onClick={onAdminLogin}
-                className="gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4"
-                size="sm"
-              >
-                <UserCheck size={14} className="sm:size-4" />
-                <span className="hidden xs:inline">Admin Login</span>
-                <span className="xs:hidden">Login</span>
-              </Button>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
 
           <div className="mt-3 sm:mt-4 flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
