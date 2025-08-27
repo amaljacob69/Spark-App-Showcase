@@ -2,6 +2,12 @@
 
 A modern restaurant menu application with Firebase integration, admin panel, and different pricing tiers for dine-in AC, non-AC, and takeaway options.
 
+## 📂 Save to GitHub
+
+**Ready to save your project to GitHub?** 
+- 📋 Follow the complete guide: **[GITHUB-SETUP.md](./GITHUB-SETUP.md)**
+- ⚡ Quick setup script: **[github-setup.sh](./github-setup.sh)**
+
 ## 🚀 Getting Started
 
 ### Prerequisites
