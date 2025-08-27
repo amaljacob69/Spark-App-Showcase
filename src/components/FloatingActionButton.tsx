@@ -7,7 +7,8 @@ import {
   Star, 
   InstagramLogo, 
   ShoppingCart,
-  MapPin 
+  MapPin,
+  Phone
 } from '@phosphor-icons/react'
 
 interface FloatingActionButtonProps {
@@ -32,6 +33,21 @@ export function FloatingActionButton({
     // Paradise Family Restaurant & Bake shop - Instagram location page
     const instagramUrl = 'https://www.instagram.com/explore/locations/1026441532/chalakudy-paradise-restaurant/'
     window.open(instagramUrl, '_blank', 'noopener,noreferrer')
+    setIsExpanded(false)
+  }
+
+  const handlePhoneClick = () => {
+    // Paradise Family Restaurant phone number for reservations
+    // Replace with actual restaurant phone number
+    const phoneNumber = 'tel:+914802712345'
+    window.location.href = phoneNumber
+    setIsExpanded(false)
+  }
+
+  const handleLocationClick = () => {
+    // Paradise Family Restaurant location on Google Maps
+    const googleMapsUrl = 'https://www.google.com/maps/place/Paradise+Family+Restaurant+%26+Bake+shop/@10.3090089,76.3310867,17z/data=!3m1!4b1!4m6!3m5!1s0x3b0c027046c7c919:0x5c6cd8aba74c1d6d!8m2!3d10.3090089!4d76.3336616!16s%2Fg%2F11b6zqp8tc?entry=ttu'
+    window.open(googleMapsUrl, '_blank', 'noopener,noreferrer')
     setIsExpanded(false)
   }
 
@@ -69,6 +85,26 @@ export function FloatingActionButton({
                 </Badge>
               )}
             </div>
+
+            {/* Phone Call Button */}
+            <Button
+              size="icon"
+              className="h-12 w-12 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-white hover:scale-110 transition-all duration-200"
+              onClick={handlePhoneClick}
+              aria-label="Call for reservations"
+            >
+              <Phone size={20} weight="bold" />
+            </Button>
+
+            {/* Location Button */}
+            <Button
+              size="icon"
+              className="h-12 w-12 rounded-full shadow-lg bg-blue-500 hover:bg-blue-600 text-white hover:scale-110 transition-all duration-200"
+              onClick={handleLocationClick}
+              aria-label="View location on Google Maps"
+            >
+              <MapPin size={20} weight="bold" />
+            </Button>
 
             {/* Google Review Button */}
             <Button
