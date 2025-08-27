@@ -11,9 +11,10 @@ A modern restaurant menu application with Firebase integration, admin panel, and
 
 **Ready to save your project to GitHub?** Choose your preferred method:
 
-- 🚀 **Quick Start**: [GIT-QUICK-START.md](./GIT-QUICK-START.md) - *Fastest way with copy-paste commands*
-- 📋 **Complete Guide**: [GITHUB-SETUP.md](./GITHUB-SETUP.md) - *Detailed explanation with tips*  
-- ⚡ **Setup Script**: [github-setup.sh](./github-setup.sh) - *All commands in one script*
+- 🚀 **Step-by-Step Guide**: [CREATE-GITHUB-REPOSITORY.md](./CREATE-GITHUB-REPOSITORY.md) - *Complete walkthrough with VS Code*
+- ✅ **Interactive Checklist**: [GITHUB-REPOSITORY-CHECKLIST.md](./GITHUB-REPOSITORY-CHECKLIST.md) - *Guided checklist format*
+- ⚡ **Quick Commands**: [GIT-QUICK-START.md](./GIT-QUICK-START.md) - *Copy-paste commands for experienced users*
+- 📋 **Detailed Guide**: [GITHUB-SETUP.md](./GITHUB-SETUP.md) - *Comprehensive explanation with tips*
 
 ## 🚀 Getting Started
 
