@@ -33,6 +33,11 @@
 - **Why it matters**: Enhances customer engagement by allowing easy access to social platforms and order management without disrupting menu browsing
 - **Success criteria**: Button remains accessible while scrolling, cart badge shows item count, social links open correctly, cart allows order management and WhatsApp ordering
 
+### Special Offers & Daily Specials System
+- **What it does**: Displays promotional offers, daily specials, combo deals, and discount offers with advanced management tools for administrators
+- **Why it matters**: Boosts customer engagement, highlights special deals, and provides restaurant with marketing tools to increase sales and promote specific items
+- **Success criteria**: Featured offers prominently displayed, offers filtered by current menu type and availability, admin can create/edit/manage offers with scheduling, proper validation for discount percentages and pricing
+
 ### Advanced Search & Filtering System
 - **What it does**: Provides comprehensive search with text queries and advanced dietary preference filtering (vegetarian, egg, chicken, meat, fish)
 - **Why it matters**: Customers can quickly find dishes that match their dietary needs and preferences, improving user experience and accessibility
@@ -103,11 +108,13 @@
 ### UI Elements & Component Selection
 - **Component Usage**: 
   - Cards for menu items with clear typography hierarchy and dietary preference indicators
-  - Dialog modals for admin functions (login, add/edit items) with dietary selection checkboxes
+  - Special offers section with prominent featured offers and secondary deals grid
+  - Dialog modals for admin functions (login, add/edit items, manage offers) with dietary selection checkboxes
   - Advanced filter popover with visual dietary preference selection
+  - Comprehensive offer management interface with scheduling and pricing controls
   - Button variants for different action priorities
   - Form inputs with clear labeling for admin panel
-  - Badge components for dietary indicators with color-coded icons
+  - Badge components for dietary indicators with color-coded icons and offer labels
 - **Component Customization**: Tailored shadcn components with restaurant-appropriate styling and dietary preference theming
 - **Component States**: Clear hover, active, and focus states for all interactive elements including dietary filters
 - **Icon Selection**: Phosphor icons for admin functions and dietary indicators (Leaf, Egg, Bird, Cow, Fish)
@@ -145,4 +152,4 @@
 - **Admin Tools**: Dedicated QR code management panel for generating and copying QR links
 
 ## Reflection
-This approach creates a professional dual-purpose application that serves both customer browsing and restaurant management needs with comprehensive dietary preference support. The elegant design reinforces the restaurant's premium positioning while the intuitive admin tools ensure staff can maintain current, accurate menu information including detailed dietary classifications without technical barriers. The advanced filtering system makes the menu accessible to customers with specific dietary needs, while the search functionality allows for quick discovery of specific dishes. The focus on typography and visual hierarchy makes menu items appetizing and easy to navigate, while the secure admin system provides necessary management capabilities including comprehensive dietary preference management.
+This approach creates a professional dual-purpose application that serves both customer browsing and restaurant management needs with comprehensive dietary preference support and dynamic promotional marketing capabilities. The elegant design reinforces the restaurant's premium positioning while the intuitive admin tools ensure staff can maintain current, accurate menu information and create compelling offers without technical barriers. The special offers system enables restaurants to boost sales through targeted promotions, daily specials, and combo deals while maintaining a seamless customer experience. The advanced filtering system makes the menu accessible to customers with specific dietary needs, while the search functionality allows for quick discovery of specific dishes. The focus on typography and visual hierarchy makes menu items and offers appetizing and easy to navigate, while the secure admin system provides comprehensive management capabilities including detailed dietary preference management and sophisticated promotional tools.

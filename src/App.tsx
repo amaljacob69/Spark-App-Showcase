@@ -8,6 +8,7 @@ import { ThemePreview } from './components/ThemePreview'
 import { DietaryFilter, type DietaryPreference } from './components/DietaryFilter'
 import { FloatingActionButton } from './components/FloatingActionButton'
 import { CartDialog, useCart } from './components/CartDialog'
+import { OffersSection } from './components/OffersSection'
 import { Button } from './components/ui/button'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
@@ -436,6 +437,9 @@ function AppContent() {
       />
       
       <main className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8" role="main" aria-label="Restaurant menu content">
+        {/* Special Offers Section */}
+        <OffersSection isAdmin={safeIsAdmin} menuType={safeSelectedMenuType} />
+
         {/* Search and Filter Results Display */}
         {(searchQuery || (selectedDietaryFilters && selectedDietaryFilters.length > 0)) && (
           <div className="mb-4 sm:mb-6 lg:mb-8">
