@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Admin users collection - only authenticated users can read their own admin status
+    match /admins/{email} {
+      allow read: if request.auth != null && request.auth.token.email == email;
+      allow write: if request.auth != null && 
+                      request.auth.token.email in get(/databases/$(database)/documents/admins/$(request.auth.token.email)).data.keys();
+    }
+    
+    // Restaurant menu data - read access for all, write access for admins only
+    match /restaurant/menu {
+      allow read: if true; // Anyone can read the menu
+      allow write: if request.auth != null && 
+                      exists(/databases/$(database)/documents/admins/$(request.auth.token.email));
+    }
+    
+    // Default deny all other documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+// These rules ensure:
+// 1. Anyone can read the restaurant menu (for customers)
+// 2. Only authenticated admin users can modify menu items
+// 3. Admin status is verified against the admins collection
+// 4. Users can only check their own admin status
+// 5. Only existing admins can add new admin users

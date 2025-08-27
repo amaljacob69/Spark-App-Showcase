@@ -1,35 +1,86 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore'
+import type { MenuItem } from '../App'
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyAYuSiwMkEJoTeNrvmkmUGh0GovPrMACRg",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "paradise-family.firebaseapp.com",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "paradise-family",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "paradise-family.firebasestorage.app",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "477641412672",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:477641412672:web:140084cd4275aab3b34fa5",
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-XWQXEJXV71"
+  apiKey: "AIzaSyAYuSiwMkEJoTeNrvmkmUGh0GovPrMACRg",
+  authDomain: "paradise-family.firebaseapp.com",
+  projectId: "paradise-family",
+  storageBucket: "paradise-family.firebasestorage.app",
+  messagingSenderId: "477641412672",
+  appId: "1:477641412672:web:140084cd4275aab3b34fa5",
+  measurementId: "G-XWQXEJXV71"
 }
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 
-// Initialize Firestore
-export const db = getFirestore(app)
-
-// Initialize Auth
+// Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app)
 
-// Development emulator setup (optional)
-if (import.meta.env.DEV && !import.meta.env.VITE_FIREBASE_EMULATOR_DISABLED) {
-  // Connect to Firestore emulator if running in development
+// Initialize Cloud Firestore and get a reference to the service
+export const db = getFirestore(app)
+
+// Google Auth provider
+const provider = new GoogleAuthProvider()
+
+// Auth functions
+export const signInWithGoogle = () => signInWithPopup(auth, provider)
+export const logOut = () => signOut(auth)
+
+// Menu items Firestore operations
+export const saveMenuItems = async (menuItems: MenuItem[]) => {
   try {
-    connectFirestoreEmulator(db, 'localhost', 8080)
+    const menuRef = doc(db, 'restaurant', 'menu')
+    await setDoc(menuRef, { items: menuItems, updatedAt: new Date() })
   } catch (error) {
-    // Emulator already connected or not available
-    console.log('Firestore emulator connection skipped')
+    console.error('Error saving menu items:', error)
+    throw error
   }
 }
 
-export default app
+export const loadMenuItems = async (): Promise<MenuItem[]> => {
+  try {
+    const menuRef = doc(db, 'restaurant', 'menu')
+    const menuSnap = await getDoc(menuRef)
+    
+    if (menuSnap.exists()) {
+      const data = menuSnap.data()
+      return data.items || []
+    }
+    return []
+  } catch (error) {
+    console.error('Error loading menu items:', error)
+    throw error
+  }
+}
+
+// Admin users management
+export const checkAdminAccess = async (email: string): Promise<boolean> => {
+  try {
+    const adminRef = doc(db, 'admins', email)
+    const adminSnap = await getDoc(adminRef)
+    return adminSnap.exists()
+  } catch (error) {
+    console.error('Error checking admin access:', error)
+    return false
+  }
+}
+
+export const addAdminUser = async (email: string) => {
+  try {
+    const adminRef = doc(db, 'admins', email)
+    await setDoc(adminRef, { 
+      email, 
+      addedAt: new Date(),
+      isActive: true 
+    })
+  } catch (error) {
+    console.error('Error adding admin user:', error)
+    throw error
+  }
+}
+
+// Auth state observer
+export const onAuthStateChange = onAuthStateChanged

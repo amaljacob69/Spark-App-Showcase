@@ -3,11 +3,11 @@ import { Button } from './ui/button'
 import { CategoryFilter } from './CategoryFilter'
 import { MenuTypeSelector } from './MenuTypeSelector'
 import { MenuType } from '../App'
+import { useAuth } from './FirebaseAuthProvider'
+import { signInWithGoogle, logOut } from '../lib/firebase'
+import { toast } from 'sonner'
 
 interface HeaderProps {
-  isAdmin: boolean
-  onLogin: () => void
-  onLogout: () => void
   categories: string[]
   selectedCategory: string
   onCategorySelect: (category: string) => void
@@ -17,9 +17,6 @@ interface HeaderProps {
 }
 
 export function Header({ 
-  isAdmin, 
-  onLogin, 
-  onLogout, 
   categories, 
   selectedCategory, 
   onCategorySelect,
@@ -27,6 +24,28 @@ export function Header({
   onMenuTypeSelect,
   isDirectLink
 }: HeaderProps) {
+  const { user, isAdmin } = useAuth()
+
+  const handleLogin = async () => {
+    try {
+      const result = await signInWithGoogle()
+      toast.success(`Welcome ${result.user.displayName || result.user.email}!`)
+    } catch (error) {
+      console.error('Login error:', error)
+      toast.error('Failed to sign in')
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      await logOut()
+      toast.success('Logged out successfully')
+    } catch (error) {
+      console.error('Logout error:', error)
+      toast.error('Failed to log out')
+    }
+  }
+
   const getMenuTypeIcon = (type: MenuType) => {
     switch (type) {
       case 'dinein-non-ac':
@@ -48,6 +67,7 @@ export function Header({
         return 'Takeaway Menu'
     }
   }
+
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
@@ -56,23 +76,30 @@ export function Header({
             <ChefHat size={32} className="text-primary" />
             <div>
               <h1 className="font-display font-bold text-2xl text-foreground">
-                Savory
+                Paradise Family Restaurant
               </h1>
               <p className="text-sm text-muted-foreground">Fine Dining Experience</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            {isAdmin ? (
+            {user ? (
               <div className="flex items-center gap-3">
+                {user.photoURL && (
+                  <img 
+                    src={user.photoURL} 
+                    alt={user.displayName || 'User'} 
+                    className="w-8 h-8 rounded-full"
+                  />
+                )}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <UserCheck size={16} />
-                  Admin Mode
+                  {isAdmin ? 'Admin' : 'User'}: {user.displayName || user.email}
                 </div>
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={onLogout}
+                  onClick={handleLogout}
                   className="gap-2"
                 >
                   <LogOut size={16} />
@@ -82,7 +109,7 @@ export function Header({
             ) : (
               <Button 
                 variant="outline"
-                onClick={onLogin}
+                onClick={handleLogin}
                 className="gap-2"
               >
                 <UserCheck size={16} />

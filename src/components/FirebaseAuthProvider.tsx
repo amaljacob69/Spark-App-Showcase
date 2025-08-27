@@ -1,13 +1,42 @@
-import { ReactNode } from 'react'
-import { useAuth } from '../hooks/useAuth'
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { User } from 'firebase/auth'
+import { auth, onAuthStateChange, checkAdminAccess } from '../lib/firebase'
 import { LoadingSpinner } from './ui/loading-spinner'
+
+interface AuthContextType {
+  user: User | null
+  isAdmin: boolean
+  loading: boolean
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 interface FirebaseAuthProviderProps {
   children: ReactNode
 }
 
 export function FirebaseAuthProvider({ children }: FirebaseAuthProviderProps) {
-  const { loading } = useAuth()
+  const [user, setUser] = useState<User | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange(async (user) => {
+      setUser(user)
+      
+      if (user) {
+        // Check if user is admin
+        const adminAccess = await checkAdminAccess(user.email || '')
+        setIsAdmin(adminAccess)
+      } else {
+        setIsAdmin(false)
+      }
+      
+      setLoading(false)
+    })
+
+    return () => unsubscribe()
+  }, [])
 
   if (loading) {
     return (
@@ -20,5 +49,17 @@ export function FirebaseAuthProvider({ children }: FirebaseAuthProviderProps) {
     )
   }
 
-  return <>{children}</>
+  return (
+    <AuthContext.Provider value={{ user, isAdmin, loading }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useAuth must be used within a FirebaseAuthProvider')
+  }
+  return context
 }

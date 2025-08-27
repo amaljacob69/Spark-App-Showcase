@@ -4,7 +4,10 @@ import { Header } from './components/Header'
 import { MenuGrid } from './components/MenuGrid'
 import { AdminPanel } from './components/AdminPanel'
 import { LoginDialog } from './components/LoginDialog'
+import { FirebaseAuthProvider, useAuth } from './components/FirebaseAuthProvider'
 import { Toaster } from './components/ui/sonner'
+import { saveMenuItems, loadMenuItems } from './lib/firebase'
+import { toast } from 'sonner'
 
 export interface MenuItem {
   id: string
@@ -110,61 +113,81 @@ const getItemPrice = (item: MenuItem, menuType: MenuType): number => {
   return item.prices[menuType]
 }
 
-function App() {
+function AppContent() {
+  const { isAdmin, loading } = useAuth()
   const [menuItems, setMenuItems] = useKV<MenuItem[]>("menu-items", sampleMenuItems)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [selectedMenuType, setSelectedMenuType] = useKV<MenuType>("selected-menu-type", 'dinein-ac')
-  const [isAdmin, setIsAdmin] = useKV<boolean>("admin-session", false)
-  const [showLoginDialog, setShowLoginDialog] = useState(false)
   const [isDirectLink, setIsDirectLink] = useState(false)
+  const [firebaseLoaded, setFirebaseLoaded] = useState(false)
+
+  // Load menu items from Firebase on app start
+  useEffect(() => {
+    if (!loading && !firebaseLoaded) {
+      loadMenuItems()
+        .then(firebaseItems => {
+          if (firebaseItems.length > 0) {
+            setMenuItems(firebaseItems)
+            toast.success('Menu loaded from Firebase')
+          }
+          setFirebaseLoaded(true)
+        })
+        .catch(error => {
+          console.error('Failed to load menu from Firebase:', error)
+          toast.error('Failed to load menu from cloud')
+          setFirebaseLoaded(true)
+        })
+    }
+  }, [loading, firebaseLoaded, setMenuItems])
+
+  // Save menu items to Firebase whenever they change (if admin is logged in)
+  useEffect(() => {
+    if (isAdmin && firebaseLoaded && menuItems.length > 0) {
+      saveMenuItems(menuItems).catch(error => {
+        console.error('Failed to save menu to Firebase:', error)
+        toast.error('Failed to save menu to cloud')
+      })
+    }
+  }, [menuItems, isAdmin, firebaseLoaded])
 
   // Handle URL parameters to set menu type directly
-  // QR Code URLs for each menu type:
-  // - ?menu=dinein-non-ac (QR for Non-AC dining area - shows only Non-AC menu)
-  // - ?menu=dinein-ac (QR for AC dining area - shows only AC menu)  
-  // - ?menu=takeaway (QR for takeaway counter - shows only Takeaway menu)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const menuParam = urlParams.get('menu') as MenuType
     
     if (menuParam && ['dinein-non-ac', 'dinein-ac', 'takeaway'].includes(menuParam)) {
       setSelectedMenuType(menuParam)
-      setIsDirectLink(true) // Lock menu type for all direct QR code access
+      setIsDirectLink(true)
       
       setTimeout(() => {
-        // Show appropriate message based on menu type
-        import('sonner').then(({ toast }) => {
-          const messages = {
-            'dinein-non-ac': {
-              title: 'Dine-in Non-AC Menu',
-              description: 'Showing Non-AC pricing only'
-            },
-            'dinein-ac': {
-              title: 'Dine-in AC Menu', 
-              description: 'Showing AC pricing only'
-            },
-            'takeaway': {
-              title: 'Takeaway Menu',
-              description: 'Showing takeaway pricing only'
-            }
+        const messages = {
+          'dinein-non-ac': {
+            title: 'Dine-in Non-AC Menu',
+            description: 'Showing Non-AC pricing only'
+          },
+          'dinein-ac': {
+            title: 'Dine-in AC Menu', 
+            description: 'Showing AC pricing only'
+          },
+          'takeaway': {
+            title: 'Takeaway Menu',
+            description: 'Showing takeaway pricing only'
           }
-          
-          const message = messages[menuParam]
-          toast.success(message.title, {
-            description: message.description
-          })
+        }
+        
+        const message = messages[menuParam]
+        toast.success(message.title, {
+          description: message.description
         })
       }, 500)
     }
-  }, [])
+  }, [setSelectedMenuType])
 
-  // Memoize categories to avoid recalculation on every render
   const categories = useMemo(() => 
     ['all', ...Array.from(new Set(menuItems.map(item => item.category)))], 
     [menuItems]
   )
 
-  // Memoize filtered items to avoid recalculation on every render
   const filteredItems = useMemo(() => 
     selectedCategory === 'all' 
       ? menuItems 
@@ -172,7 +195,6 @@ function App() {
     [menuItems, selectedCategory]
   )
 
-  // Memoize handlers to prevent unnecessary re-renders
   const handleAddItem = useCallback((item: Omit<MenuItem, 'id'>) => {
     const newItem: MenuItem = {
       name: item.name || '',
@@ -201,29 +223,10 @@ function App() {
     setMenuItems(current => current.filter(item => item.id !== id))
   }, [setMenuItems])
 
-  const handleLogin = useCallback(() => {
-    setIsAdmin(true)
-    setShowLoginDialog(false)
-  }, [setIsAdmin])
-
-  const handleLogout = useCallback(() => {
-    setIsAdmin(false)
-  }, [setIsAdmin])
-
-  const handleShowLoginDialog = useCallback(() => {
-    setShowLoginDialog(true)
-  }, [])
-
-  const handleCloseLoginDialog = useCallback((open: boolean) => {
-    setShowLoginDialog(open)
-  }, [])
-
   return (
     <div className="min-h-screen bg-background">
       <Header 
         isAdmin={isAdmin}
-        onLogin={handleShowLoginDialog}
-        onLogout={handleLogout}
         categories={categories}
         selectedCategory={selectedCategory}
         onCategorySelect={setSelectedCategory}
@@ -249,14 +252,16 @@ function App() {
         )}
       </main>
 
-      <LoginDialog 
-        open={showLoginDialog}
-        onOpenChange={handleCloseLoginDialog}
-        onLogin={handleLogin}
-      />
-
       <Toaster />
     </div>
+  )
+}
+
+function App() {
+  return (
+    <FirebaseAuthProvider>
+      <AppContent />
+    </FirebaseAuthProvider>
   )
 }
 
