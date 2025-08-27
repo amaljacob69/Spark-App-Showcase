@@ -22,15 +22,15 @@ export function FloatingActionButton({
   const [isExpanded, setIsExpanded] = useState(false)
 
   const handleGoogleReviewClick = () => {
-    // Replace with your actual Google Business listing URL
-    const googleReviewUrl = 'https://search.google.com/local/writereview?placeid=ChIJ_____YOUR_PLACE_ID_____'
+    // Paradise Family Restaurant & Bake shop - Google Business listing
+    const googleReviewUrl = 'https://search.google.com/local/writereview?placeid=ChIJGcnxTmwCCDsRbR1By6fYbFc'
     window.open(googleReviewUrl, '_blank', 'noopener,noreferrer')
     setIsExpanded(false)
   }
 
   const handleInstagramClick = () => {
-    // Replace with your actual Instagram profile URL
-    const instagramUrl = 'https://instagram.com/paradisefamilyrestaurant'
+    // Paradise Family Restaurant & Bake shop - Instagram location page
+    const instagramUrl = 'https://www.instagram.com/explore/locations/1026441532/chalakudy-paradise-restaurant/'
     window.open(instagramUrl, '_blank', 'noopener,noreferrer')
     setIsExpanded(false)
   }
