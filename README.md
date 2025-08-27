@@ -1,131 +1,117 @@
-# Paradise Family Restaurant Menu Application
+# Paradise Family Restaurant Menu
 
-A modern restaurant menu application with Firebase integration, featuring separate pricing for dine-in AC, non-AC, and takeaway options.
+A modern restaurant menu application with Firebase integration, admin panel, and different pricing tiers for dine-in AC, non-AC, and takeaway options.
 
-## Prerequisites
+## 🚀 Getting Started
 
-- [Node.js](https://nodejs.org/) (version 16 or higher)
-- [VS Code](https://code.visualstudio.com/)
-- [Firebase CLI](https://firebase.google.com/docs/cli) (for deployment)
+### Prerequisites
 
-## Getting Started in VS Code
+- Node.js (v16 or higher)
+- VS Code (recommended)
+- Firebase account (for deployment)
 
-### 1. Install Dependencies
+### Installation & Setup
 
-Open the integrated terminal in VS Code (`Ctrl+`` ` or `View > Terminal`) and run:
+1. **Open in VS Code**
+   ```bash
+   code .
+   ```
+
+2. **Install Dependencies**
+   Open VS Code terminal (`Ctrl/Cmd + ``) and run:
+   ```bash
+   npm install
+   ```
+
+3. **Start Development Server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open in Browser**
+   - The app will run at `http://localhost:5173`
+   - VS Code will show the URL in terminal
+
+### 🔧 Development Commands
 
 ```bash
-npm install
-```
-
-### 2. Development Server
-
-Start the development server:
-
-```bash
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Type checking
+npm run type-check
 ```
 
-The application will be available at `http://localhost:5173`
+### 🎯 Features
 
-### 3. VS Code Extensions (Recommended)
+- **Three Menu Types**: Dine-in Non-AC, Dine-in AC, and Takeaway with different pricing
+- **Admin Panel**: Add, edit, delete menu items (requires Firebase authentication)
+- **Firebase Integration**: Real-time data sync and authentication
+- **QR Code Ready**: Direct links for each menu type
+- **Responsive Design**: Works on all devices
 
-Install these VS Code extensions for better development experience:
+### 📱 Direct Menu URLs
 
-- **ES7+ React/Redux/React-Native snippets** - React code snippets
-- **Tailwind CSS IntelliSense** - Tailwind CSS autocomplete
-- **Firebase** - Firebase syntax highlighting
-- **TypeScript and JavaScript Language Features** - Built-in TS support
-- **Prettier** - Code formatting
-- **Auto Rename Tag** - HTML/JSX tag management
+Once running, access specific menus:
+- **Non-AC Dine-in**: `http://localhost:5173?menu=dinein-non-ac`
+- **AC Dine-in**: `http://localhost:5173?menu=dinein-ac`
+- **Takeaway**: `http://localhost:5173?menu=takeaway`
 
-### 4. Firebase Setup (Already Configured)
+### 🔐 Admin Access
 
-The application is configured to connect to your Firebase project:
-- Project ID: `paradise-family`
-- Authentication is set up for admin access
-- Firestore is used for menu data storage
+1. Click "Admin Login" in the header
+2. Sign in with your Firebase Google account
+3. Ensure your email is added as an admin in Firebase Console
 
-### 5. Menu Access URLs
+### 🚀 Deployment
 
-The application supports direct menu links via URL parameters:
+The app is configured for Firebase Hosting:
 
-- **Non-AC Menu**: `http://localhost:5173?menu=dinein-non-ac`
-- **AC Menu**: `http://localhost:5173?menu=dinein-ac`
-- **Takeaway Menu**: `http://localhost:5173?menu=takeaway`
+1. **Build the app**:
+   ```bash
+   npm run build
+   ```
 
-### 6. Admin Access
+2. **Deploy to Firebase**:
+   ```bash
+   firebase deploy
+   ```
 
-- Navigate to the application
-- Click the "Admin Login" button in the header
-- Sign in with your Firebase authenticated account
-- Add, edit, and manage menu items through the admin panel
+### 🛠️ VS Code Tips
 
-## Project Structure
+- Use `Ctrl/Cmd + Shift + P` → "TypeScript: Restart TS Server" if you see type errors
+- Install "ES7+ React/Redux/React-Native snippets" extension for faster coding
+- Use `Ctrl/Cmd + ` to open/close the integrated terminal
+
+### 📁 Project Structure
 
 ```
 src/
-├── components/           # React components
-│   ├── ui/              # shadcn UI components
-│   ├── AdminPanel.tsx   # Admin interface
-│   ├── Header.tsx       # Navigation header
-│   ├── MenuGrid.tsx     # Menu display
-│   └── ...
-├── lib/                 # Utilities and Firebase config
-├── assets/             # Static assets
+├── components/          # React components
+│   ├── ui/             # shadcn/ui components
+│   ├── Header.tsx      # App header with navigation
+│   ├── MenuGrid.tsx    # Menu items display
+│   └── AdminPanel.tsx  # Admin management interface
+├── lib/                # Utilities and Firebase config
 ├── App.tsx             # Main application component
 └── index.css           # Global styles
 ```
 
-## Available Scripts
+### 🔧 Troubleshooting
 
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run lint         # Run ESLint
-```
+**If the app won't start:**
+1. Delete `node_modules` folder
+2. Delete `package-lock.json`
+3. Run `npm install` again
+4. Run `npm run dev`
 
-## Firebase Deployment
-
-To deploy to Firebase Hosting:
-
-```bash
-# Build the application
-npm run build
-
-# Deploy to Firebase
-firebase deploy --only hosting
-```
-
-Your application will be available at:
-- https://paradise-family.web.app
-- https://paradise-family.firebaseapp.com
-
-## Development Tips
-
-1. **Hot Reload**: The dev server automatically reloads when you save changes
-2. **Browser DevTools**: Use React DevTools extension for debugging
-3. **Firebase Console**: Monitor data and authentication at https://console.firebase.google.com
-4. **Responsive Design**: Test different screen sizes using browser dev tools
-
-## Troubleshooting
-
-If you encounter issues:
-
-1. **Port already in use**: Kill the process or use a different port:
-   ```bash
-   npm run dev -- --port 3000
-   ```
-
-2. **Firebase connection issues**: Check your internet connection and Firebase config
-
-3. **Node modules issues**: Clear cache and reinstall:
-   ```bash
-   rm -rf node_modules package-lock.json
-   npm install
-   ```
-
-## Support
-
-For Firebase-specific issues, refer to the [Firebase Documentation](https://firebase.google.com/docs).
+**If Firebase features don't work:**
+- Check Firebase config in `src/lib/firebase.ts`
+- Ensure Firestore security rules are properly configured
+- Verify authentication setup in Firebase Console
