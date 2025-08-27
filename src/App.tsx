@@ -4,8 +4,10 @@ import { Header } from './components/Header'
 import { MenuGrid } from './components/MenuGrid'
 import { AdminPanel } from './components/AdminPanel'
 import { LoginDialog } from './components/LoginDialog'
+import { ThemePreview } from './components/ThemePreview'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
+import { useTheme } from './hooks/useTheme'
 
 export interface MenuItem {
   id: string
@@ -119,6 +121,9 @@ function AppContent() {
   const [isDirectLink, setIsDirectLink] = useState(false)
   const [showLoginDialog, setShowLoginDialog] = useState(false)
 
+  // Apply theme based on selected menu type
+  const currentTheme = useTheme(selectedMenuType)
+
   // Simple admin authentication with password
   const handleAdminLogin = useCallback((password: string) => {
     // Simple password check - in production, use proper authentication
@@ -213,6 +218,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-background">
+      <ThemePreview menuType={selectedMenuType} />
       <Header 
         isAdmin={isAdmin}
         onAdminLogin={() => setShowLoginDialog(true)}

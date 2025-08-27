@@ -46,7 +46,7 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
   return (
     <>
       <Card className={cn(
-        "group transition-all duration-200 hover:shadow-md",
+        "group transition-all duration-300 hover:shadow-md themed-card themed-hover theme-transition",
         !item.available && "opacity-60"
       )}>
         <CardContent className="p-4 sm:p-6">

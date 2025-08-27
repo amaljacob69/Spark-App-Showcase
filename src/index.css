@@ -8,10 +8,24 @@
   
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   .font-display {
     font-family: 'Playfair Display', serif;
+  }
+  
+  /* Theme-specific body styles */
+  .theme-dinein-non-ac {
+    background-image: linear-gradient(135deg, var(--background) 0%, oklch(0.97 0.01 45) 100%);
+  }
+  
+  .theme-dinein-ac {
+    background-image: linear-gradient(135deg, var(--background) 0%, oklch(0.96 0.01 210) 100%);
+  }
+  
+  .theme-takeaway {
+    background-image: linear-gradient(135deg, var(--background) 0%, oklch(0.97 0.01 120) 100%);
   }
   
   /* Mobile-specific optimizations */
@@ -66,6 +80,43 @@
   /* Better text wrapping for mobile */
   .break-anywhere {
     overflow-wrap: anywhere;
+  }
+  
+  /* Theme transition utilities */
+  .theme-transition {
+    transition: all 0.3s ease;
+  }
+  
+  /* Theme-specific card styles */
+  .theme-dinein-non-ac .themed-card {
+    box-shadow: 0 4px 6px -1px rgba(251, 146, 60, 0.1), 0 2px 4px -1px rgba(251, 146, 60, 0.06);
+    border-color: rgba(251, 146, 60, 0.2);
+  }
+  
+  .theme-dinein-ac .themed-card {
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06);
+    border-color: rgba(59, 130, 246, 0.2);
+  }
+  
+  .theme-takeaway .themed-card {
+    box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.1), 0 2px 4px -1px rgba(34, 197, 94, 0.06);
+    border-color: rgba(34, 197, 94, 0.2);
+  }
+  
+  /* Theme-specific hover effects */
+  .theme-dinein-non-ac .themed-hover:hover {
+    background-color: rgba(251, 146, 60, 0.05);
+    transform: translateY(-2px);
+  }
+  
+  .theme-dinein-ac .themed-hover:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+    transform: translateY(-2px);
+  }
+  
+  .theme-takeaway .themed-hover:hover {
+    background-color: rgba(34, 197, 94, 0.05);
+    transform: translateY(-2px);
   }
 }
 

@@ -1,9 +1,10 @@
-import { ChefHat, UserCheck, LogOut, House, AirConditioner, Package } from '@phosphor-icons/react'
+import { ChefHat, UserCheck, LogOut, House, AirConditioner, Package, Palette } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { CategoryFilter } from './CategoryFilter'
 import { MenuTypeSelector } from './MenuTypeSelector'
 import { MenuType } from '../App'
 import { toast } from 'sonner'
+import { menuThemes } from '../hooks/useTheme'
 
 interface HeaderProps {
   isAdmin: boolean
@@ -54,7 +55,7 @@ export function Header({
   }
 
   return (
-    <header className="bg-card border-b border-border sticky top-0 z-50">
+    <header className="bg-card border-b border-border sticky top-0 z-50 transition-all duration-300">
       <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
@@ -63,7 +64,13 @@ export function Header({
               <h1 className="font-display font-bold text-lg sm:text-2xl text-foreground truncate">
                 Paradise Family Restaurant
               </h1>
-              <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Fine Dining Experience</p>
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                <span className="hidden sm:block">Fine Dining Experience</span>
+                <span className="flex items-center gap-1">
+                  <Palette size={12} className="sm:size-3" />
+                  <span className="font-medium text-primary">{menuThemes[menuType].name}</span>
+                </span>
+              </div>
             </div>
           </div>
 
@@ -115,10 +122,13 @@ export function Header({
             {/* Show fixed menu type indicator for QR code direct access */}
             {isDirectLink && (
               <div className="order-2 lg:order-1">
-                <div className="flex items-center gap-2 px-3 py-2 bg-accent/10 text-accent-foreground rounded-md border">
+                <div className="flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary-foreground rounded-md border border-primary/20 shadow-sm">
                   {getMenuTypeIcon(menuType)}
-                  <span className="text-sm font-medium">{getMenuTypeName(menuType)}</span>
-                  <span className="text-xs opacity-75 hidden sm:inline">(QR Access)</span>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">{getMenuTypeName(menuType)}</span>
+                    <span className="text-xs opacity-75">{menuThemes[menuType].name} Theme</span>
+                  </div>
+                  <span className="text-xs opacity-75 hidden sm:inline ml-2">(QR Access)</span>
                 </div>
               </div>
             )}
