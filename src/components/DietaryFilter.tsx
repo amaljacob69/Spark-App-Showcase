@@ -82,23 +82,23 @@ export function DietaryFilter({ selectedFilters, onFiltersChange, className }: D
     dietaryOptions.find(option => option.key === key)
 
   return (
-    <div className={cn("flex flex-col gap-3", className)}>
+    <div className={cn("flex flex-col gap-3 sm:gap-4", className)}>
       <div className="flex items-center justify-between">
         <Popover open={isOpen} onOpenChange={setIsOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              size="sm"
+              size="lg"
               className={cn(
-                "h-10 px-3 gap-2 justify-start font-medium transition-all duration-200",
-                selectedFilters.length > 0 && "border-primary/50 bg-primary/5"
+                "h-12 sm:h-14 px-4 sm:px-6 gap-3 justify-start font-medium transition-all duration-300 touch-target hover-lift",
+                "focus:ring-2 focus:ring-primary/30",
+                selectedFilters.length > 0 && "border-primary/50 bg-primary/10 shadow-md scale-105"
               )}
             >
-              <Leaf size={16} />
-              <span className="hidden sm:inline">Dietary Filters</span>
-              <span className="sm:hidden">Filters</span>
+              <Leaf size={18} />
+              <span className="text-sm sm:text-base">Dietary Filters</span>
               {selectedFilters.length > 0 && (
-                <Badge variant="secondary" className="ml-auto min-w-0 px-1.5 py-0 text-xs">
+                <Badge variant="secondary" className="ml-auto min-w-0 px-2 py-1 text-xs font-bold">
                   {selectedFilters.length}
                 </Badge>
               )}
@@ -106,20 +106,20 @@ export function DietaryFilter({ selectedFilters, onFiltersChange, className }: D
           </PopoverTrigger>
           
           <PopoverContent 
-            className="w-80 p-4" 
+            className="w-80 sm:w-96 p-4 sm:p-6 bg-popover/95 backdrop-blur-sm" 
             align="start"
             side="bottom"
-            sideOffset={4}
+            sideOffset={8}
           >
-            <div className="space-y-4">
+            <div className="space-y-4 sm:space-y-6">
               <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-sm">Dietary Preferences</h4>
+                <h4 className="font-semibold text-base sm:text-lg">Dietary Preferences</h4>
                 {selectedFilters.length > 0 && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={clearAllFilters}
-                    className="h-6 px-2 text-xs"
+                    className="h-8 px-3 text-xs hover-lift"
                   >
                     Clear all
                   </Button>
@@ -128,7 +128,7 @@ export function DietaryFilter({ selectedFilters, onFiltersChange, className }: D
               
               <Separator />
               
-              <div className="grid gap-2">
+              <div className="grid gap-3">
                 {dietaryOptions.map((option) => {
                   const Icon = option.icon
                   const isSelected = selectedFilters.includes(option.key)
@@ -138,19 +138,20 @@ export function DietaryFilter({ selectedFilters, onFiltersChange, className }: D
                       key={option.key}
                       onClick={() => toggleFilter(option.key)}
                       className={cn(
-                        "flex items-center gap-3 p-3 rounded-lg text-left transition-all duration-200 border",
+                        "flex items-center gap-4 p-4 rounded-lg text-left transition-all duration-300 border-2 touch-target",
                         "hover:scale-[1.02] active:scale-[0.98]",
                         isSelected 
-                          ? `${option.bgColor} ${option.borderColor} ring-2 ring-primary/20` 
-                          : "bg-card border-border hover:bg-muted/50"
+                          ? `${option.bgColor} ${option.borderColor} ring-2 ring-primary/30 shadow-md` 
+                          : "bg-card border-border hover:bg-muted/50 hover:border-muted-foreground/30"
                       )}
                     >
                       <div className={cn(
-                        "flex items-center justify-center w-8 h-8 rounded-full",
+                        "flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200",
                         isSelected ? option.bgColor : "bg-muted"
                       )}>
                         <Icon 
-                          size={16} 
+                          size={20} 
+                          weight={isSelected ? "duotone" : "regular"}
                           className={cn(
                             "transition-colors duration-200",
                             isSelected ? option.color : "text-muted-foreground"
@@ -158,15 +159,15 @@ export function DietaryFilter({ selectedFilters, onFiltersChange, className }: D
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-sm text-foreground">
+                        <div className="font-medium text-sm sm:text-base text-foreground">
                           {option.label}
                         </div>
-                        <div className="text-xs text-muted-foreground mt-0.5">
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-1">
                           {option.description}
                         </div>
                       </div>
                       {isSelected && (
-                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
                       )}
                     </button>
                   )
@@ -179,7 +180,7 @@ export function DietaryFilter({ selectedFilters, onFiltersChange, className }: D
 
       {/* Selected filters display */}
       {selectedFilters.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           {selectedFilters.map((filter) => {
             const option = getOptionByKey(filter)
             if (!option) return null
@@ -190,20 +191,20 @@ export function DietaryFilter({ selectedFilters, onFiltersChange, className }: D
                 key={filter}
                 variant="secondary"
                 className={cn(
-                  "gap-1.5 py-1 px-2 transition-all duration-200 hover:scale-105",
+                  "gap-2 py-2 px-3 text-xs sm:text-sm transition-all duration-200 hover:scale-105 touch-target-sm",
                   option.bgColor,
                   option.borderColor,
-                  "border"
+                  "border-2 font-medium"
                 )}
               >
-                <Icon size={12} className={option.color} />
-                <span className="text-xs font-medium">{option.label}</span>
+                <Icon size={14} className={option.color} weight="duotone" />
+                <span>{option.label}</span>
                 <button
                   onClick={() => toggleFilter(filter)}
-                  className="ml-1 hover:bg-background/20 rounded-full p-0.5 transition-colors duration-200"
+                  className="ml-1 hover:bg-background/30 rounded-full p-1 transition-colors duration-200"
                   aria-label={`Remove ${option.label} filter`}
                 >
-                  <X size={10} />
+                  <X size={12} />
                 </button>
               </Badge>
             )

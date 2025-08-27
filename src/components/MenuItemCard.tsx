@@ -55,54 +55,63 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
   return (
     <>
       <Card className={cn(
-        "group transition-all duration-300 hover:shadow-md themed-card themed-hover theme-transition",
-        !item.available && "opacity-60"
+        "group overflow-hidden themed-card themed-hover theme-transition hover-glow",
+        "border-2 border-transparent hover:border-primary/20",
+        !item.available && "opacity-60 grayscale"
       )}>
-        <CardContent className="p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start mb-3 gap-2 sm:gap-4">
+        <CardContent className="p-4 sm:p-5 lg:p-6">
+          {/* Header section with title and price */}
+          <div className="flex justify-between items-start mb-3 sm:mb-4 gap-3">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-base sm:text-lg text-foreground mb-1 break-words">
+              <h3 className="font-semibold text-base sm:text-lg lg:text-xl text-foreground mb-2 break-words leading-tight text-balance">
                 {item.name}
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed break-words">
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed break-words line-clamp-3">
                 {item.description}
               </p>
             </div>
-            <div className="flex-shrink-0 text-right sm:ml-4 self-start">
-              <div className="font-bold text-accent text-lg sm:text-xl">
+            <div className="flex-shrink-0 text-right">
+              <div className="font-bold text-accent text-xl sm:text-2xl drop-shadow-sm">
                 ${item.prices ? getItemPrice(item, menuType).toFixed(2) : '0.00'}
               </div>
               {isAdmin && (
-                <div className="text-xs text-muted-foreground mt-1">
-                  AC: ${item.prices ? item.prices['dinein-ac'].toFixed(2) : '0.00'}
+                <div className="text-xs text-muted-foreground mt-1 space-y-0.5">
+                  <div>AC: ${item.prices ? item.prices['dinein-ac'].toFixed(2) : '0.00'}</div>
+                  <div>Non-AC: ${item.prices ? item.prices['dinein-non-ac'].toFixed(2) : '0.00'}</div>
+                  <div>Takeaway: ${item.prices ? item.prices['takeaway'].toFixed(2) : '0.00'}</div>
                 </div>
               )}
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-2">
+          {/* Meta information section */}
+          <div className="flex flex-col gap-3">
+            {/* Category and availability badges */}
             <div className="flex items-center gap-2 flex-wrap">
               <Badge 
                 variant="secondary"
-                className="text-xs"
+                className="text-xs font-medium px-2 py-1"
               >
                 {item.category}
               </Badge>
               <Badge 
                 variant={item.available ? "default" : "secondary"}
                 className={cn(
-                  "text-xs",
+                  "text-xs font-medium px-2 py-1",
                   item.available 
-                    ? "bg-green-100 text-green-800 border-green-200" 
+                    ? "bg-green-100 text-green-800 border-green-200 hover:bg-green-200" 
                     : "bg-gray-100 text-gray-600 border-gray-200"
                 )}
               >
                 {item.available ? 'Available' : 'Unavailable'}
               </Badge>
-              
-              {/* Dietary preferences indicators */}
-              {item.dietary && item.dietary.length > 0 && (
-                <div className="flex items-center gap-1">
+            </div>
+            
+            {/* Dietary preferences indicators */}
+            {item.dietary && item.dietary.length > 0 && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs text-muted-foreground font-medium">Contains:</span>
+                <div className="flex items-center gap-1.5">
                   {item.dietary.map((dietary) => {
                     const iconInfo = dietaryIcons[dietary]
                     if (!iconInfo) return null
@@ -112,53 +121,59 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
                       <div
                         key={dietary}
                         className={cn(
-                          "flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-200",
+                          "flex items-center justify-center w-7 h-7 rounded-full border-2 transition-all duration-200 touch-target-sm",
                           iconInfo.bg,
                           iconInfo.border,
-                          "hover:scale-110"
+                          "hover:scale-110 active:scale-95 cursor-help"
                         )}
-                        title={dietary.charAt(0).toUpperCase() + dietary.slice(1)}
+                        title={`Contains ${dietary.charAt(0).toUpperCase() + dietary.slice(1)}`}
                       >
-                        <Icon size={12} className={iconInfo.color} />
+                        <Icon size={14} className={iconInfo.color} weight="duotone" />
                       </div>
                     )
                   })}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
+            {/* Admin controls */}
             {isAdmin && (
-              <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center justify-end gap-1.5 pt-2 border-t border-border/50 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleToggleAvailability}
-                  className="h-8 w-8 p-0"
+                  className={cn(
+                    "h-8 w-8 p-0 touch-target-sm hover-lift",
+                    item.available 
+                      ? "hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200"
+                      : "hover:bg-green-50 hover:text-green-600 hover:border-green-200"
+                  )}
                   title={item.available ? 'Mark as unavailable' : 'Mark as available'}
                 >
                   {item.available ? (
-                    <EyeSlash size={14} />
+                    <EyeSlash size={16} />
                   ) : (
-                    <Eye size={14} />
+                    <Eye size={16} />
                   )}
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => setShowEditDialog(true)}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 touch-target-sm hover-lift hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200"
                   title="Edit item"
                 >
-                  <PencilSimple size={14} />
+                  <PencilSimple size={16} />
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleDelete}
-                  className="h-8 w-8 p-0 text-destructive hover:text-destructive-foreground hover:bg-destructive"
+                  className="h-8 w-8 p-0 touch-target-sm hover-lift hover:bg-red-50 hover:text-red-600 hover:border-red-200"
                   title="Delete item"
                 >
-                  <Trash size={14} />
+                  <Trash size={16} />
                 </Button>
               </div>
             )}

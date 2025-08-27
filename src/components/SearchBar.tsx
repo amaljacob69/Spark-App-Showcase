@@ -30,14 +30,14 @@ export function SearchBar({ onSearch, className, placeholder = "Search menu item
 
   return (
     <div className={cn(
-      "relative group transition-all duration-200",
-      isFocused && "scale-[1.02]",
+      "relative group transition-all duration-300",
+      isFocused && "scale-[1.02] z-10",
       className
     )}>
       <div className="relative">
         <MagnifyingGlass 
-          size={18} 
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground transition-colors duration-200 group-focus-within:text-primary" 
+          size={20} 
+          className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground transition-all duration-200 group-focus-within:text-primary group-focus-within:scale-110" 
         />
         <Input
           value={query}
@@ -46,10 +46,11 @@ export function SearchBar({ onSearch, className, placeholder = "Search menu item
           onBlur={() => setIsFocused(false)}
           placeholder={placeholder}
           className={cn(
-            "pl-10 pr-10 h-11 transition-all duration-200",
-            "focus:ring-2 focus:ring-primary/20 focus:border-primary",
-            "hover:border-muted-foreground/50",
-            query && "pr-12"
+            "pl-11 sm:pl-12 pr-12 h-12 sm:h-14 text-base transition-all duration-300",
+            "focus:ring-2 focus:ring-primary/30 focus:border-primary focus:shadow-lg",
+            "hover:border-muted-foreground/50 hover:shadow-md",
+            "bg-background/80 backdrop-blur-sm",
+            query && "pr-14"
           )}
           role="searchbox"
           aria-label="Search menu items"
@@ -59,18 +60,29 @@ export function SearchBar({ onSearch, className, placeholder = "Search menu item
             variant="ghost"
             size="sm"
             onClick={clearSearch}
-            className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-muted/80"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-muted/80 touch-target-sm"
             aria-label="Clear search"
           >
-            <X size={14} />
+            <X size={16} />
           </Button>
         )}
       </div>
       
-      {/* Search suggestions/hints */}
+      {/* Enhanced search suggestions/hints */}
       {isFocused && !query && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-md shadow-lg p-2 text-sm text-muted-foreground z-50">
-          <div className="text-xs">Try searching for "salmon", "vegetarian", or "dessert"</div>
+        <div className="absolute top-full left-0 right-0 mt-2 bg-popover/95 backdrop-blur-sm border border-border rounded-lg shadow-lg p-4 text-sm text-muted-foreground z-50 animate-in slide-in-from-top-2">
+          <div className="text-xs font-medium mb-2">Popular searches:</div>
+          <div className="flex flex-wrap gap-1.5">
+            {['salmon', 'vegetarian', 'chicken', 'dessert', 'pasta'].map((term) => (
+              <button
+                key={term}
+                onClick={() => setQuery(term)}
+                className="text-xs px-2 py-1 bg-muted/50 rounded-md hover:bg-muted transition-colors"
+              >
+                {term}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

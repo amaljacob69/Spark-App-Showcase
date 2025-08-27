@@ -35,8 +35,6 @@ export function Header({
   searchQuery
 }: HeaderProps) {
 
-
-
   const getMenuTypeIcon = (type: MenuType) => {
     switch (type) {
       case 'dinein-non-ac':
@@ -60,102 +58,109 @@ export function Header({
   }
 
   return (
-    <header className="bg-card border-b border-border sticky top-0 z-50 transition-all duration-300">
-      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
-        <div className="flex items-center justify-between">
+    <header className="bg-card/80 backdrop-blur-lg border-b border-border/50 sticky top-0 z-50 theme-transition safe-area-top">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
+        {/* Top row with branding and admin controls */}
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-            <ChefHat size={28} className="text-primary flex-shrink-0 sm:size-8" />
+            <div className="relative">
+              <ChefHat size={28} className="text-primary flex-shrink-0 sm:size-8 drop-shadow-sm" />
+              <div className="absolute -inset-1 bg-primary/20 rounded-full blur-sm -z-10 animate-pulse" />
+            </div>
             <div className="min-w-0 flex-1">
-              <h1 className="font-display font-bold text-lg sm:text-2xl text-foreground truncate">
+              <h1 className="font-display font-bold text-lg sm:text-2xl xl:text-3xl text-foreground truncate text-balance">
                 Paradise Family Restaurant
               </h1>
               <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
                 <span className="hidden sm:block">Fine Dining Experience</span>
-                <span className="flex items-center gap-1">
+                <div className="flex items-center gap-1">
                   <Palette size={12} className="sm:size-3" />
                   <span className="font-medium text-primary">{menuThemes[menuType].name}</span>
-                </span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Hide admin controls when accessed via QR direct links */}
+          {/* Admin controls - hidden on direct links */}
           {!isDirectLink && (
-            <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+            <div className="flex items-center gap-2 flex-shrink-0">
               {isAdmin ? (
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-                    <UserCheck size={16} />
-                    Admin Access
+                  <div className="hidden lg:flex items-center gap-2 text-sm text-muted-foreground px-2 py-1 bg-green-50 rounded-md border border-green-200">
+                    <UserCheck size={16} className="text-green-600" />
+                    <span className="text-green-700">Admin Access</span>
                   </div>
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={onAdminLogout}
-                    className="gap-1 sm:gap-2 px-2 sm:px-3"
+                    className="gap-1 sm:gap-2 px-3 sm:px-4 touch-target-sm hover-lift transition-all duration-200"
                   >
                     <SignOut size={14} className="sm:size-4" />
                     <span className="hidden sm:inline">Logout</span>
+                    <span className="sm:hidden">Out</span>
                   </Button>
                 </div>
               ) : (
                 <Button 
                   variant="outline"
                   onClick={onAdminLogin}
-                  className="gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4"
+                  className="gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 touch-target hover-lift"
                   size="sm"
                 >
                   <UserCheck size={14} className="sm:size-4" />
-                  <span className="hidden xs:inline">Admin Login</span>
-                  <span className="xs:hidden">Login</span>
+                  <span className="hidden sm:inline">Admin Login</span>
+                  <span className="sm:hidden">Login</span>
                 </Button>
               )}
             </div>
           )}
         </div>
 
-          <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4">
-            {/* Search Bar */}
-            <div className="w-full">
-              <SearchBar 
-                onSearch={onSearch}
-                className="w-full max-w-md mx-auto lg:mx-0"
-                placeholder="Search dishes, ingredients, or categories..."
+        {/* Search bar - full width on mobile */}
+        <div className="mb-3 sm:mb-4">
+          <SearchBar 
+            onSearch={onSearch}
+            className="w-full max-w-2xl mx-auto"
+            placeholder="Search dishes, ingredients, categories, or dietary options..."
+          />
+        </div>
+
+        {/* Menu type and category controls */}
+        <div className="flex flex-col gap-3 sm:gap-4">
+          {/* Menu type selector/indicator */}
+          {!isDirectLink ? (
+            <div className="order-1">
+              <MenuTypeSelector 
+                selectedType={menuType}
+                onTypeSelect={onMenuTypeSelect}
               />
             </div>
-
-            <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
-              {/* Only show menu type selector if not accessing via direct QR link */}
-              {!isDirectLink && (
-                <div className="order-2 lg:order-1">
-                  <MenuTypeSelector 
-                    selectedType={menuType}
-                    onTypeSelect={onMenuTypeSelect}
-                  />
-                </div>
-              )}
-              {/* Show fixed menu type indicator for QR code direct access */}
-              {isDirectLink && (
-                <div className="order-2 lg:order-1">
-                  <div className="flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary-foreground rounded-md border border-primary/20 shadow-sm">
+          ) : (
+            <div className="order-1">
+              <div className="flex items-center justify-center sm:justify-start">
+                <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-primary/10 to-primary/5 text-primary rounded-lg border border-primary/20 shadow-sm">
+                  <div className="flex items-center justify-center w-8 h-8 bg-primary/20 rounded-full">
                     {getMenuTypeIcon(menuType)}
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium">{getMenuTypeName(menuType)}</span>
-                      <span className="text-xs opacity-75">{menuThemes[menuType].name} Theme</span>
-                    </div>
-                    <span className="text-xs opacity-75 hidden sm:inline ml-2">(QR Access)</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold">{getMenuTypeName(menuType)}</span>
+                    <span className="text-xs opacity-75">{menuThemes[menuType].name} Theme • QR Access</span>
                   </div>
                 </div>
-              )}
-              <div className="order-1 lg:order-2">
-                <CategoryFilter 
-                  categories={categories}
-                  selectedCategory={selectedCategory}
-                  onCategorySelect={onCategorySelect}
-                />
               </div>
             </div>
+          )}
+          
+          {/* Category filter */}
+          <div className="order-2">
+            <CategoryFilter 
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onCategorySelect={onCategorySelect}
+            />
           </div>
+        </div>
       </div>
     </header>
   )

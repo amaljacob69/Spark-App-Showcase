@@ -15,7 +15,7 @@ export function CategoryFilter({ categories, selectedCategory, onCategorySelect 
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center sm:justify-start">
+      <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
         {categories.map((category) => (
           <Button
             key={category}
@@ -23,10 +23,11 @@ export function CategoryFilter({ categories, selectedCategory, onCategorySelect 
             size="sm"
             onClick={() => onCategorySelect(category)}
             className={cn(
-              "transition-all duration-200 text-xs px-2.5 py-1.5 sm:px-3 sm:py-2 min-w-0",
+              "transition-all duration-200 text-xs sm:text-sm px-3 py-2 min-w-0 touch-target-sm hover-lift",
+              "whitespace-nowrap font-medium",
               selectedCategory === category 
-                ? "bg-primary text-primary-foreground shadow-sm" 
-                : "hover:bg-muted"
+                ? "bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20 scale-105" 
+                : "hover:bg-muted hover:scale-105 active:scale-95"
             )}
           >
             {formatCategoryName(category)}

@@ -28,95 +28,196 @@
     background-image: linear-gradient(135deg, var(--background) 0%, oklch(0.97 0.01 120) 100%);
   }
   
-  /* Mobile-specific optimizations */
-  @media (max-width: 640px) {
+  /* Mobile-first optimizations */
+  @media (max-width: 768px) {
     html {
       font-size: 14px;
     }
     
-    /* Improve touch scrolling on iOS */
+    /* Improve touch scrolling on all mobile devices */
     body {
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
     }
     
     /* Better button tap experience on mobile */
     button, 
     [role="button"],
     input[type="submit"],
-    input[type="button"] {
+    input[type="button"],
+    [data-radix-collection-item] {
       -webkit-tap-highlight-color: transparent;
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
+      cursor: pointer;
     }
     
-    /* Prevent zooming on form inputs */
+    /* Prevent zooming on form inputs while maintaining accessibility */
     input, 
     select, 
-    textarea {
+    textarea,
+    [role="combobox"] {
       font-size: 16px;
+      transform: translateZ(0); /* Force hardware acceleration */
+    }
+    
+    /* Improve modal and dialog experience on mobile */
+    [role="dialog"],
+    [data-radix-dialog-content] {
+      max-height: 90vh;
+      max-width: 95vw;
+      margin: auto;
+    }
+    
+    /* Better sticky header behavior */
+    .sticky {
+      position: -webkit-sticky;
+      position: sticky;
+    }
+  }
+  
+  /* Ultra-small screens (< 375px) */
+  @media (max-width: 374px) {
+    html {
+      font-size: 13px;
+    }
+    
+    .container {
+      padding-left: 12px;
+      padding-right: 12px;
     }
   }
 }
 
-/* Custom mobile breakpoint utilities */
+/* Custom mobile utilities and enhanced design system */
 @layer utilities {
+  /* Enhanced typography scale for mobile */
+  .text-mobile-xs {
+    font-size: 0.6875rem; /* 11px */
+    line-height: 0.875rem; /* 14px */
+  }
+  
   .text-mobile-sm {
-    font-size: 0.75rem;
-    line-height: 1rem;
+    font-size: 0.75rem; /* 12px */
+    line-height: 1rem; /* 16px */
   }
   
   .text-mobile-base {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; /* 20px */
   }
   
-  /* Touch-friendly minimum sizes */
+  /* Enhanced touch-friendly sizes */
   .touch-target {
     min-height: 44px;
     min-width: 44px;
   }
   
-  /* Better text wrapping for mobile */
+  .touch-target-sm {
+    min-height: 36px;
+    min-width: 36px;
+  }
+  
+  /* Better text handling */
   .break-anywhere {
     overflow-wrap: anywhere;
   }
   
-  /* Theme transition utilities */
-  .theme-transition {
-    transition: all 0.3s ease;
+  .text-balance {
+    text-wrap: balance;
   }
   
-  /* Theme-specific card styles */
+  /* Enhanced transitions */
+  .theme-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .smooth-transform {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Mobile-first spacing system */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Enhanced hover states for mobile */
+  @media (hover: hover) and (pointer: fine) {
+    .hover-lift:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+    
+    .hover-glow:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+  }
+  
+  /* Mobile-specific grid layouts */
+  .mobile-grid-1 {
+    grid-template-columns: 1fr;
+  }
+  
+  .mobile-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Better scroll behavior */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Enhanced theme-specific card styles with better mobile experience */
   .theme-dinein-non-ac .themed-card {
     box-shadow: 0 4px 6px -1px rgba(251, 146, 60, 0.1), 0 2px 4px -1px rgba(251, 146, 60, 0.06);
     border-color: rgba(251, 146, 60, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .theme-dinein-ac .themed-card {
     box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06);
     border-color: rgba(59, 130, 246, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .theme-takeaway .themed-card {
     box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.1), 0 2px 4px -1px rgba(34, 197, 94, 0.06);
     border-color: rgba(34, 197, 94, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* Theme-specific hover effects */
-  .theme-dinein-non-ac .themed-hover:hover {
-    background-color: rgba(251, 146, 60, 0.05);
-    transform: translateY(-2px);
+  /* Enhanced hover effects with mobile considerations */
+  @media (hover: hover) and (pointer: fine) {
+    .theme-dinein-non-ac .themed-hover:hover {
+      background-color: rgba(251, 146, 60, 0.05);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(251, 146, 60, 0.15);
+    }
+    
+    .theme-dinein-ac .themed-hover:hover {
+      background-color: rgba(59, 130, 246, 0.05);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+    
+    .theme-takeaway .themed-hover:hover {
+      background-color: rgba(34, 197, 94, 0.05);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.15);
+    }
   }
   
-  .theme-dinein-ac .themed-hover:hover {
-    background-color: rgba(59, 130, 246, 0.05);
-    transform: translateY(-2px);
-  }
-  
-  .theme-takeaway .themed-hover:hover {
-    background-color: rgba(34, 197, 94, 0.05);
-    transform: translateY(-2px);
+  /* Touch feedback for mobile */
+  @media (hover: none) and (pointer: coarse) {
+    .themed-hover:active {
+      transform: scale(0.98);
+      transition: transform 0.1s ease;
+    }
   }
 }
 

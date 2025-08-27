@@ -405,7 +405,7 @@ function AppContent() {
   }, [searchQuery, selectedDietaryFilters, setSelectedDietaryFilters])
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background safe-area-top safe-area-bottom">
       <ThemePreview menuType={safeSelectedMenuType} />
       <Header 
         isAdmin={safeIsAdmin}
@@ -421,25 +421,25 @@ function AppContent() {
         searchQuery={searchQuery}
       />
       
-      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 lg:py-8" role="main" aria-label="Restaurant menu content">
+      <main className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8" role="main" aria-label="Restaurant menu content">
         {/* Search and Filter Results Display */}
         {(searchQuery || (selectedDietaryFilters && selectedDietaryFilters.length > 0)) && (
-          <div className="mb-4 sm:mb-6">
-            <div className="flex flex-col gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg border">
+          <div className="mb-4 sm:mb-6 lg:mb-8">
+            <div className="flex flex-col gap-3 sm:gap-4 p-4 sm:p-5 bg-muted/50 rounded-xl border border-border/50 backdrop-blur-sm">
               {/* Search Results */}
               {searchQuery && (
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-muted-foreground">
                       Search results for: 
                     </span>
-                    <span className="font-medium text-foreground">"{searchQuery}"</span>
+                    <span className="font-semibold text-foreground text-sm sm:text-base">"{searchQuery}"</span>
                   </div>
                   <Button 
                     variant="ghost" 
                     size="sm" 
                     onClick={() => setSearchQuery('')}
-                    className="text-xs h-7 px-2 whitespace-nowrap"
+                    className="text-xs h-8 px-3 whitespace-nowrap hover-lift touch-target-sm"
                   >
                     Clear search
                   </Button>
@@ -448,7 +448,7 @@ function AppContent() {
               
               {/* Dietary Filter Results */}
               {selectedDietaryFilters && selectedDietaryFilters.length > 0 && (
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-muted-foreground">
                       Filtered by dietary preferences
@@ -458,16 +458,16 @@ function AppContent() {
                     variant="ghost" 
                     size="sm" 
                     onClick={() => setSelectedDietaryFilters([])}
-                    className="text-xs h-7 px-2 whitespace-nowrap"
+                    className="text-xs h-8 px-3 whitespace-nowrap hover-lift touch-target-sm"
                   >
                     Clear filters
                   </Button>
                 </div>
               )}
               
-              {/* Results count */}
-              <div className="flex items-center justify-between">
-                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+              {/* Results count and clear all */}
+              <div className="flex items-center justify-between pt-2 border-t border-border/50">
+                <span className="text-xs sm:text-sm bg-primary/15 text-primary px-3 py-1.5 rounded-full font-medium">
                   {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'} found
                 </span>
                 {(searchQuery || (selectedDietaryFilters && selectedDietaryFilters.length > 0)) && (
@@ -478,7 +478,7 @@ function AppContent() {
                       setSearchQuery('')
                       setSelectedDietaryFilters([])
                     }}
-                    className="text-xs h-7 px-2"
+                    className="text-xs h-8 px-3 hover-lift"
                   >
                     Clear all
                   </Button>
@@ -489,7 +489,7 @@ function AppContent() {
         )}
 
         {/* Dietary Filters */}
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-6 sm:mb-8 lg:mb-10">
           <DietaryFilter
             selectedFilters={selectedDietaryFilters || []}
             onFiltersChange={setSelectedDietaryFilters}
@@ -508,7 +508,9 @@ function AppContent() {
         />
         
         {safeIsAdmin && (
-          <AdminPanel onAddItem={handleAddItem} />
+          <div className="mt-8 sm:mt-10 lg:mt-12">
+            <AdminPanel onAddItem={handleAddItem} />
+          </div>
         )}
       </main>
 
