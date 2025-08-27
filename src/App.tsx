@@ -4,9 +4,7 @@ import { Header } from './components/Header'
 import { MenuGrid } from './components/MenuGrid'
 import { AdminPanel } from './components/AdminPanel'
 import { LoginDialog } from './components/LoginDialog'
-import { FirebaseAuthProvider, useAuth } from './components/FirebaseAuthProvider'
 import { Toaster } from './components/ui/sonner'
-import { saveMenuItems, loadMenuItems } from './lib/firebase'
 import { toast } from 'sonner'
 
 export interface MenuItem {
@@ -114,41 +112,31 @@ const getItemPrice = (item: MenuItem, menuType: MenuType): number => {
 }
 
 function AppContent() {
-  const { isAdmin, loading } = useAuth()
+  const [isAdmin, setIsAdmin] = useKV<boolean>("is-admin", false)
   const [menuItems, setMenuItems] = useKV<MenuItem[]>("menu-items", sampleMenuItems)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [selectedMenuType, setSelectedMenuType] = useKV<MenuType>("selected-menu-type", 'dinein-ac')
   const [isDirectLink, setIsDirectLink] = useState(false)
-  const [firebaseLoaded, setFirebaseLoaded] = useState(false)
+  const [showLoginDialog, setShowLoginDialog] = useState(false)
 
-  // Load menu items from Firebase on app start
-  useEffect(() => {
-    if (!loading && !firebaseLoaded) {
-      loadMenuItems()
-        .then(firebaseItems => {
-          if (firebaseItems.length > 0) {
-            setMenuItems(firebaseItems)
-            toast.success('Menu loaded from Firebase')
-          }
-          setFirebaseLoaded(true)
-        })
-        .catch(error => {
-          console.error('Failed to load menu from Firebase:', error)
-          toast.error('Failed to load menu from cloud')
-          setFirebaseLoaded(true)
-        })
+  // Simple admin authentication with password
+  const handleAdminLogin = useCallback((password: string) => {
+    // Simple password check - in production, use proper authentication
+    if (password === 'admin123') {
+      setIsAdmin(true)
+      setShowLoginDialog(false)
+      toast.success('Admin access granted')
+      return true
+    } else {
+      toast.error('Invalid admin password')
+      return false
     }
-  }, [loading, firebaseLoaded, setMenuItems])
+  }, [setIsAdmin])
 
-  // Save menu items to Firebase whenever they change (if admin is logged in)
-  useEffect(() => {
-    if (isAdmin && firebaseLoaded && menuItems.length > 0) {
-      saveMenuItems(menuItems).catch(error => {
-        console.error('Failed to save menu to Firebase:', error)
-        toast.error('Failed to save menu to cloud')
-      })
-    }
-  }, [menuItems, isAdmin, firebaseLoaded])
+  const handleAdminLogout = useCallback(() => {
+    setIsAdmin(false)
+    toast.success('Admin logged out')
+  }, [setIsAdmin])
 
   // Handle URL parameters to set menu type directly
   useEffect(() => {
@@ -227,6 +215,8 @@ function AppContent() {
     <div className="min-h-screen bg-background">
       <Header 
         isAdmin={isAdmin}
+        onAdminLogin={() => setShowLoginDialog(true)}
+        onAdminLogout={handleAdminLogout}
         categories={categories}
         selectedCategory={selectedCategory}
         onCategorySelect={setSelectedCategory}
@@ -252,6 +242,14 @@ function AppContent() {
         )}
       </main>
 
+      {showLoginDialog && (
+        <LoginDialog 
+          open={showLoginDialog}
+          onOpenChange={setShowLoginDialog}
+          onLogin={handleAdminLogin}
+        />
+      )}
+
       <Toaster 
         position="top-center"
         toastOptions={{
@@ -266,11 +264,7 @@ function AppContent() {
 }
 
 function App() {
-  return (
-    <FirebaseAuthProvider>
-      <AppContent />
-    </FirebaseAuthProvider>
-  )
+  return <AppContent />
 }
 
 export { getItemPrice }

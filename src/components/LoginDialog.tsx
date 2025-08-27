@@ -10,12 +10,11 @@ import {
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
-import { toast } from 'sonner'
 
 interface LoginDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onLogin: () => void
+  onLogin: (password: string) => boolean
 }
 
 export function LoginDialog({ open, onOpenChange, onLogin }: LoginDialogProps) {
@@ -26,13 +25,9 @@ export function LoginDialog({ open, onOpenChange, onLogin }: LoginDialogProps) {
     e.preventDefault()
     setLoading(true)
 
-    // Simple password check - in real app would be proper authentication
-    if (password === 'admin123') {
-      onLogin()
+    const success = onLogin(password)
+    if (success) {
       setPassword('')
-      toast.success('Welcome back, Admin!')
-    } else {
-      toast.error('Invalid password')
     }
 
     setLoading(false)

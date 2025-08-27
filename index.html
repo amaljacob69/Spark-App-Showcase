@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <title>Savory - Restaurant Menu</title>
-    <meta name="description" content="Fine dining restaurant menu with different pricing for dine-in AC, non-AC, and takeaway options. Admin panel for menu management." />
+    <title>Paradise Family Restaurant - Menu</title>
+    <meta name="description" content="Paradise Family Restaurant menu with different pricing for dine-in AC, non-AC, and takeaway options. Admin panel for menu management." />
     <meta name="keywords" content="restaurant, menu, fine dining, food, dine-in, takeaway" />
     <meta name="author" content="Savory Restaurant" />
     
@@ -13,7 +13,7 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>" />
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Savory - Restaurant Menu" />
+    <meta property="og:title" content="Paradise Family Restaurant - Menu" />
     <meta property="og:description" content="Experience fine dining with our curated menu featuring different pricing for dine-in and takeaway options." />
     <meta property="og:type" content="website" />
     
@@ -23,14 +23,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="/src/main.css" rel="stylesheet" />
     
-    <!-- Deployment verification helper -->
+    <!-- QR Code Access Helper -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                window.verifyDeployment = function() {
-                    console.log('🔍 Paradise Family Restaurant - Deployment Check');
-                    console.log('Run the verify-deployment.js script for full verification');
-                    console.log('Direct menu URLs:');
+                window.showMenuLinks = function() {
+                    console.log('🍽️ Paradise Family Restaurant - Menu Links');\n                    console.log('Direct menu URLs:');
                     console.log('- Non-AC:', window.location.origin + '?menu=dinein-non-ac');
                     console.log('- AC:', window.location.origin + '?menu=dinein-ac'); 
                     console.log('- Takeaway:', window.location.origin + '?menu=takeaway');
