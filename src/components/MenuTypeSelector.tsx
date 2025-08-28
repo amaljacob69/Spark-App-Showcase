@@ -19,14 +19,14 @@ const menuTypes = [
   },
   {
     type: 'dinein-ac' as MenuType,
-    label: 'Dine-in AC',
+    label: 'Dine-in A/C',
     icon: Snowflake,
     description: 'Standard pricing',
     themeColor: 'bg-blue-500'
   },
   {
     type: 'takeaway' as MenuType,
-    label: 'Takeaway',
+    label: 'Take Away',
     icon: Package,
     description: '20% off base price',
     themeColor: 'bg-green-500'

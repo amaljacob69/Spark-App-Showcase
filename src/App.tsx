@@ -314,15 +314,15 @@ function AppContent() {
         const messages = {
           'dinein-non-ac': {
             title: 'Dine-in Non-AC Menu',
-            description: 'Cozy Warmth Theme • Showing Non-AC pricing only'
+            description: 'Showing Non-AC pricing only'
           },
           'dinein-ac': {
-            title: 'Dine-in AC Menu', 
-            description: 'Cool Elegance Theme • Showing AC pricing only'
+            title: 'Dine-in A/C Menu', 
+            description: 'Showing A/C pricing only'
           },
           'takeaway': {
-            title: 'Takeaway Menu',
-            description: 'Fresh Vitality Theme • Showing takeaway pricing only'
+            title: 'Take Away Menu',
+            description: 'Showing take away pricing only'
           }
         }
         
