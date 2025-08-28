@@ -17,6 +17,8 @@ interface MenuTypeConfig {
   color: string
 }
 
+// QR Code configurations - only showing AC and takeaway options
+// Non-AC menu type is excluded per user request
 const menuConfigs: MenuTypeConfig[] = [
   {
     type: 'dinein-ac',
