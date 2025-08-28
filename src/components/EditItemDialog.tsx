@@ -53,9 +53,9 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
         name: item.name || '',
         description: item.description || '',
         prices: {
-          'dinein-non-ac': item.prices['dinein-non-ac']?.toString() || '',
-          'dinein-ac': item.prices['dinein-ac']?.toString() || '',
-          'takeaway': item.prices['takeaway']?.toString() || ''
+          'dinein-non-ac': (typeof item.prices['dinein-non-ac'] === 'number' && !isNaN(item.prices['dinein-non-ac'])) ? item.prices['dinein-non-ac'].toString() : '',
+          'dinein-ac': (typeof item.prices['dinein-ac'] === 'number' && !isNaN(item.prices['dinein-ac'])) ? item.prices['dinein-ac'].toString() : '',
+          'takeaway': (typeof item.prices['takeaway'] === 'number' && !isNaN(item.prices['takeaway'])) ? item.prices['takeaway'].toString() : ''
         },
         category: item.category || '',
         available: item.available ?? true,
@@ -73,9 +73,16 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
       return
     }
 
-    const nonAcPrice = parseFloat(formData.prices['dinein-non-ac'])
-    const acPrice = parseFloat(formData.prices['dinein-ac'])
-    const takeawayPrice = parseFloat(formData.prices['takeaway'])
+    let nonAcPrice: number, acPrice: number, takeawayPrice: number
+
+    try {
+      nonAcPrice = parseFloat(formData.prices['dinein-non-ac'])
+      acPrice = parseFloat(formData.prices['dinein-ac'])
+      takeawayPrice = parseFloat(formData.prices['takeaway'])
+    } catch (error) {
+      toast.error('Invalid price format')
+      return
+    }
 
     if (isNaN(nonAcPrice) || nonAcPrice <= 0 || 
         isNaN(acPrice) || acPrice <= 0 || 
@@ -84,18 +91,23 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
       return
     }
 
-    onSave({
-      name: formData.name.trim(),
-      description: formData.description.trim(),
-      prices: {
-        'dinein-non-ac': nonAcPrice,
-        'dinein-ac': acPrice,
-        'takeaway': takeawayPrice
-      },
-      category: formData.category.trim(),
-      available: formData.available,
-      dietary: formData.dietary
-    })
+    try {
+      onSave({
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        prices: {
+          'dinein-non-ac': nonAcPrice,
+          'dinein-ac': acPrice,
+          'takeaway': takeawayPrice
+        },
+        category: formData.category.trim(),
+        available: formData.available,
+        dietary: formData.dietary
+      })
+    } catch (error) {
+      console.error('Error saving item:', error)
+      toast.error('Error saving item. Please try again.')
+    }
   }
 
   const handleChange = (field: string, value: string | boolean) => {

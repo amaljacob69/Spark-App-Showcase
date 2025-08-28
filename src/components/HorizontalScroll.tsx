@@ -41,13 +41,13 @@ export function HorizontalScroll({
     
     setCanScrollLeft(scrollLeft > 0)
     setCanScrollRight(scrollLeft < maxScroll - 1) // -1 for floating point precision
-    setScrollProgress(maxScroll > 0 ? scrollLeft / maxScroll : 0)
+    setScrollProgress(maxScroll > 0 ? Math.min(1, Math.max(0, scrollLeft / maxScroll)) : 0)
 
-    // Calculate visible items
-    if (cardWidth && itemCount > 0) {
+    // Calculate visible items with safety checks
+    if (cardWidth && itemCount > 0 && typeof cardWidth === 'number' && typeof itemCount === 'number' && typeof gap === 'number') {
       const containerWidth = clientWidth
       const itemsVisible = Math.floor(containerWidth / (cardWidth + gap))
-      setVisibleItems(Math.min(itemsVisible, itemCount))
+      setVisibleItems(Math.max(1, Math.min(itemsVisible, itemCount)))
     }
   }, [cardWidth, gap, itemCount])
 
@@ -183,17 +183,18 @@ export function HorizontalScroll({
             
             {/* Item Counter */}
             <div className="flex items-center gap-1 text-xs text-muted-foreground font-medium">
-              <span className="text-foreground">{Math.ceil(scrollProgress * (itemCount - visibleItems + 1)) || 1}</span>
+              <span className="text-foreground">{Math.ceil(scrollProgress * Math.max(1, Math.floor(itemCount) - Math.floor(visibleItems) + 1)) || 1}</span>
               <span>/</span>
-              <span>{itemCount - visibleItems + 1}</span>
+              <span>{Math.max(1, Math.floor(itemCount) - Math.floor(visibleItems) + 1)}</span>
             </div>
           </div>
 
           {/* Dot Indicators for fewer items */}
-          {itemCount <= 8 && (
+          {itemCount <= 8 && itemCount > 0 && visibleItems > 0 && (
             <div className="flex gap-1.5 ml-2">
-              {Array.from({ length: Math.max(1, itemCount - visibleItems + 1) }).map((_, index) => {
-                const progress = index / Math.max(1, itemCount - visibleItems)
+              {Array.from({ length: Math.max(1, Math.floor(itemCount) - Math.floor(visibleItems) + 1) }).map((_, index) => {
+                const maxIndex = Math.max(1, Math.floor(itemCount) - Math.floor(visibleItems))
+                const progress = maxIndex > 0 ? index / maxIndex : 0
                 const isActive = Math.abs(scrollProgress - progress) < 0.2
                 
                 return (
@@ -252,8 +253,20 @@ export function ScrollableCardContainer({
   cardWidth = 280,
   gap = 16
 }: ScrollableCardContainerProps) {
-  const childrenArray = Array.isArray(children) ? children : [children]
-  const itemCount = childrenArray.filter(Boolean).length
+  // Safely handle children conversion to array
+  let childrenArray: ReactNode[] = []
+  try {
+    if (Array.isArray(children)) {
+      childrenArray = children
+    } else if (children) {
+      childrenArray = [children]
+    }
+  } catch (error) {
+    console.warn('Error processing children in ScrollableCardContainer:', error)
+    childrenArray = []
+  }
+  
+  const itemCount = childrenArray.filter(child => child != null).length
 
   return (
     <HorizontalScroll

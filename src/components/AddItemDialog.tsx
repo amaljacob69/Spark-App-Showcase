@@ -55,9 +55,16 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
       return
     }
 
-    const nonAcPrice = parseFloat(formData.prices['dinein-non-ac'])
-    const acPrice = parseFloat(formData.prices['dinein-ac'])
-    const takeawayPrice = parseFloat(formData.prices['takeaway'])
+    let nonAcPrice: number, acPrice: number, takeawayPrice: number
+
+    try {
+      nonAcPrice = parseFloat(formData.prices['dinein-non-ac'])
+      acPrice = parseFloat(formData.prices['dinein-ac'])
+      takeawayPrice = parseFloat(formData.prices['takeaway'])
+    } catch (error) {
+      toast.error('Invalid price format')
+      return
+    }
 
     if (isNaN(nonAcPrice) || nonAcPrice <= 0 || 
         isNaN(acPrice) || acPrice <= 0 || 
@@ -66,33 +73,38 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
       return
     }
 
-    onAddItem({
-      name: formData.name.trim(),
-      description: formData.description.trim(),
-      prices: {
-        'dinein-non-ac': nonAcPrice,
-        'dinein-ac': acPrice,
-        'takeaway': takeawayPrice
-      },
-      category: formData.category.trim(),
-      available: formData.available,
-      dietary: formData.dietary
-    })
+    try {
+      onAddItem({
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        prices: {
+          'dinein-non-ac': nonAcPrice,
+          'dinein-ac': acPrice,
+          'takeaway': takeawayPrice
+        },
+        category: formData.category.trim(),
+        available: formData.available,
+        dietary: formData.dietary
+      })
 
-    setFormData({
-      name: '',
-      description: '',
-      prices: {
-        'dinein-non-ac': '',
-        'dinein-ac': '',
-        'takeaway': ''
-      },
-      category: '',
-      available: true,
-      dietary: []
-    })
+      setFormData({
+        name: '',
+        description: '',
+        prices: {
+          'dinein-non-ac': '',
+          'dinein-ac': '',
+          'takeaway': ''
+        },
+        category: '',
+        available: true,
+        dietary: []
+      })
 
-    toast.success(`${formData.name} has been added to the menu`)
+      toast.success(`${formData.name} has been added to the menu`)
+    } catch (error) {
+      console.error('Error adding item:', error)
+      toast.error('Error adding item. Please try again.')
+    }
   }
 
   const handleChange = (field: string, value: string | boolean) => {
