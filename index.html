@@ -29,8 +29,9 @@
             if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
                 window.showMenuLinks = function() {
                     console.log('🍽️ Paradise Family Restaurant - Menu Links');\n                    console.log('Direct menu URLs:');
-                    console.log('- A/C:', window.location.origin + '?menu=dinein-ac'); 
-                    console.log('- Take Away:', window.location.origin + '?menu=takeaway');
+                    console.log('- Dine-in Non-AC:', window.location.origin + '?menu=dinein-non-ac'); 
+                    console.log('- Dine-in AC:', window.location.origin + '?menu=dinein-ac');
+                    console.log('- Takeaway:', window.location.origin + '?menu=takeaway');
                 };
             }
         });

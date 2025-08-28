@@ -313,16 +313,16 @@ function AppContent() {
       setTimeout(() => {
         const messages = {
           'dinein-non-ac': {
-            title: 'Dine-in Non-A/C Menu',
-            description: 'Showing Non-AC pricing only'
+            title: 'Dine-in Non-AC Menu',
+            description: 'Cozy Warmth Theme • Showing Non-AC pricing only'
           },
           'dinein-ac': {
-            title: 'Dine-in A/C Menu', 
-            description: 'Showing A/C pricing only'
+            title: 'Dine-in AC Menu', 
+            description: 'Cool Elegance Theme • Showing AC pricing only'
           },
           'takeaway': {
-            title: 'Take Away Menu',
-            description: 'Showing takeaway pricing only'
+            title: 'Takeaway Menu',
+            description: 'Fresh Vitality Theme • Showing takeaway pricing only'
           }
         }
         
