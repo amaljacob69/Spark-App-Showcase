@@ -137,7 +137,7 @@ export function FloatingActionButton({
           {/* Action Buttons */}
           {isExpanded && (
             <div className="flex flex-col gap-3">
-              {/* Cart Button */}
+              {/* Google Review Button */}
               <div 
                 className={`relative group transition-all duration-500 ease-out ${
                   animateButtons 
@@ -146,6 +146,79 @@ export function FloatingActionButton({
                 }`}
                 style={{ 
                   animationDelay: animateButtons ? '50ms' : '0ms',
+                  animationFillMode: 'both'
+                }}
+              >
+                <Button
+                  size="icon"
+                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white 
+                           transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
+                           hover:scale-110 hover:-translate-y-1"
+                  onClick={handleGoogleReviewClick}
+                  aria-label="Leave a Google Review"
+                >
+                  <Star 
+                    size={20} 
+                    weight="fill" 
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12 group-hover:animate-pulse" 
+                  />
+                </Button>
+                {/* Enhanced Tooltip */}
+                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
+                  <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
+                                shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
+                    <div className="font-medium">Leave Review</div>
+                    <div className="text-white/80 text-[10px]">Share your experience</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Instagram Button */}
+              <div 
+                className={`relative group transition-all duration-500 ease-out ${
+                  animateButtons 
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+                    : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
+                }`}
+                style={{ 
+                  animationDelay: animateButtons ? '100ms' : '0ms',
+                  animationFillMode: 'both'
+                }}
+              >
+                <Button
+                  size="icon"
+                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 
+                           hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 text-white 
+                           transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
+                           hover:scale-110 hover:-translate-y-1"
+                  onClick={handleInstagramClick}
+                  aria-label="Follow us on Instagram"
+                >
+                  <InstagramLogo 
+                    size={20} 
+                    weight="fill" 
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12" 
+                  />
+                </Button>
+                {/* Enhanced Tooltip */}
+                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
+                  <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
+                                shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
+                    <div className="font-medium">Follow on Instagram</div>
+                    <div className="text-white/80 text-[10px]">@paradisefamilyrestaurant</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cart Button */}
+              <div 
+                className={`relative group transition-all duration-500 ease-out ${
+                  animateButtons 
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+                    : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
+                }`}
+                style={{ 
+                  animationDelay: animateButtons ? '150ms' : '0ms',
                   animationFillMode: 'both'
                 }}
               >
@@ -192,7 +265,7 @@ export function FloatingActionButton({
                     : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
                 }`}
                 style={{ 
-                  animationDelay: animateButtons ? '100ms' : '0ms',
+                  animationDelay: animateButtons ? '200ms' : '0ms',
                   animationFillMode: 'both'
                 }}
               >
@@ -228,7 +301,7 @@ export function FloatingActionButton({
                     : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
                 }`}
                 style={{ 
-                  animationDelay: animateButtons ? '150ms' : '0ms',
+                  animationDelay: animateButtons ? '250ms' : '0ms',
                   animationFillMode: 'both'
                 }}
               >
@@ -252,79 +325,6 @@ export function FloatingActionButton({
                                 shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
                     <div className="font-medium">Location & Directions</div>
                     <div className="text-white/80 text-[10px]">View map & get directions</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Google Review Button */}
-              <div 
-                className={`relative group transition-all duration-500 ease-out ${
-                  animateButtons 
-                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
-                    : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
-                }`}
-                style={{ 
-                  animationDelay: animateButtons ? '200ms' : '0ms',
-                  animationFillMode: 'both'
-                }}
-              >
-                <Button
-                  size="icon"
-                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white 
-                           transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
-                           hover:scale-110 hover:-translate-y-1"
-                  onClick={handleGoogleReviewClick}
-                  aria-label="Leave a Google Review"
-                >
-                  <Star 
-                    size={20} 
-                    weight="fill" 
-                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12 group-hover:animate-pulse" 
-                  />
-                </Button>
-                {/* Enhanced Tooltip */}
-                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
-                  <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
-                                shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
-                    <div className="font-medium">Leave Review</div>
-                    <div className="text-white/80 text-[10px]">Share your experience</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Instagram Button */}
-              <div 
-                className={`relative group transition-all duration-500 ease-out ${
-                  animateButtons 
-                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
-                    : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
-                }`}
-                style={{ 
-                  animationDelay: animateButtons ? '250ms' : '0ms',
-                  animationFillMode: 'both'
-                }}
-              >
-                <Button
-                  size="icon"
-                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 
-                           hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 text-white 
-                           transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
-                           hover:scale-110 hover:-translate-y-1"
-                  onClick={handleInstagramClick}
-                  aria-label="Follow us on Instagram"
-                >
-                  <InstagramLogo 
-                    size={20} 
-                    weight="fill" 
-                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12" 
-                  />
-                </Button>
-                {/* Enhanced Tooltip */}
-                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
-                  <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
-                                shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
-                    <div className="font-medium">Follow on Instagram</div>
-                    <div className="text-white/80 text-[10px]">@paradisefamilyrestaurant</div>
                   </div>
                 </div>
               </div>
