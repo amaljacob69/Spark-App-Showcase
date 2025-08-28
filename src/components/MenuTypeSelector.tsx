@@ -2,6 +2,7 @@ import { House, Snowflake, Package, Palette } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { MenuType } from '../App'
 import { menuThemes } from '../hooks/useTheme'
+import { HorizontalScroll } from './HorizontalScroll'
 import { cn } from '@/lib/utils'
 
 interface MenuTypeSelectorProps {
@@ -45,30 +46,44 @@ export function MenuTypeSelector({ selectedType, onTypeSelect }: MenuTypeSelecto
           {menuThemes[selectedType].name}
         </span>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-        {menuTypes.map(({ type, label, icon: Icon, description, themeColor }) => (
-          <Button
-            key={type}
-            variant={selectedType === type ? "default" : "outline"}
-            size="lg"
-            onClick={() => onTypeSelect(type)}
-            className={cn(
-              "gap-3 text-sm px-4 py-3 h-auto flex-col sm:flex-row transition-all duration-300 touch-target hover-lift",
-              selectedType === type && "shadow-lg ring-2 ring-primary/30 scale-105"
-            )}
-            title={`${description} • ${menuThemes[type].name} Theme`}
-          >
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className={cn("w-3 h-3 rounded-full", themeColor)} />
-              <Icon size={18} className="flex-shrink-0" />
-              <span className="font-medium">{label}</span>
-            </div>
-            <div className="text-xs opacity-75 sm:ml-auto">
-              {description}
-            </div>
-          </Button>
-        ))}
-      </div>
+      
+      <HorizontalScroll
+        showIndicators={false}
+        showArrows={false}
+        cardWidth={280}
+        gap={16}
+        itemCount={menuTypes.length}
+        className="menu-type-scroll"
+      >
+        <div className="flex gap-3 sm:gap-4 px-1 sm:grid sm:grid-cols-3 sm:px-0">
+          {menuTypes.map(({ type, label, icon: Icon, description, themeColor }, index) => (
+            <Button
+              key={type}
+              variant={selectedType === type ? "default" : "outline"}
+              size="lg"
+              onClick={() => onTypeSelect(type)}
+              className={cn(
+                "gap-3 text-sm px-4 py-3 h-auto flex-col sm:flex-row transition-all duration-300 touch-target hover-lift snap-start",
+                "min-w-64 sm:min-w-0 whitespace-nowrap flex-shrink-0",
+                selectedType === type && "shadow-lg ring-2 ring-primary/30 scale-105"
+              )}
+              title={`${description} • ${menuThemes[type].name} Theme`}
+              style={{
+                animationDelay: `${index * 0.1}s`
+              }}
+            >
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className={cn("w-3 h-3 rounded-full", themeColor)} />
+                <Icon size={18} className="flex-shrink-0" />
+                <span className="font-medium">{label}</span>
+              </div>
+              <div className="text-xs opacity-75 sm:ml-auto">
+                {description}
+              </div>
+            </Button>
+          ))}
+        </div>
+      </HorizontalScroll>
     </div>
   )
 }

@@ -227,6 +227,59 @@
     }
   }
 
+  /* Enhanced horizontal scroll progress indicators */
+  .scroll-progress-indicator {
+    animation: scroll-progress 1.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes scroll-progress {
+    0% {
+      opacity: 0.4;
+      transform: scaleX(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+
+  /* Smooth scroll snap points */
+  .scroll-snap-x {
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+  }
+
+  .scroll-snap-start {
+    scroll-snap-align: start;
+  }
+
+  .scroll-snap-center {
+    scroll-snap-align: center;
+  }
+
+  /* Enhanced scroll fade gradients */
+  .scroll-fade-left {
+    background: linear-gradient(90deg, 
+      var(--background) 0%, 
+      rgba(var(--background), 0.95) 30%, 
+      rgba(var(--background), 0.7) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .scroll-fade-right {
+    background: linear-gradient(-90deg, 
+      var(--background) 0%, 
+      rgba(var(--background), 0.95) 30%, 
+      rgba(var(--background), 0.7) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
   .stagger-slide-up-1 {
     animation: stagger-slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: 0.05s;
@@ -331,6 +384,55 @@
   }
   .scrollbar-hide::-webkit-scrollbar {
     display: none;             /* Safari and Chrome */
+  }
+
+  /* Enhanced horizontal scroll containers */
+  .horizontal-scroll-container {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  /* Smooth scroll snap */
+  .horizontal-scroll-container.snap-x {
+    scroll-snap-type: x mandatory;
+  }
+
+  .horizontal-scroll-container .snap-start {
+    scroll-snap-align: start;
+  }
+
+  /* Enhanced scroll indicators */
+  .scroll-indicator {
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(var(--primary), 0.1) 20%, 
+      rgba(var(--primary), 0.2) 50%, 
+      rgba(var(--primary), 0.1) 80%, 
+      transparent 100%
+    );
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scroll-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Mobile scroll hints */
+  .scroll-hint {
+    animation: scroll-hint 3s ease-in-out infinite;
+  }
+
+  @keyframes scroll-hint {
+    0%, 90%, 100% {
+      transform: translateX(0);
+      opacity: 0.6;
+    }
+    45% {
+      transform: translateX(8px);
+      opacity: 1;
+    }
   }
 
   /* Staggered fade-in animation for category buttons */

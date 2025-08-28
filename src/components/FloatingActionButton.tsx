@@ -332,21 +332,27 @@ export function FloatingActionButton({
             </div>
           )}
 
-          {/* Enhanced Main Toggle Button */}
+          {/* Enhanced Main Toggle Button with improved visual indicators */}
           <Button
             size="icon"
             className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-xl transition-all duration-500 ease-out touch-target
-                       hover:shadow-2xl floating-button-ripple button-press-effect ${
+                       hover:shadow-2xl floating-button-ripple button-press-effect backdrop-blur-sm border-2 border-white/20
+                       focus:ring-4 focus:ring-primary/30 focus:outline-none relative group ${
               isExpanded 
                 ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground scale-110 rotate-45' 
-                : `bg-accent hover:bg-accent/90 text-accent-foreground hover:scale-110 hover:rotate-12 ${
-                    isIdle ? 'floating-bounce' : ''
+                : `bg-gradient-to-br from-accent via-accent to-accent/90 hover:from-accent/90 hover:via-accent hover:to-accent 
+                   text-accent-foreground hover:scale-110 hover:rotate-12 ${
+                    isIdle ? 'floating-bounce pulse-glow' : ''
                   } ${cartItemCount > 0 && !isExpanded ? 'pulse-glow' : ''}`
             }`}
             onClick={toggleExpanded}
             aria-label={isExpanded ? 'Close menu' : 'Open quick actions menu'}
           >
-            <div className="relative flex items-center justify-center">
+            {/* Enhanced background gradient overlay */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+            
+            {/* Main button content with enhanced indicators */}
+            <div className="relative flex items-center justify-center z-10">
               {isExpanded ? (
                 <X 
                   size={24} 
@@ -358,14 +364,29 @@ export function FloatingActionButton({
                   <DotsThreeVertical 
                     size={24} 
                     weight="bold" 
-                    className="transition-all duration-300 ease-out hover:rotate-90" 
+                    className="transition-all duration-300 ease-out group-hover:rotate-90" 
                   />
+                  {/* Enhanced cart indicator */}
                   {cartItemCount > 0 && (
-                    <div className="absolute -top-2 -right-2 h-3 w-3 bg-destructive rounded-full animate-bounce shadow-lg" />
+                    <>
+                      <div className="absolute -top-2 -right-2 h-3 w-3 bg-destructive rounded-full animate-bounce shadow-lg" />
+                      <div className="absolute -top-2 -right-2 h-3 w-3 bg-destructive/50 rounded-full animate-ping" />
+                    </>
                   )}
+                  {/* Scroll hint indicators */}
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex gap-0.5">
+                    <div className="w-1 h-1 bg-current opacity-30 rounded-full animate-pulse" />
+                    <div className="w-1 h-1 bg-current opacity-30 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                    <div className="w-1 h-1 bg-current opacity-30 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+                  </div>
                 </div>
               )}
             </div>
+
+            {/* Idle state pulsing ring */}
+            {isIdle && !isExpanded && (
+              <div className="absolute inset-0 rounded-full border-2 border-accent animate-ping opacity-20" />
+            )}
           </Button>
         </div>
 

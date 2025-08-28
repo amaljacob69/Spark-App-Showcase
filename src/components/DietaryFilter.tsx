@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Leaf, Egg, Bird, Cow, Fish, X } from '@phosphor-icons/react'
+import { Leaf, Egg, Bird, Cow, Fish, X, Sparkle } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Separator } from './ui/separator'
+import { HorizontalScroll } from './HorizontalScroll'
 import { cn } from '@/lib/utils'
 
 export type DietaryPreference = 'vegetarian' | 'egg' | 'chicken' | 'meat' | 'fish'
@@ -180,35 +181,51 @@ export function DietaryFilter({ selectedFilters, onFiltersChange, className }: D
 
       {/* Selected filters display */}
       {selectedFilters.length > 0 && (
-        <div className="flex flex-wrap gap-2 sm:gap-3">
-          {selectedFilters.map((filter) => {
-            const option = getOptionByKey(filter)
-            if (!option) return null
-            
-            const Icon = option.icon
-            return (
-              <Badge
-                key={filter}
-                variant="secondary"
-                className={cn(
-                  "gap-2 py-2 px-3 text-xs sm:text-sm transition-all duration-200 hover:scale-105 touch-target-sm",
-                  option.bgColor,
-                  option.borderColor,
-                  "border-2 font-medium"
-                )}
-              >
-                <Icon size={14} className={option.color} weight="duotone" />
-                <span>{option.label}</span>
-                <button
-                  onClick={() => toggleFilter(filter)}
-                  className="ml-1 hover:bg-background/30 rounded-full p-1 transition-colors duration-200"
-                  aria-label={`Remove ${option.label} filter`}
-                >
-                  <X size={12} />
-                </button>
-              </Badge>
-            )
-          })}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Sparkle size={12} className="text-primary" />
+            <span>Active dietary filters:</span>
+          </div>
+          
+          <HorizontalScroll
+            showIndicators={selectedFilters.length > 3}
+            showArrows={false}
+            cardWidth={120}
+            gap={8}
+            itemCount={selectedFilters.length}
+            className="dietary-filters-scroll"
+          >
+            <div className="flex gap-2 sm:gap-3 px-1">
+              {selectedFilters.map((filter) => {
+                const option = getOptionByKey(filter)
+                if (!option) return null
+                
+                const Icon = option.icon
+                return (
+                  <Badge
+                    key={filter}
+                    variant="secondary"
+                    className={cn(
+                      "gap-2 py-2 px-3 text-xs sm:text-sm transition-all duration-200 hover:scale-105 touch-target-sm snap-start flex-shrink-0",
+                      option.bgColor,
+                      option.borderColor,
+                      "border-2 font-medium"
+                    )}
+                  >
+                    <Icon size={14} className={option.color} weight="duotone" />
+                    <span>{option.label}</span>
+                    <button
+                      onClick={() => toggleFilter(filter)}
+                      className="ml-1 hover:bg-background/30 rounded-full p-1 transition-colors duration-200"
+                      aria-label={`Remove ${option.label} filter`}
+                    >
+                      <X size={12} />
+                    </button>
+                  </Badge>
+                )
+              })}
+            </div>
+          </HorizontalScroll>
         </div>
       )}
     </div>

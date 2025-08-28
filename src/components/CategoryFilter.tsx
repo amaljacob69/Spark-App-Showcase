@@ -1,5 +1,6 @@
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
+import { HorizontalScroll } from './HorizontalScroll'
 import { 
   ForkKnife, 
   Egg, 
@@ -12,7 +13,8 @@ import {
   Salad,
   Bread,
   Star,
-  GridFour
+  GridFour,
+  Sparkle
 } from '@phosphor-icons/react'
 
 interface CategoryFilterProps {
@@ -105,12 +107,23 @@ export function CategoryFilter({ categories, selectedCategory, onCategorySelect 
             Browse Categories
           </span>
           <div className="flex-1 h-px bg-gradient-to-r from-border to-transparent hidden sm:block ml-3" />
+          <div className="flex items-center gap-1 text-xs text-primary bg-primary/10 px-2 py-1 rounded-full">
+            <Sparkle size={12} />
+            <span>{categories.length}</span>
+          </div>
         </h3>
       </div>
 
-      {/* Enhanced category buttons with scroll container */}
-      <div className="relative">
-        <div className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide pb-2 px-1 sm:px-0 justify-start scroll-smooth">
+      {/* Enhanced category buttons with horizontal scroll */}
+      <HorizontalScroll
+        showIndicators={true}
+        showArrows={false}
+        cardWidth={120}
+        gap={12}
+        itemCount={categories.length}
+        className="category-scroll-container"
+      >
+        <div className="flex gap-3 px-1 py-1">
           {categories.map((category, index) => {
             const isSelected = selectedCategory === category
             return (
@@ -118,7 +131,7 @@ export function CategoryFilter({ categories, selectedCategory, onCategorySelect 
                 key={category}
                 onClick={() => onCategorySelect(category)}
                 className={cn(
-                  "group relative flex items-center gap-2 px-4 py-3 rounded-xl category-smooth-transition touch-target-sm category-button-glow",
+                  "group relative flex items-center gap-2 px-4 py-3 rounded-xl category-smooth-transition touch-target-sm category-button-glow snap-start",
                   "font-medium text-sm whitespace-nowrap min-w-fit transform hover:scale-105 active:scale-95",
                   "bg-gradient-to-r shadow-sm border backdrop-blur-sm",
                   "focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2",
@@ -163,15 +176,7 @@ export function CategoryFilter({ categories, selectedCategory, onCategorySelect 
             )
           })}
         </div>
-
-        {/* Enhanced fade out indicators for scrollable content */}
-        <div className="absolute left-0 top-0 bottom-2 w-6 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none sm:hidden z-10" />
-        <div className="absolute right-0 top-0 bottom-2 w-6 bg-gradient-to-l from-background via-background/80 to-transparent pointer-events-none sm:hidden z-10" />
-        
-        {/* Scroll indicators */}
-        <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-transparent via-primary/30 to-transparent rounded-full opacity-50 sm:hidden animate-pulse" />
-        <div className="absolute -right-2 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-transparent via-primary/30 to-transparent rounded-full opacity-50 sm:hidden animate-pulse" />
-      </div>
+      </HorizontalScroll>
 
       {/* Enhanced active category indicator */}
       {selectedCategory !== 'all' && (

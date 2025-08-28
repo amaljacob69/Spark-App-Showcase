@@ -9,6 +9,7 @@ import { DietaryFilter, type DietaryPreference } from './components/DietaryFilte
 import { FloatingActionButton } from './components/FloatingActionButton'
 import { CartDialog, useCart } from './components/CartDialog'
 import { OffersSection } from './components/OffersSection'
+import { FeaturedMenuSection, PopularMenuSection } from './components/HorizontalMenuSection'
 import { Button } from './components/ui/button'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
@@ -419,6 +420,26 @@ function AppContent() {
     setShowCartDialog(true)
   }, [])
 
+  // Get featured and popular items for horizontal sections
+  const featuredItems = useMemo(() => {
+    return safeMenuItems
+      .filter(item => item.available && (item.category === 'Chicken' || item.category === 'Fish'))
+      .slice(0, 6)
+  }, [safeMenuItems])
+
+  const popularItems = useMemo(() => {
+    // Simulate popular items based on price and category
+    return safeMenuItems
+      .filter(item => item.available)
+      .sort((a, b) => getItemPrice(b, safeSelectedMenuType) - getItemPrice(a, safeSelectedMenuType))
+      .slice(0, 6)
+  }, [safeMenuItems, safeSelectedMenuType])
+
+  const showHorizontalSections = !searchQuery && 
+    (!selectedDietaryFilters || selectedDietaryFilters.length === 0) && 
+    selectedCategory === 'all' && 
+    !safeIsAdmin
+
   return (
     <div className="min-h-screen bg-background safe-area-top safe-area-bottom">
       <ThemePreview menuType={safeSelectedMenuType} />
@@ -513,6 +534,39 @@ function AppContent() {
             onFiltersChange={setSelectedDietaryFilters}
           />
         </div>
+
+        {/* Featured and Popular Sections - only when no filters active */}
+        {showHorizontalSections && (
+          <div className="space-y-8 sm:space-y-10 lg:space-y-12 mb-8 sm:mb-10 lg:mb-12">
+            {featuredItems.length > 0 && (
+              <FeaturedMenuSection
+                items={featuredItems}
+                menuType={safeSelectedMenuType}
+                getItemPrice={getItemPrice}
+                onAddToCart={handleAddToCart}
+                maxItems={6}
+                onViewAll={() => {
+                  setSelectedCategory('Chicken')
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+              />
+            )}
+            
+            {popularItems.length > 0 && (
+              <PopularMenuSection
+                items={popularItems}
+                menuType={safeSelectedMenuType}
+                getItemPrice={getItemPrice}
+                onAddToCart={handleAddToCart}
+                maxItems={6}
+                onViewAll={() => {
+                  setSelectedCategory('all')
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+              />
+            )}
+          </div>
+        )}
         
         <MenuGrid 
           items={filteredItems}
