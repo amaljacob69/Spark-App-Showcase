@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Snowflake, Package, Link, Check, QrCode } from '@phosphor-icons/react'
+import { Snowflake, Package, Link, Check, QrCode, Thermometer } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { toast } from 'sonner'
@@ -17,9 +17,15 @@ interface MenuTypeConfig {
   color: string
 }
 
-// QR Code configurations - only showing AC and takeaway options
-// Non-AC menu type is excluded per user request
+// QR Code configurations for all menu types
 const menuConfigs: MenuTypeConfig[] = [
+  {
+    type: 'dinein-non-ac',
+    name: 'Dine-in Non-AC Menu',
+    description: 'For customers in non-AC dining area',
+    icon: <Thermometer size={20} />,
+    color: 'text-orange-600'
+  },
   {
     type: 'dinein-ac',
     name: 'Dine-in A/C Menu',
@@ -123,6 +129,7 @@ export function QRCodeManager({ isVisible = true }: QRCodeManagerProps) {
             <li>1. Copy the link for each menu type above</li>
             <li>2. Use a QR code generator (like qr-code-generator.com) to create QR codes</li>
             <li>3. Print and place QR codes in respective areas:</li>
+            <li className="ml-4">• Non-AC dining area → Non-AC QR code</li>
             <li className="ml-4">• AC dining area → A/C QR code</li>
             <li className="ml-4">• Takeaway counter → Take Away QR code</li>
             <li>4. Customers will only see pricing for their specific dining option</li>
