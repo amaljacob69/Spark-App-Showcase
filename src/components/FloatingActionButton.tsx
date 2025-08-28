@@ -3,15 +3,16 @@ import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
 import { 
-  Plus, 
+  DotsThreeVertical, 
   X, 
-  Star, 
+  GoogleLogo, 
   InstagramLogo, 
   ShoppingCart,
   MapPin,
   Phone,
   NavigationArrow,
-  Copy
+  Copy,
+  Star
 } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
@@ -151,15 +152,15 @@ export function FloatingActionButton({
               >
                 <Button
                   size="icon"
-                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white 
+                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-red-500 hover:bg-red-600 text-white 
                            transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
                            hover:scale-110 hover:-translate-y-1"
                   onClick={handleGoogleReviewClick}
                   aria-label="Leave a Google Review"
                 >
-                  <Star 
+                  <GoogleLogo 
                     size={20} 
-                    weight="fill" 
+                    weight="bold" 
                     className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12 group-hover:animate-pulse" 
                   />
                 </Button>
@@ -167,8 +168,8 @@ export function FloatingActionButton({
                 <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
                   <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
                                 shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
-                    <div className="font-medium">Leave Review</div>
-                    <div className="text-white/80 text-[10px]">Share your experience</div>
+                    <div className="font-medium">Google Reviews</div>
+                    <div className="text-white/80 text-[10px]">Rate our restaurant</div>
                   </div>
                 </div>
               </div>
@@ -343,7 +344,7 @@ export function FloatingActionButton({
                   } ${cartItemCount > 0 && !isExpanded ? 'pulse-glow' : ''}`
             }`}
             onClick={toggleExpanded}
-            aria-label={isExpanded ? 'Close action menu' : 'Open action menu'}
+            aria-label={isExpanded ? 'Close menu' : 'Open quick actions menu'}
           >
             <div className="relative flex items-center justify-center">
               {isExpanded ? (
@@ -354,7 +355,7 @@ export function FloatingActionButton({
                 />
               ) : (
                 <div className="relative">
-                  <Plus 
+                  <DotsThreeVertical 
                     size={24} 
                     weight="bold" 
                     className="transition-all duration-300 ease-out hover:rotate-90" 
@@ -374,7 +375,7 @@ export function FloatingActionButton({
             className={`fixed inset-0 bg-black/20 backdrop-blur-sm -z-10 sm:hidden
                        animate-in fade-in-0 duration-300`}
             onClick={() => setIsExpanded(false)}
-            aria-label="Close action menu"
+            aria-label="Close quick actions menu"
           />
         )}
       </div>
@@ -462,10 +463,12 @@ export function FloatingActionButton({
                         setShowLocationDialog(false)
                       }}
                       variant="outline"
-                      className="w-full justify-start gap-2 touch-target text-sm"
+                      className="w-full justify-start gap-2 touch-target text-sm bg-red-50 hover:bg-red-100 border-red-200"
                     >
-                      <Star size={16} weight="fill" />
-                      Leave Review
+                      <GoogleLogo size={16} weight="bold" className="text-red-600" />
+                      <span className="text-red-600 font-medium">
+                        Google Reviews
+                      </span>
                     </Button>
                     
                     <Button
