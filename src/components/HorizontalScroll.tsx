@@ -13,6 +13,7 @@ interface HorizontalScrollProps {
   gap?: number
   itemCount?: number
   id?: string
+  showScrollBar?: boolean
 }
 
 export function HorizontalScroll({ 
@@ -24,7 +25,8 @@ export function HorizontalScroll({
   cardWidth = 280,
   gap = 16,
   itemCount = 0,
-  id = 'horizontal-scroll'
+  id = 'horizontal-scroll',
+  showScrollBar = false
 }: HorizontalScrollProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
@@ -134,10 +136,10 @@ export function HorizontalScroll({
       <div
         ref={scrollContainerRef}
         className={cn(
-          "flex overflow-x-auto scrollbar-hide pb-2 scroll-smooth",
-          snapToCards && "snap-x snap-mandatory"
+          "flex overflow-x-auto pb-2 scroll-smooth",
+          snapToCards && "snap-x snap-mandatory",
+          showScrollBar ? "scrollbar-visible" : "scrollbar-hide"
         )}
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {children}
       </div>
@@ -216,8 +218,8 @@ export function HorizontalScroll({
         </div>
       )}
 
-      {/* Mobile Scroll Hint */}
-      {itemCount > visibleItems && (
+      {/* Mobile Scroll Hint - Only show when not using scroll bar */}
+      {!showScrollBar && itemCount > visibleItems && (
         <div className="flex items-center justify-center mt-2 sm:hidden">
           <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/30 px-3 py-1.5 rounded-full border border-border/30">
             <div className="flex gap-1">
@@ -242,6 +244,7 @@ interface ScrollableCardContainerProps {
   showArrows?: boolean
   cardWidth?: number
   gap?: number
+  showScrollBar?: boolean
 }
 
 export function ScrollableCardContainer({
@@ -251,7 +254,8 @@ export function ScrollableCardContainer({
   showIndicators = true,
   showArrows = true,
   cardWidth = 280,
-  gap = 16
+  gap = 16,
+  showScrollBar = false
 }: ScrollableCardContainerProps) {
   // Safely handle children conversion to array
   let childrenArray: ReactNode[] = []
@@ -277,6 +281,7 @@ export function ScrollableCardContainer({
       cardWidth={cardWidth}
       gap={gap}
       itemCount={itemCount}
+      showScrollBar={showScrollBar}
     >
       <div className={cn("flex gap-4 px-1", cardClassName)}>
         {children}

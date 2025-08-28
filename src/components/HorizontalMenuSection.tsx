@@ -72,8 +72,6 @@ export function HorizontalMenuSection({
             </h2>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>{displayItems.length} items</span>
-              <div className="w-1 h-1 bg-muted-foreground rounded-full" />
-              <span>Swipe to explore</span>
             </div>
           </div>
         </div>
@@ -93,12 +91,13 @@ export function HorizontalMenuSection({
 
       {/* Horizontal Scrolling Menu Items */}
       <HorizontalScroll
-        showIndicators={true}
+        showIndicators={false}
         showArrows={true}
         cardWidth={280}
         gap={16}
         itemCount={displayItems.length}
         className="menu-items-scroll"
+        showScrollBar={true}
       >
         <div className="flex gap-4 px-2 pb-2">
           {displayItems.map((item, index) => (

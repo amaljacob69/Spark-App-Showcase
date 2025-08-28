@@ -386,6 +386,31 @@
     display: none;             /* Safari and Chrome */
   }
 
+  /* Custom styled scrollbar for when we want to show it */
+  .scrollbar-visible {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.4 0.15 200 / 0.3) oklch(0.93 0.02 80 / 0.1);
+  }
+  
+  .scrollbar-visible::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .scrollbar-visible::-webkit-scrollbar-track {
+    background: oklch(0.93 0.02 80 / 0.1);
+    border-radius: 3px;
+  }
+  
+  .scrollbar-visible::-webkit-scrollbar-thumb {
+    background: oklch(0.4 0.15 200 / 0.4);
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .scrollbar-visible::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.4 0.15 200 / 0.6);
+  }
+
   /* Enhanced horizontal scroll containers */
   .horizontal-scroll-container {
     scroll-behavior: smooth;
