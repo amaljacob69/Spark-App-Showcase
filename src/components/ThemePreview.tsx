@@ -38,9 +38,11 @@ export function ThemePreview({ menuType }: ThemePreviewProps) {
             <div className="font-semibold text-sm" style={{ color: theme.colors['--foreground'] }}>
               Theme Changed
             </div>
-            <div className="text-xs opacity-75" style={{ color: theme.colors['--muted-foreground'] }}>
-              {theme.name}
-            </div>
+            {theme.name && (
+              <div className="text-xs opacity-75" style={{ color: theme.colors['--muted-foreground'] }}>
+                {theme.name}
+              </div>
+            )}
           </div>
         </div>
       </Card>

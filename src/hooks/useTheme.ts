@@ -3,7 +3,7 @@ import { MenuType } from '../App'
 
 export const menuThemes = {
   'dinein-non-ac': {
-    name: 'Cozy Warmth',
+    name: '',
     colors: {
       '--background': 'oklch(0.96 0.02 50)',
       '--foreground': 'oklch(0.2 0.01 50)',
@@ -93,7 +93,8 @@ export const useTheme = (menuType: MenuType) => {
     // Update document title to reflect current theme
     const menuTypeName = menuType === 'dinein-non-ac' ? 'Dine-in Non-AC' : 
                         menuType === 'dinein-ac' ? 'Dine-in AC' : 'Takeaway'
-    document.title = `Paradise Family Restaurant - ${menuTypeName} Menu (${theme.name})`
+    const titleSuffix = theme.name ? ` (${theme.name})` : ''
+    document.title = `Paradise Family Restaurant - ${menuTypeName} Menu${titleSuffix}`
     
     // Update meta theme-color for mobile browsers
     const metaThemeColor = document.querySelector('meta[name="theme-color"]')
