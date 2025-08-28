@@ -323,6 +323,65 @@
       transition: transform 0.1s ease;
     }
   }
+
+  /* Hide scrollbars while maintaining scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;     /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;             /* Safari and Chrome */
+  }
+
+  /* Staggered fade-in animation for category buttons */
+  .stagger-fade-in {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    animation: stagger-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes stagger-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Enhanced category hover effects with smooth transitions */
+  .category-button-glow {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .category-button-glow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent, rgba(255,255,255,0.1));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .category-button-glow:hover::before {
+    opacity: 1;
+  }
+
+  /* Smooth color transitions for category buttons */
+  .category-smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .category-smooth-transition:hover {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
 
 :root {
