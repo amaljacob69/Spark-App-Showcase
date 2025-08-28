@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
@@ -26,6 +26,39 @@ export function FloatingActionButton({
 }: FloatingActionButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [showLocationDialog, setShowLocationDialog] = useState(false)
+  const [animateButtons, setAnimateButtons] = useState(false)
+  const [isIdle, setIsIdle] = useState(false)
+
+  // Auto-animate main button when idle (no interaction for 5 seconds)
+  useEffect(() => {
+    let idleTimer: NodeJS.Timeout
+    
+    const resetIdleTimer = () => {
+      clearTimeout(idleTimer)
+      setIsIdle(false)
+      
+      if (!isExpanded) {
+        idleTimer = setTimeout(() => {
+          setIsIdle(true)
+        }, 5000) // 5 seconds of inactivity
+      }
+    }
+
+    resetIdleTimer()
+    
+    // Reset idle timer on user interaction
+    const events = ['click', 'touchstart', 'scroll', 'mousemove']
+    events.forEach(event => {
+      document.addEventListener(event, resetIdleTimer, { passive: true })
+    })
+
+    return () => {
+      clearTimeout(idleTimer)
+      events.forEach(event => {
+        document.removeEventListener(event, resetIdleTimer)
+      })
+    }
+  }, [isExpanded])
   
   // Restaurant details
   const restaurantDetails = {
@@ -85,7 +118,17 @@ export function FloatingActionButton({
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded)
+    setIsIdle(false) // Stop idle animation when user interacts
   }
+
+  // Staggered animation effect for buttons
+  useEffect(() => {
+    if (isExpanded) {
+      setAnimateButtons(true)
+    } else {
+      setAnimateButtons(false)
+    }
+  }, [isExpanded])
 
   return (
     <>
@@ -93,135 +136,243 @@ export function FloatingActionButton({
         <div className="flex flex-col items-end gap-3">
           {/* Action Buttons */}
           {isExpanded && (
-            <div className="flex flex-col gap-2 animate-in slide-in-from-bottom-2 duration-200">
+            <div className="flex flex-col gap-3">
               {/* Cart Button */}
-              <div className="relative group">
+              <div 
+                className={`relative group transition-all duration-500 ease-out ${
+                  animateButtons 
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+                    : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
+                }`}
+                style={{ 
+                  animationDelay: animateButtons ? '50ms' : '0ms',
+                  animationFillMode: 'both'
+                }}
+              >
                 <Button
                   size="icon"
-                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-110 transition-all duration-200 touch-target"
+                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground 
+                           transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
+                           hover:scale-110 hover:-translate-y-1"
                   onClick={handleCartClick}
                   aria-label={`Shopping cart${cartItemCount > 0 ? ` (${cartItemCount} items)` : ''}`}
                 >
-                  <ShoppingCart size={20} weight="bold" />
+                  <ShoppingCart 
+                    size={20} 
+                    weight="bold" 
+                    className="transition-transform duration-200 group-hover:scale-110" 
+                  />
                 </Button>
                 {cartItemCount > 0 && (
                   <Badge 
                     variant="destructive" 
-                    className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-5 w-5 sm:h-6 sm:w-6 rounded-full p-0 flex items-center justify-center text-xs font-bold animate-pulse"
+                    className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-5 w-5 sm:h-6 sm:w-6 rounded-full p-0 
+                             flex items-center justify-center text-xs font-bold animate-bounce shadow-lg"
                   >
                     {cartItemCount > 99 ? '99+' : cartItemCount}
                   </Badge>
                 )}
-                {/* Tooltip - hidden on mobile */}
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:group-hover:block">
-                  <div className="bg-black/80 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap backdrop-blur-sm">
-                    View Cart {cartItemCount > 0 && `(${cartItemCount})`}
+                {/* Enhanced Tooltip */}
+                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
+                  <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
+                                shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
+                    <div className="font-medium">View Cart</div>
+                    {cartItemCount > 0 && (
+                      <div className="text-white/80 text-[10px]">{cartItemCount} items</div>
+                    )}
                   </div>
                 </div>
               </div>
 
               {/* Phone Call Button */}
-              <div className="relative group">
+              <div 
+                className={`relative group transition-all duration-500 ease-out ${
+                  animateButtons 
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+                    : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
+                }`}
+                style={{ 
+                  animationDelay: animateButtons ? '100ms' : '0ms',
+                  animationFillMode: 'both'
+                }}
+              >
                 <Button
                   size="icon"
-                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-white hover:scale-110 transition-all duration-200 touch-target"
+                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-white 
+                           transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
+                           hover:scale-110 hover:-translate-y-1"
                   onClick={handlePhoneClick}
                   aria-label="Call for reservations"
                 >
-                  <Phone size={20} weight="bold" />
+                  <Phone 
+                    size={20} 
+                    weight="bold" 
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12" 
+                  />
                 </Button>
-                {/* Tooltip - hidden on mobile */}
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:group-hover:block">
-                  <div className="bg-black/80 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap backdrop-blur-sm">
-                    Call Restaurant
+                {/* Enhanced Tooltip */}
+                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
+                  <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
+                                shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
+                    <div className="font-medium">Call Restaurant</div>
+                    <div className="text-white/80 text-[10px]">For reservations</div>
                   </div>
                 </div>
               </div>
 
               {/* Location Button */}
-              <div className="relative group">
+              <div 
+                className={`relative group transition-all duration-500 ease-out ${
+                  animateButtons 
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+                    : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
+                }`}
+                style={{ 
+                  animationDelay: animateButtons ? '150ms' : '0ms',
+                  animationFillMode: 'both'
+                }}
+              >
                 <Button
                   size="icon"
-                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-blue-500 hover:bg-blue-600 text-white hover:scale-110 transition-all duration-200 touch-target"
+                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-blue-500 hover:bg-blue-600 text-white 
+                           transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
+                           hover:scale-110 hover:-translate-y-1"
                   onClick={handleLocationClick}
                   aria-label="View location and get directions"
                 >
-                  <MapPin size={20} weight="bold" />
+                  <MapPin 
+                    size={20} 
+                    weight="bold" 
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:animate-pulse" 
+                  />
                 </Button>
-                {/* Tooltip - hidden on mobile */}
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:group-hover:block">
-                  <div className="bg-black/80 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap backdrop-blur-sm">
-                    Location & Directions
+                {/* Enhanced Tooltip */}
+                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
+                  <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
+                                shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
+                    <div className="font-medium">Location & Directions</div>
+                    <div className="text-white/80 text-[10px]">View map & get directions</div>
                   </div>
                 </div>
               </div>
 
               {/* Google Review Button */}
-              <div className="relative group">
+              <div 
+                className={`relative group transition-all duration-500 ease-out ${
+                  animateButtons 
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+                    : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
+                }`}
+                style={{ 
+                  animationDelay: animateButtons ? '200ms' : '0ms',
+                  animationFillMode: 'both'
+                }}
+              >
                 <Button
                   size="icon"
-                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white hover:scale-110 transition-all duration-200 touch-target"
+                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-yellow-500 hover:bg-yellow-600 text-white 
+                           transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
+                           hover:scale-110 hover:-translate-y-1"
                   onClick={handleGoogleReviewClick}
                   aria-label="Leave a Google Review"
                 >
-                  <Star size={20} weight="fill" />
+                  <Star 
+                    size={20} 
+                    weight="fill" 
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12 group-hover:animate-pulse" 
+                  />
                 </Button>
-                {/* Tooltip - hidden on mobile */}
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:group-hover:block">
-                  <div className="bg-black/80 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap backdrop-blur-sm">
-                    Leave Review
+                {/* Enhanced Tooltip */}
+                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
+                  <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
+                                shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
+                    <div className="font-medium">Leave Review</div>
+                    <div className="text-white/80 text-[10px]">Share your experience</div>
                   </div>
                 </div>
               </div>
 
               {/* Instagram Button */}
-              <div className="relative group">
+              <div 
+                className={`relative group transition-all duration-500 ease-out ${
+                  animateButtons 
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+                    : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
+                }`}
+                style={{ 
+                  animationDelay: animateButtons ? '250ms' : '0ms',
+                  animationFillMode: 'both'
+                }}
+              >
                 <Button
                   size="icon"
-                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 text-white hover:scale-110 transition-all duration-200 touch-target"
+                  className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 
+                           hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 text-white 
+                           transition-all duration-300 ease-out touch-target group-hover:shadow-xl floating-button-ripple button-press-effect
+                           hover:scale-110 hover:-translate-y-1"
                   onClick={handleInstagramClick}
                   aria-label="Follow us on Instagram"
                 >
-                  <InstagramLogo size={20} weight="fill" />
+                  <InstagramLogo 
+                    size={20} 
+                    weight="fill" 
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12" 
+                  />
                 </Button>
-                {/* Tooltip - hidden on mobile */}
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:group-hover:block">
-                  <div className="bg-black/80 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap backdrop-blur-sm">
-                    Follow on Instagram
+                {/* Enhanced Tooltip */}
+                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 hidden lg:group-hover:block z-10">
+                  <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap backdrop-blur-sm
+                                shadow-lg border border-white/10 animate-in slide-in-from-right-2 fade-in-0 duration-200">
+                    <div className="font-medium">Follow on Instagram</div>
+                    <div className="text-white/80 text-[10px]">@paradisefamilyrestaurant</div>
                   </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Main Toggle Button */}
+          {/* Enhanced Main Toggle Button */}
           <Button
             size="icon"
-            className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-xl transition-all duration-300 touch-target ${
+            className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-xl transition-all duration-500 ease-out touch-target
+                       hover:shadow-2xl floating-button-ripple button-press-effect ${
               isExpanded 
-                ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground rotate-45' 
-                : 'bg-accent hover:bg-accent/90 text-accent-foreground hover:scale-110'
+                ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground scale-110 rotate-45' 
+                : `bg-accent hover:bg-accent/90 text-accent-foreground hover:scale-110 hover:rotate-12 ${
+                    isIdle ? 'floating-bounce' : ''
+                  } ${cartItemCount > 0 && !isExpanded ? 'pulse-glow' : ''}`
             }`}
             onClick={toggleExpanded}
             aria-label={isExpanded ? 'Close action menu' : 'Open action menu'}
           >
-            {isExpanded ? (
-              <X size={24} weight="bold" />
-            ) : (
-              <div className="relative">
-                <Plus size={24} weight="bold" />
-                {cartItemCount > 0 && (
-                  <div className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full animate-pulse" />
-                )}
-              </div>
-            )}
+            <div className="relative flex items-center justify-center">
+              {isExpanded ? (
+                <X 
+                  size={24} 
+                  weight="bold" 
+                  className="transition-all duration-300 ease-out" 
+                />
+              ) : (
+                <div className="relative">
+                  <Plus 
+                    size={24} 
+                    weight="bold" 
+                    className="transition-all duration-300 ease-out hover:rotate-90" 
+                  />
+                  {cartItemCount > 0 && (
+                    <div className="absolute -top-2 -right-2 h-3 w-3 bg-destructive rounded-full animate-bounce shadow-lg" />
+                  )}
+                </div>
+              )}
+            </div>
           </Button>
         </div>
 
-        {/* Backdrop for mobile */}
+        {/* Enhanced Backdrop for mobile */}
         {isExpanded && (
           <div 
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm -z-10 sm:hidden"
+            className={`fixed inset-0 bg-black/20 backdrop-blur-sm -z-10 sm:hidden
+                       animate-in fade-in-0 duration-300`}
             onClick={() => setIsExpanded(false)}
             aria-label="Close action menu"
           />
