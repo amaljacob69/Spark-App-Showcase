@@ -114,13 +114,12 @@ export function HorizontalMenuSection({
             >
               <MenuItemCard
                 item={item}
-                price={getItemPrice(item, menuType)}
                 menuType={menuType}
-                onAddToCart={onAddToCart}
+                getItemPrice={getItemPrice}
                 isAdmin={isAdmin}
-                onEdit={onEditItem}
-                onDelete={onDeleteItem}
-                className="h-full"
+                onEdit={onEditItem || (() => {})}
+                onDelete={onDeleteItem || (() => {})}
+                onAddToCart={onAddToCart}
               />
             </div>
           ))}
