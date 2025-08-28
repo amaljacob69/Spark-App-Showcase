@@ -19,22 +19,15 @@ interface MenuTypeConfig {
 
 const menuConfigs: MenuTypeConfig[] = [
   {
-    type: 'dinein-non-ac',
-    name: 'Dine-in Non-AC',
-    description: 'For customers in non-AC dining area',
-    icon: <House size={20} />,
-    color: 'text-blue-600'
-  },
-  {
     type: 'dinein-ac',
-    name: 'Dine-in AC',
+    name: 'Dine-in A/C Menu',
     description: 'For customers in AC dining area',
     icon: <Snowflake size={20} />,
     color: 'text-green-600'
   },
   {
     type: 'takeaway',
-    name: 'Takeaway',
+    name: 'Take Away Menu',
     description: 'For takeaway counter customers',
     icon: <Package size={20} />,
     color: 'text-orange-600'
@@ -82,7 +75,7 @@ export function QRCodeManager({ isVisible = true }: QRCodeManagerProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
           {menuConfigs.map((config) => {
             const isCopied = copiedLinks.has(config.type)
             
@@ -128,9 +121,8 @@ export function QRCodeManager({ isVisible = true }: QRCodeManagerProps) {
             <li>1. Copy the link for each menu type above</li>
             <li>2. Use a QR code generator (like qr-code-generator.com) to create QR codes</li>
             <li>3. Print and place QR codes in respective areas:</li>
-            <li className="ml-4">• Non-AC dining area → Non-AC QR code</li>
-            <li className="ml-4">• AC dining area → AC QR code</li>
-            <li className="ml-4">• Takeaway counter → Takeaway QR code</li>
+            <li className="ml-4">• AC dining area → A/C QR code</li>
+            <li className="ml-4">• Takeaway counter → Take Away QR code</li>
             <li>4. Customers will only see pricing for their specific dining option</li>
           </ol>
         </div>

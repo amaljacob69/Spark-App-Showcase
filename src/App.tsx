@@ -313,15 +313,15 @@ function AppContent() {
       setTimeout(() => {
         const messages = {
           'dinein-non-ac': {
-            title: 'Dine-in Non-AC Menu',
+            title: 'Dine-in Non-A/C Menu',
             description: 'Showing Non-AC pricing only'
           },
           'dinein-ac': {
-            title: 'Dine-in AC Menu', 
-            description: 'Showing AC pricing only'
+            title: 'Dine-in A/C Menu', 
+            description: 'Showing A/C pricing only'
           },
           'takeaway': {
-            title: 'Takeaway Menu',
+            title: 'Take Away Menu',
             description: 'Showing takeaway pricing only'
           }
         }

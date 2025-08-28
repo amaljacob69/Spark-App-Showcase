@@ -51,9 +51,9 @@ export function Header({
       case 'dinein-non-ac':
         return 'Dine-in Non-AC Menu'
       case 'dinein-ac':
-        return 'Dine-in AC Menu'
+        return 'Dine-in A/C Menu'
       case 'takeaway':
-        return 'Takeaway Menu'
+        return 'Take Away Menu'
     }
   }
 
@@ -145,7 +145,9 @@ export function Header({
                   </div>
                   <div className="flex flex-col">
                     <span className="text-sm font-semibold">{getMenuTypeName(menuType)}</span>
-                    <span className="text-xs opacity-75">{menuThemes[menuType].name} Theme • QR Access</span>
+                    <span className="text-xs opacity-75">
+                      {menuType === 'dinein-ac' ? 'A/C • QR Access' : 'QR Access'}
+                    </span>
                   </div>
                 </div>
               </div>

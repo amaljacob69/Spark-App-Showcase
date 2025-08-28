@@ -191,7 +191,7 @@ export function EditItemDialog({ open, onOpenChange, item, onSave }: EditItemDia
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="edit-price-dinein-ac" className="text-xs text-muted-foreground">
-                    Dine-in (AC)
+                    Dine-in (A/C)
                   </Label>
                   <Input
                     id="edit-price-dinein-ac"

@@ -189,7 +189,7 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="price-dinein-ac" className="text-xs text-muted-foreground">
-                    Dine-in (AC)
+                    Dine-in (A/C)
                   </Label>
                   <Input
                     id="price-dinein-ac"

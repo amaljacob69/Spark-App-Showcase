@@ -19,7 +19,7 @@ const menuTypes = [
   },
   {
     type: 'dinein-ac' as MenuType,
-    label: 'Dine-in AC',
+    label: 'Dine-in A/C',
     icon: Snowflake,
     description: 'Standard pricing',
     themeColor: 'bg-blue-500'
