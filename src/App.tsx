@@ -3,7 +3,7 @@ import { useKV } from '@github/spark/hooks'
 import { Header } from './components/Header'
 import { MenuGrid } from './components/MenuGrid'
 import { AdminPanel } from './components/AdminPanel'
-
+import ErrorBoundary from './components/ErrorBoundary'
 import { LoginDialog } from './components/LoginDialog'
 import { ThemePreview } from './components/ThemePreview'
 import { DietaryFilter, type DietaryPreference } from './components/DietaryFilter'
@@ -17,6 +17,13 @@ import { Footer } from './components/Footer'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
 import { useTheme } from './hooks/useTheme'
+import { usePerformanceMonitoring } from './lib/performance'
+import { useOfflineStatus } from './lib/offline'
+import securityManager from './lib/security'
+import offlineManager from './lib/offline'
+import performanceMonitor from './lib/performance'
+import config from './config/environment'
+import './lib/errorHandler' // Initialize global error handling
 
 export interface MenuItem {
   id: string
@@ -275,6 +282,11 @@ function AppContent() {
   const [selectedDietaryFilters, setSelectedDietaryFilters] = useKV<DietaryPreference[]>('dietary-filters', [])
   const [showCartDialog, setShowCartDialog] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [loginAttempts, setLoginAttempts] = useState(0)
+  
+  // Production-ready hooks
+  const { isOnline, offlineStatus } = useOfflineStatus()
+  const { startTiming } = usePerformanceMonitoring('AppContent')
 
   // Cart functionality
   const { cartItems, addToCart, updateQuantity, removeFromCart, clearCart, getCartItemCount } = useCart()
@@ -287,6 +299,43 @@ function AppContent() {
   const safeSelectedMenuType = selectedMenuType || 'dinein-ac'
   const safeIsAdmin = isAdmin || false
 
+  // Performance monitoring
+  useEffect(() => {
+    const endTiming = startTiming()
+    
+    return () => {
+      if (endTiming) endTiming()
+    }
+  }, [startTiming])
+
+  // Cache menu items for offline use
+  useEffect(() => {
+    if (safeMenuItems && safeMenuItems.length > 0) {
+      offlineManager.cacheData('menu-items', safeMenuItems, 60) // Cache for 1 hour
+    }
+  }, [safeMenuItems])
+
+  // Handle offline status changes
+  useEffect(() => {
+    const handleOffline = () => {
+      toast.info('You are now offline. Some features may be limited.')
+    }
+    
+    const handleOnline = () => {
+      toast.success('You are back online!')
+      // Sync any queued changes
+      offlineManager.forcSync().catch(console.error)
+    }
+
+    window.addEventListener('app:offline', handleOffline)
+    window.addEventListener('app:online', handleOnline)
+
+    return () => {
+      window.removeEventListener('app:offline', handleOffline)
+      window.removeEventListener('app:online', handleOnline)
+    }
+  }, [])
+
   // Simulate loading for better UX
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -295,23 +344,67 @@ function AppContent() {
     return () => clearTimeout(timer)
   }, [])
 
-  // Simple admin authentication with password
+  // Enhanced admin authentication with security
   const handleAdminLogin = useCallback((password: string) => {
-    // Simple password check - in production, use proper authentication
-    if (password === 'admin123') {
-      setIsAdmin(true)
-      setShowLoginDialog(false)
-      toast.success('Admin access granted')
-      return true
-    } else {
-      toast.error('Invalid admin password')
+    const identifier = 'admin-login'
+    
+    // Check if user has exceeded login attempts
+    if (!securityManager.checkLoginAttempts(identifier)) {
+      toast.error('Too many failed attempts. Please try again later.')
       return false
     }
-  }, [setIsAdmin])
+    
+    // Validate password
+    const validation = securityManager.validatePassword(password)
+    if (!validation.valid) {
+      toast.error(validation.message || 'Invalid password')
+      return false
+    }
+    
+    // Check admin password (in production, use proper authentication)
+    if (password === 'admin123') {
+      securityManager.recordLoginAttempt(identifier, true)
+      securityManager.refreshSession()
+      setIsAdmin(true)
+      setShowLoginDialog(false)
+      setLoginAttempts(0)
+      toast.success('Admin access granted')
+      
+      // Log successful admin login
+      if (config.features.enableAnalytics) {
+        performanceMonitor.recordMetric('admin_login_success', Date.now())
+      }
+      
+      return true
+    } else {
+      securityManager.recordLoginAttempt(identifier, false)
+      const newAttempts = loginAttempts + 1
+      setLoginAttempts(newAttempts)
+      
+      toast.error(`Invalid password. ${config.security.maxLoginAttempts - newAttempts} attempts remaining.`)
+      
+      // Log failed admin login attempt
+      if (config.features.enableAnalytics) {
+        performanceMonitor.recordMetric('admin_login_failed', Date.now())
+      }
+      
+      return false
+    }
+  }, [setIsAdmin, loginAttempts])
 
   const handleAdminLogout = useCallback(() => {
     setIsAdmin(false)
+    setLoginAttempts(0)
+    
+    // Clear sensitive data
+    securityManager.refreshSession()
+    
     toast.success('Admin logged out')
+    
+    // Log admin logout
+    if (config.features.enableAnalytics) {
+      performanceMonitor.recordMetric('admin_logout', Date.now())
+    }
   }, [setIsAdmin])
 
   // Handle URL parameters to set menu type directly
@@ -385,33 +478,94 @@ function AppContent() {
   }, [safeMenuItems, selectedCategory, selectedDietaryFilters, searchQuery])
 
   const handleAddItem = useCallback((item: Omit<MenuItem, 'id'>) => {
-    const newItem: MenuItem = {
-      name: item.name || '',
-      description: item.description || '',
-      prices: item.prices || {
-        'dinein-non-ac': 0,
-        'dinein-ac': 0,
-        'takeaway': 0
-      },
-      category: item.category || 'Other',
-      available: item.available ?? true,
-      dietary: item.dietary || [],
-      id: Date.now().toString()
+    // Validate admin operation
+    if (!securityManager.validateMenuOperation('create', item)) {
+      return
     }
-    setMenuItems(current => [...(current || []), newItem])
-  }, [setMenuItems])
+    
+    try {
+      // Sanitize input data
+      const sanitizedItem = securityManager.sanitizeMenuItem(item)
+      
+      const newItem: MenuItem = {
+        ...sanitizedItem,
+        id: securityManager.generateSecureId()
+      }
+      
+      setMenuItems(current => [...(current || []), newItem])
+      
+      // Queue for sync if offline
+      if (!isOnline) {
+        offlineManager.queueForSync('menu_create', newItem)
+      }
+      
+      toast.success('Menu item added successfully')
+      
+      // Log menu item creation
+      if (config.features.enableAnalytics) {
+        performanceMonitor.recordMetric('menu_item_created', Date.now())
+      }
+      
+    } catch (error) {
+      console.error('Failed to add menu item:', error)
+      toast.error('Failed to add menu item. Please check your input.')
+    }
+  }, [setMenuItems, isOnline])
 
   const handleEditItem = useCallback((id: string, updates: Partial<MenuItem>) => {
-    setMenuItems(current => 
-      (current || []).map(item => 
-        item.id === id ? { ...item, ...updates } : item
+    // Validate admin operation
+    if (!securityManager.validateMenuOperation('update', updates)) {
+      return
+    }
+    
+    try {
+      // Sanitize update data
+      const sanitizedUpdates = securityManager.sanitizeMenuItem(updates)
+      
+      setMenuItems(current => 
+        (current || []).map(item => 
+          item.id === id ? { ...item, ...sanitizedUpdates } : item
+        )
       )
-    )
-  }, [setMenuItems])
+      
+      // Queue for sync if offline
+      if (!isOnline) {
+        offlineManager.queueForSync('menu_update', { id, updates: sanitizedUpdates })
+      }
+      
+      toast.success('Menu item updated successfully')
+      
+      // Log menu item update
+      if (config.features.enableAnalytics) {
+        performanceMonitor.recordMetric('menu_item_updated', Date.now())
+      }
+      
+    } catch (error) {
+      console.error('Failed to update menu item:', error)
+      toast.error('Failed to update menu item. Please check your input.')
+    }
+  }, [setMenuItems, isOnline])
 
   const handleDeleteItem = useCallback((id: string) => {
+    // Validate admin operation
+    if (!securityManager.validateMenuOperation('delete')) {
+      return
+    }
+    
     setMenuItems(current => (current || []).filter(item => item.id !== id))
-  }, [setMenuItems])
+    
+    // Queue for sync if offline
+    if (!isOnline) {
+      offlineManager.queueForSync('menu_delete', { id })
+    }
+    
+    toast.success('Menu item deleted successfully')
+    
+    // Log menu item deletion
+    if (config.features.enableAnalytics) {
+      performanceMonitor.recordMetric('menu_item_deleted', Date.now())
+    }
+  }, [setMenuItems, isOnline])
 
   const handleCategorySelect = useCallback((category: string) => {
     setSelectedCategory(category)
@@ -676,7 +830,11 @@ function AppContent() {
 }
 
 function App() {
-  return <AppContent />
+  return (
+    <ErrorBoundary>
+      <AppContent />
+    </ErrorBoundary>
+  )
 }
 
 export { getItemPrice }
