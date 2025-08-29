@@ -5,8 +5,8 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react'
 import { AlertTriangle, RefreshCw, Home } from '@phosphor-icons/react'
-import { Button } from './components/ui/button'
-import { Card, CardContent } from './components/ui/card'
+import { Button } from './ui/button'
+import { Card, CardContent } from './ui/card'
 
 interface Props {
   children: ReactNode
@@ -36,7 +36,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo)
-    
+
     this.setState({
       error,
       errorInfo,
@@ -61,7 +61,7 @@ class ErrorBoundary extends Component<Props, State> {
       url: window.location.href,
       errorId: this.state.errorId
     }
-    
+
     console.error('Production Error Report:', errorReport)
   }
 
@@ -129,7 +129,7 @@ class ErrorBoundary extends Component<Props, State> {
               )}
 
               <div className="flex flex-col sm:flex-row gap-2 pt-4">
-                <Button 
+                <Button
                   onClick={this.handleRetry}
                   variant="default"
                   className="flex-1"
@@ -137,8 +137,8 @@ class ErrorBoundary extends Component<Props, State> {
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Try Again
                 </Button>
-                
-                <Button 
+
+                <Button
                   onClick={this.handleReload}
                   variant="outline"
                   className="flex-1"
@@ -146,8 +146,8 @@ class ErrorBoundary extends Component<Props, State> {
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Refresh Page
                 </Button>
-                
-                <Button 
+
+                <Button
                   onClick={this.handleGoHome}
                   variant="outline"
                   className="flex-1"

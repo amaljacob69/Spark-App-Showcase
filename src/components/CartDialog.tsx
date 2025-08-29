@@ -7,10 +7,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Separator } from './ui/separator'
 import { ScrollArea } from './ui/scroll-area'
 import { toast } from 'sonner'
-import { 
-  ShoppingCart, 
-  Plus, 
-  Minus, 
+import {
+  ShoppingCart,
+  Plus,
+  Minus,
   Trash,
   Receipt,
   X
@@ -42,13 +42,13 @@ export function CartDialog({
   onClearCart
 }: CartDialogProps) {
   const getTotalPrice = useCallback(() => {
-    return cartItems.reduce((total, item) => {
+    return (cartItems || []).reduce((total, item) => {
       return total + (getItemPrice(item, item.selectedMenuType) * item.quantity)
     }, 0)
   }, [cartItems])
 
   const getTotalItems = useCallback(() => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0)
+    return (cartItems || []).reduce((total, item) => total + item.quantity, 0)
   }, [cartItems])
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
@@ -60,7 +60,7 @@ export function CartDialog({
   }
 
   const handleCheckout = () => {
-    if (cartItems.length === 0) {
+    if (!cartItems || cartItems.length === 0) {
       toast.error('Your cart is empty')
       return
     }
@@ -68,21 +68,21 @@ export function CartDialog({
     const totalAmount = getTotalPrice()
     const amountWithGST = formatAmountWithGST(totalAmount)
     const itemCount = getTotalItems()
-    
+
     // Create order summary with Indian Rupee
-    const orderSummary = cartItems.map(item => 
+    const orderSummary = (cartItems || []).map(item =>
       `${item.quantity}x ${item.name} (${item.selectedMenuType.replace('-', ' ').toUpperCase()}) - ${formatCurrency(getItemPrice(item, item.selectedMenuType) * item.quantity)}`
     ).join('\n')
 
     // Create WhatsApp message with GST breakdown
     const message = `*Paradise Family Restaurant - Order*\n\n${orderSummary}\n\n*Subtotal: ${amountWithGST.base}*\n*GST (${amountWithGST.gstRate}): ${amountWithGST.gst}*\n*Total: ${amountWithGST.total}* (${itemCount} items)\n\nPlease confirm this order. Thank you!`
-    
+
     // WhatsApp URL with Indian number format
     const whatsappNumber = '+919876543210' // Replace with actual restaurant WhatsApp number
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
-    
+
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
-    
+
     toast.success('Order sent via WhatsApp!')
     onOpenChange(false)
   }
@@ -94,7 +94,7 @@ export function CartDialog({
           <DialogTitle className="flex items-center gap-2 text-xl">
             <ShoppingCart size={24} weight="bold" />
             Your Cart
-            {cartItems.length > 0 && (
+            {cartItems && cartItems.length > 0 && (
               <Badge variant="secondary" className="ml-2">
                 {getTotalItems()} {getTotalItems() === 1 ? 'item' : 'items'}
               </Badge>
@@ -103,7 +103,7 @@ export function CartDialog({
         </DialogHeader>
 
         <div className="flex-1 overflow-hidden">
-          {cartItems.length === 0 ? (
+          {!cartItems || cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-8 text-center">
               <ShoppingCart size={64} className="text-muted-foreground/50 mb-4" />
               <h3 className="text-lg font-semibold mb-2">Your cart is empty</h3>
@@ -118,7 +118,7 @@ export function CartDialog({
             <div className="flex flex-col h-full">
               <ScrollArea className="flex-1 px-6">
                 <div className="space-y-4 py-4">
-                  {cartItems.map((item) => (
+                  {cartItems && cartItems.map((item) => (
                     <Card key={item.id} className="relative">
                       <CardContent className="p-4">
                         <div className="flex justify-between items-start gap-3">
@@ -147,9 +147,9 @@ export function CartDialog({
                             <X size={14} />
                           </Button>
                         </div>
-                        
+
                         <Separator className="my-3" />
-                        
+
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Button
@@ -186,7 +186,7 @@ export function CartDialog({
                 {(() => {
                   const totalAmount = getTotalPrice()
                   const amountWithGST = formatAmountWithGST(totalAmount)
-                  
+
                   return (
                     <div className="space-y-3">
                       <div className="flex justify-between items-center text-sm">
@@ -209,15 +209,15 @@ export function CartDialog({
                 })()}
 
                 <div className="flex gap-3">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="flex-1"
                     onClick={onClearCart}
                   >
                     <Trash size={16} className="mr-2" />
                     Clear
                   </Button>
-                  <Button 
+                  <Button
                     className="flex-1"
                     onClick={handleCheckout}
                   >
@@ -258,7 +258,7 @@ export function useCart() {
         return [...currentItems, newCartItem]
       }
     })
-    
+
     toast.success(`Added ${item.name} to cart`)
   }, [setCartItems])
 

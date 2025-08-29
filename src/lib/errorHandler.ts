@@ -1,130 +1,216 @@
 /**
- * Global error handler for unhandled promise rejections and errors
+ * Global Error Handler for Production
+ * Provides graceful error handling and user feedback
  */
 
-import { toast } from 'sonner'
 import config from '../config/environment'
 
+interface ErrorReport {
+  message: string
+  stack?: string
+  url: string
+  timestamp: number
+  userAgent: string
+  userId?: string
+  sessionId: string
+  additionalInfo?: Record<string, any>
+}
+
 class GlobalErrorHandler {
-  private errorCount: number = 0
-  private lastErrorTime: number = 0
-  private maxErrorsPerMinute: number = 10
+  private sessionId: string
+  private errorQueue: ErrorReport[] = []
+  private isInitialized: boolean = false
 
   constructor() {
-    if (typeof window !== 'undefined') {
-      this.initializeErrorHandling()
+    this.sessionId = this.generateSessionId()
+    this.initialize()
+  }
+
+  private initialize(): void {
+    if (this.isInitialized || typeof window === 'undefined') {
+      return
+    }
+
+    // Global error handler
+    window.addEventListener('error', this.handleError.bind(this))
+    
+    // Promise rejection handler
+    window.addEventListener('unhandledrejection', this.handlePromiseRejection.bind(this))
+    
+    // React error boundary fallback
+    window.addEventListener('react-error', this.handleReactError.bind(this))
+
+    this.isInitialized = true
+  }
+
+  private generateSessionId(): string {
+    return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+  }
+
+  private handleError(event: ErrorEvent): void {
+    try {
+      const errorReport: ErrorReport = {
+        message: event.message || 'Unknown error',
+        stack: event.error?.stack,
+        url: window.location.href,
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent,
+        sessionId: this.sessionId
+      }
+
+      this.reportError(errorReport)
+    } catch (reportingError) {
+      console.error('Error reporting failed:', reportingError)
     }
   }
 
-  private initializeErrorHandling(): void {
-    // Handle unhandled promise rejections
-    window.addEventListener('unhandledrejection', this.handleUnhandledRejection.bind(this))
-    
-    // Handle global JavaScript errors
-    window.addEventListener('error', this.handleGlobalError.bind(this))
-    
-    // Handle resource loading errors
-    window.addEventListener('error', this.handleResourceError.bind(this), true)
-  }
+  private handlePromiseRejection(event: PromiseRejectionEvent): void {
+    try {
+      const errorReport: ErrorReport = {
+        message: `Promise rejection: ${event.reason?.message || event.reason}`,
+        stack: event.reason?.stack,
+        url: window.location.href,
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent,
+        sessionId: this.sessionId,
+        additionalInfo: {
+          type: 'promise_rejection',
+          reason: event.reason
+        }
+      }
 
-  private handleUnhandledRejection(event: PromiseRejectionEvent): void {
-    console.error('Unhandled promise rejection:', event.reason)
-    
-    this.logError({
-      type: 'unhandled_promise_rejection',
-      message: event.reason?.message || 'Unhandled promise rejection',
-      stack: event.reason?.stack,
-      timestamp: new Date().toISOString(),
-      url: window.location.href
-    })
-
-    // Prevent the default browser console error
-    event.preventDefault()
-
-    // Show user-friendly error message
-    if (this.shouldShowErrorToUser()) {
-      toast.error('Something went wrong. Please try refreshing the page.')
-    }
-  }
-
-  private handleGlobalError(event: ErrorEvent): void {
-    console.error('Global error:', event.error)
-    
-    this.logError({
-      type: 'global_error',
-      message: event.message,
-      filename: event.filename,
-      lineno: event.lineno,
-      colno: event.colno,
-      stack: event.error?.stack,
-      timestamp: new Date().toISOString(),
-      url: window.location.href
-    })
-
-    if (this.shouldShowErrorToUser()) {
-      toast.error('An unexpected error occurred. Please try again.')
-    }
-  }
-
-  private handleResourceError(event: Event): void {
-    const target = event.target as HTMLElement
-    
-    if (target && (target.tagName === 'IMG' || target.tagName === 'SCRIPT' || target.tagName === 'LINK')) {
-      console.warn('Resource failed to load:', target)
+      this.reportError(errorReport)
       
-      this.logError({
-        type: 'resource_error',
-        message: `Failed to load ${target.tagName.toLowerCase()}`,
-        resource: (target as any).src || (target as any).href,
-        timestamp: new Date().toISOString(),
-        url: window.location.href
-      })
-
-      // Don't show toast for resource errors as they're usually not critical
+      // Prevent the default browser behavior
+      event.preventDefault()
+    } catch (reportingError) {
+      console.error('Promise rejection reporting failed:', reportingError)
     }
   }
 
-  private shouldShowErrorToUser(): boolean {
-    const now = Date.now()
-    
-    // Reset error count every minute
-    if (now - this.lastErrorTime > 60000) {
-      this.errorCount = 0
+  private handleReactError(event: CustomEvent): void {
+    try {
+      const { error, errorInfo } = event.detail
+      
+      const errorReport: ErrorReport = {
+        message: `React error: ${error?.message || 'React component error'}`,
+        stack: error?.stack,
+        url: window.location.href,
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent,
+        sessionId: this.sessionId,
+        additionalInfo: {
+          type: 'react_error',
+          errorInfo,
+          componentStack: errorInfo?.componentStack
+        }
+      }
+
+      this.reportError(errorReport)
+    } catch (reportingError) {
+      console.error('React error reporting failed:', reportingError)
     }
-    
-    this.errorCount++
-    this.lastErrorTime = now
-    
-    // Don't spam the user with error messages
-    return this.errorCount <= this.maxErrorsPerMinute
   }
 
-  private logError(errorInfo: any): void {
+  private reportError(errorReport: ErrorReport): void {
+    // Always log to console in development
+    if (config.app.environment === 'development') {
+      console.error('Error Report:', errorReport)
+      return
+    }
+
+    // In production, queue errors for batched reporting
     if (config.features.enableErrorReporting) {
-      // In production, send to error reporting service
-      // For now, just log to console
-      console.error('Production Error:', errorInfo)
+      this.errorQueue.push(errorReport)
       
-      // You could send to services like:
-      // - Sentry: Sentry.captureException(errorInfo)
-      // - LogRocket: LogRocket.captureException(errorInfo)
-      // - Custom analytics endpoint
+      // Process queue with debouncing
+      this.processErrorQueue()
     }
   }
 
-  public reportError(error: Error, context?: any): void {
-    this.logError({
-      type: 'manual_report',
-      message: error.message,
-      stack: error.stack,
-      context,
-      timestamp: new Date().toISOString(),
-      url: window.location.href
-    })
+  private processErrorQueue = this.debounce((): void => {
+    if (this.errorQueue.length === 0) {
+      return
+    }
+
+    try {
+      // In a real implementation, send to error reporting service
+      // For now, just log and clear the queue
+      console.warn(`Processed ${this.errorQueue.length} error reports`)
+      
+      // Clear processed errors
+      this.errorQueue = []
+    } catch (error) {
+      console.error('Error queue processing failed:', error)
+    }
+  }, 2000)
+
+  private debounce(func: Function, wait: number): () => void {
+    let timeout: NodeJS.Timeout | null = null
+    
+    return (): void => {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+      
+      timeout = setTimeout(func, wait)
+    }
+  }
+
+  public captureException(error: Error, additionalInfo?: Record<string, any>): void {
+    try {
+      const errorReport: ErrorReport = {
+        message: error.message || 'Manual exception capture',
+        stack: error.stack,
+        url: window.location.href,
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent,
+        sessionId: this.sessionId,
+        additionalInfo: {
+          ...additionalInfo,
+          type: 'manual_capture'
+        }
+      }
+
+      this.reportError(errorReport)
+    } catch (reportingError) {
+      console.error('Manual exception capture failed:', reportingError)
+    }
+  }
+
+  public setUserId(userId: string): void {
+    // This would be called after user authentication
+    // For now, we'll just store it for future error reports
+    try {
+      sessionStorage.setItem('error-handler-user-id', userId)
+    } catch (error) {
+      console.warn('Could not store user ID for error reporting:', error)
+    }
+  }
+
+  public getSessionInfo(): { sessionId: string; timestamp: number } {
+    return {
+      sessionId: this.sessionId,
+      timestamp: Date.now()
+    }
   }
 }
 
-// Create and initialize global error handler
+// Create global instance
 const globalErrorHandler = new GlobalErrorHandler()
 
+// Export for manual error capturing
+export const captureException = (error: Error, additionalInfo?: Record<string, any>) => {
+  globalErrorHandler.captureException(error, additionalInfo)
+}
+
+export const setUserId = (userId: string) => {
+  globalErrorHandler.setUserId(userId)
+}
+
+export const getSessionInfo = () => {
+  return globalErrorHandler.getSessionInfo()
+}
+
+// Initialize immediately
 export default globalErrorHandler

@@ -20,13 +20,10 @@ import { PWAFloatingNotification } from '@/components/PWAFloatingNotification'
 import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
 import { useTheme } from '@/hooks/useTheme'
-import { usePerformanceMonitoring } from '@/lib/performance'
-import { useOfflineStatus } from '@/lib/offline'
+import { usePerformanceMonitoring, default as performanceMonitor } from '@/lib/performance'
+import { useOfflineStatus, default as offlineManager } from '@/lib/offline'
 import securityManager from '@/lib/security'
-import offlineManager from '@/lib/offline'
-import performanceMonitor from '@/lib/performance'
 import config from '@/config/environment'
-import '@/lib/errorHandler' // Initialize global error handling
 
 import type { MenuItem, MenuType, MenuPricing, DietaryPreference } from '@/types'
 import { getItemPrice } from '@/lib/menuUtils'
@@ -252,6 +249,14 @@ const sampleMenuItems: MenuItem[] = [
 
 
 function AppContent() {
+  // Initialize error handler to avoid runtime issues
+  useEffect(() => {
+    // Import and initialize error handler
+    import('@/lib/errorHandler').catch(error => {
+      console.warn('Error handler could not be loaded:', error)
+    })
+  }, [])
+
   const [isAdmin, setIsAdmin] = useKV<boolean>("is-admin", false)
   const [menuItems, setMenuItems] = useKV<MenuItem[]>("menu-items", sampleMenuItems)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -267,9 +272,27 @@ function AppContent() {
   // PWA functionality
   const { isInstalled, isInstallable, isOnline, installApp, updateAvailable, updateApp } = usePWA()
   
-  // Production-ready hooks
-  const { offlineStatus } = useOfflineStatus()
-  const { startTiming } = usePerformanceMonitoring('AppContent')
+  // Production-ready hooks with fallbacks
+  const offlineStatusHook = (() => {
+    try {
+      return useOfflineStatus()
+    } catch (error) {
+      console.warn('Offline status hook failed, using fallback:', error)
+      return { isOnline: navigator.onLine, offlineStatus: null }
+    }
+  })()
+  
+  const performanceHook = (() => {
+    try {
+      return usePerformanceMonitoring('AppContent')
+    } catch (error) {
+      console.warn('Performance monitoring hook failed, using fallback:', error)
+      return { startTiming: () => () => {} }
+    }
+  })()
+  
+  const { offlineStatus } = offlineStatusHook
+  const { startTiming } = performanceHook
 
   // Cart functionality
   const { cartItems, addToCart, updateQuantity, removeFromCart, clearCart, getCartItemCount } = useCart()
@@ -306,8 +329,12 @@ function AppContent() {
     
     const handleOnline = () => {
       toast.success('You are back online!')
-      // Sync any queued changes
-      offlineManager.forcSync().catch(console.error)
+      // Sync any queued changes safely
+      try {
+        offlineManager.forcSync().catch(console.error)
+      } catch (error) {
+        console.warn('Offline sync error:', error)
+      }
     }
 
     window.addEventListener('app:offline', handleOffline)
@@ -331,46 +358,52 @@ function AppContent() {
   const handleAdminLogin = useCallback((password: string) => {
     const identifier = 'admin-login'
     
-    // Check if user has exceeded login attempts
-    if (!securityManager.checkLoginAttempts(identifier)) {
-      toast.error('Too many failed attempts. Please try again later.')
-      return false
-    }
-    
-    // Validate password
-    const validation = securityManager.validatePassword(password)
-    if (!validation.valid) {
-      toast.error(validation.message || 'Invalid password')
-      return false
-    }
-    
-    // Check admin password (in production, use proper authentication)
-    if (password === 'admin123') {
-      securityManager.recordLoginAttempt(identifier, true)
-      securityManager.refreshSession()
-      setIsAdmin(true)
-      setShowLoginDialog(false)
-      setLoginAttempts(0)
-      toast.success('Admin access granted')
-      
-      // Log successful admin login
-      if (config.features.enableAnalytics) {
-        performanceMonitor.recordMetric('admin_login_success', Date.now())
+    try {
+      // Check if user has exceeded login attempts
+      if (!securityManager.checkLoginAttempts(identifier)) {
+        toast.error('Too many failed attempts. Please try again later.')
+        return false
       }
       
-      return true
-    } else {
-      securityManager.recordLoginAttempt(identifier, false)
-      const newAttempts = loginAttempts + 1
-      setLoginAttempts(newAttempts)
-      
-      toast.error(`Invalid password. ${config.security.maxLoginAttempts - newAttempts} attempts remaining.`)
-      
-      // Log failed admin login attempt
-      if (config.features.enableAnalytics) {
-        performanceMonitor.recordMetric('admin_login_failed', Date.now())
+      // Validate password
+      const validation = securityManager.validatePassword(password)
+      if (!validation.valid) {
+        toast.error(validation.message || 'Invalid password')
+        return false
       }
       
+      // Check admin password (in production, use proper authentication)
+      if (password === 'admin123') {
+        securityManager.recordLoginAttempt(identifier, true)
+        securityManager.refreshSession()
+        setIsAdmin(true)
+        setShowLoginDialog(false)
+        setLoginAttempts(0)
+        toast.success('Admin access granted')
+        
+        // Log successful admin login
+        if (config.features.enableAnalytics) {
+          performanceMonitor.recordMetric('admin_login_success', Date.now())
+        }
+        
+        return true
+      } else {
+        securityManager.recordLoginAttempt(identifier, false)
+        const newAttempts = loginAttempts + 1
+        setLoginAttempts(newAttempts)
+        
+        toast.error(`Invalid password. ${config.security.maxLoginAttempts - newAttempts} attempts remaining.`)
+        
+        // Log failed admin login attempt
+        if (config.features.enableAnalytics) {
+          performanceMonitor.recordMetric('admin_login_failed', Date.now())
+        }
+        
+        return false
+      }
+    } catch (error) {
+      console.error('Admin login error:', error)
+      toast.error('Login system temporarily unavailable')
       return false
     }
   }, [setIsAdmin, loginAttempts])
@@ -461,12 +494,12 @@ function AppContent() {
   }, [safeMenuItems, selectedCategory, selectedDietaryFilters, searchQuery])
 
   const handleAddItem = useCallback((item: Omit<MenuItem, 'id'>) => {
-    // Validate admin operation
-    if (!securityManager.validateMenuOperation('create', item)) {
-      return
-    }
-    
     try {
+      // Validate admin operation
+      if (!securityManager.validateMenuOperation('create', item)) {
+        return
+      }
+      
       // Sanitize input data
       const sanitizedItem = securityManager.sanitizeMenuItem(item)
       
@@ -496,12 +529,12 @@ function AppContent() {
   }, [setMenuItems, isOnline])
 
   const handleEditItem = useCallback((id: string, updates: Partial<MenuItem>) => {
-    // Validate admin operation
-    if (!securityManager.validateMenuOperation('update', updates)) {
-      return
-    }
-    
     try {
+      // Validate admin operation
+      if (!securityManager.validateMenuOperation('update', updates)) {
+        return
+      }
+      
       // Sanitize update data
       const sanitizedUpdates = securityManager.sanitizeMenuItem(updates)
       
@@ -530,23 +563,28 @@ function AppContent() {
   }, [setMenuItems, isOnline])
 
   const handleDeleteItem = useCallback((id: string) => {
-    // Validate admin operation
-    if (!securityManager.validateMenuOperation('delete')) {
-      return
-    }
-    
-    setMenuItems(current => (current || []).filter(item => item.id !== id))
-    
-    // Queue for sync if offline
-    if (!isOnline) {
-      offlineManager.queueForSync('menu_delete', { id })
-    }
-    
-    toast.success('Menu item deleted successfully')
-    
-    // Log menu item deletion
-    if (config.features.enableAnalytics) {
-      performanceMonitor.recordMetric('menu_item_deleted', Date.now())
+    try {
+      // Validate admin operation
+      if (!securityManager.validateMenuOperation('delete')) {
+        return
+      }
+      
+      setMenuItems(current => (current || []).filter(item => item.id !== id))
+      
+      // Queue for sync if offline
+      if (!isOnline) {
+        offlineManager.queueForSync('menu_delete', { id })
+      }
+      
+      toast.success('Menu item deleted successfully')
+      
+      // Log menu item deletion
+      if (config.features.enableAnalytics) {
+        performanceMonitor.recordMetric('menu_item_deleted', Date.now())
+      }
+    } catch (error) {
+      console.error('Failed to delete menu item:', error)
+      toast.error('Failed to delete menu item. Please try again.')
     }
   }, [setMenuItems, isOnline])
 

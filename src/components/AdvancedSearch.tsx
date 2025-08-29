@@ -4,10 +4,10 @@ import { Input } from './ui/input'
 import { Badge } from './ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
 import { Separator } from './ui/separator'
-import { 
-  MagnifyingGlass, 
-  X, 
-  Microphone, 
+import {
+  MagnifyingGlass,
+  X,
+  Microphone,
   MicrophoneSlash,
   Funnel,
   SortAscending,
@@ -65,27 +65,27 @@ export function AdvancedSearch({
       recognition.continuous = false
       recognition.interimResults = false
       recognition.lang = 'en-US'
-      
+
       recognition.onstart = () => {
         setIsListening(true)
       }
-      
+
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript
         onSearchChange(transcript)
         toast.success(`Voice search: "${transcript}"`)
       }
-      
+
       recognition.onerror = (event) => {
         console.error('Speech recognition error:', event.error)
         setIsListening(false)
         toast.error('Voice search failed. Please try again.')
       }
-      
+
       recognition.onend = () => {
         setIsListening(false)
       }
-      
+
       setRecognition(recognition)
     }
   }, [onSearchChange])
@@ -103,8 +103,8 @@ export function AdvancedSearch({
   }
 
   const handleTagToggle = (tag: FilterTag) => {
-    setSelectedTags(current => 
-      current.includes(tag) 
+    setSelectedTags(current =>
+      current.includes(tag)
         ? current.filter(t => t !== tag)
         : [...current, tag]
     )
@@ -123,14 +123,14 @@ export function AdvancedSearch({
 
   const activeFiltersCount = [
     searchQuery ? 1 : 0,
-    selectedFilters.length,
+    (selectedFilters && selectedFilters.length) || 0,
     selectedCategory !== 'all' ? 1 : 0,
-    selectedTags.length,
+    (selectedTags && selectedTags.length) || 0,
     sortBy !== 'name' ? 1 : 0
   ].reduce((sum, count) => sum + count, 0)
 
   const dietaryOptions: DietaryPreference[] = ['vegetarian', 'egg', 'chicken', 'meat', 'fish']
-  
+
   const tagOptions: { value: FilterTag; label: string; icon: any; color: string }[] = [
     { value: 'popular', label: 'Popular', icon: Star, color: 'text-orange-600 bg-orange-50 border-orange-200' },
     { value: 'new', label: 'New Items', icon: Clock, color: 'text-green-600 bg-green-50 border-green-200' },
@@ -145,9 +145,9 @@ export function AdvancedSearch({
         {/* Main search bar */}
         <div className="relative">
           <div className="relative flex items-center">
-            <MagnifyingGlass 
-              size={18} 
-              className="absolute left-3 text-muted-foreground pointer-events-none" 
+            <MagnifyingGlass
+              size={18}
+              className="absolute left-3 text-muted-foreground pointer-events-none"
             />
             <Input
               type="text"
@@ -157,7 +157,7 @@ export function AdvancedSearch({
               className="pl-10 pr-20 h-12 text-base rounded-xl border-2 focus:border-primary/50 transition-all duration-200"
               aria-label="Search menu items"
             />
-            
+
             {/* Voice search and clear buttons */}
             <div className="absolute right-2 flex items-center gap-1">
               {recognition && (
@@ -168,8 +168,8 @@ export function AdvancedSearch({
                   onClick={handleVoiceSearch}
                   className={cn(
                     "h-8 w-8 p-0 rounded-lg transition-all duration-200",
-                    isListening 
-                      ? "bg-red-100 text-red-600 hover:bg-red-200 animate-pulse" 
+                    isListening
+                      ? "bg-red-100 text-red-600 hover:bg-red-200 animate-pulse"
                       : "hover:bg-muted"
                   )}
                   title={isListening ? 'Stop voice search' : 'Start voice search'}
@@ -182,7 +182,7 @@ export function AdvancedSearch({
                   )}
                 </Button>
               )}
-              
+
               {searchQuery && (
                 <Button
                   type="button"
@@ -197,7 +197,7 @@ export function AdvancedSearch({
               )}
             </div>
           </div>
-          
+
           {/* Listening indicator */}
           {isListening && (
             <div className="absolute -bottom-8 left-0 right-0 text-center">
@@ -225,7 +225,7 @@ export function AdvancedSearch({
                 </Badge>
               )}
             </Button>
-            
+
             {/* Quick sort buttons */}
             <div className="flex items-center gap-1 border rounded-lg p-1 bg-muted/30">
               <Button
@@ -254,7 +254,7 @@ export function AdvancedSearch({
               </Button>
             </div>
           </div>
-          
+
           {/* Results counter */}
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <span>
@@ -274,14 +274,14 @@ export function AdvancedSearch({
         </div>
 
         {/* Active filters display */}
-        {(searchQuery || selectedFilters.length > 0 || selectedCategory !== 'all' || selectedTags.length > 0) && (
+        {(searchQuery || (selectedFilters && selectedFilters.length > 0) || selectedCategory !== 'all' || (selectedTags && selectedTags.length > 0)) && (
           <div className="flex items-center gap-2 flex-wrap p-3 bg-muted/30 rounded-lg border border-border/50">
             <span className="text-sm font-medium text-muted-foreground">Active filters:</span>
-            
+
             {searchQuery && (
               <Badge variant="secondary" className="gap-2">
                 Search: "{searchQuery}"
-                <button 
+                <button
                   onClick={() => onSearchChange('')}
                   className="hover:text-destructive"
                   aria-label="Remove search filter"
@@ -290,11 +290,11 @@ export function AdvancedSearch({
                 </button>
               </Badge>
             )}
-            
+
             {selectedCategory !== 'all' && (
               <Badge variant="secondary" className="gap-2">
                 Category: {selectedCategory}
-                <button 
+                <button
                   onClick={() => onCategoryChange('all')}
                   className="hover:text-destructive"
                   aria-label="Remove category filter"
@@ -303,11 +303,11 @@ export function AdvancedSearch({
                 </button>
               </Badge>
             )}
-            
-            {selectedFilters.map(filter => (
+
+            {selectedFilters && selectedFilters.map(filter => (
               <Badge key={filter} variant="secondary" className="gap-2 capitalize">
                 {filter}
-                <button 
+                <button
                   onClick={() => onFiltersChange(selectedFilters.filter(f => f !== filter))}
                   className="hover:text-destructive"
                   aria-label={`Remove ${filter} filter`}
@@ -316,13 +316,13 @@ export function AdvancedSearch({
                 </button>
               </Badge>
             ))}
-            
-            {selectedTags.map(tag => {
+
+            {selectedTags && selectedTags.map(tag => {
               const tagOption = tagOptions.find(t => t.value === tag)
               return (
                 <Badge key={tag} variant="secondary" className="gap-2">
                   {tagOption?.label}
-                  <button 
+                  <button
                     onClick={() => handleTagToggle(tag)}
                     className="hover:text-destructive"
                     aria-label={`Remove ${tagOption?.label} filter`}
@@ -345,7 +345,7 @@ export function AdvancedSearch({
               Advanced Search & Filters
             </DialogTitle>
           </DialogHeader>
-          
+
           <div className="space-y-6 py-4">
             {/* Category Filter */}
             <div>
@@ -364,9 +364,9 @@ export function AdvancedSearch({
                 ))}
               </div>
             </div>
-            
+
             <Separator />
-            
+
             {/* Dietary Preferences */}
             <div>
               <h4 className="font-medium mb-3">Dietary Preferences</h4>
@@ -375,12 +375,13 @@ export function AdvancedSearch({
                   <Button
                     key={option}
                     size="sm"
-                    variant={selectedFilters.includes(option) ? 'default' : 'outline'}
+                    variant={selectedFilters && selectedFilters.includes(option) ? 'default' : 'outline'}
                     onClick={() => {
-                      if (selectedFilters.includes(option)) {
-                        onFiltersChange(selectedFilters.filter(f => f !== option))
+                      const currentFilters = selectedFilters || []
+                      if (currentFilters.includes(option)) {
+                        onFiltersChange(currentFilters.filter(f => f !== option))
                       } else {
-                        onFiltersChange([...selectedFilters, option])
+                        onFiltersChange([...currentFilters, option])
                       }
                     }}
                     className="justify-start capitalize text-sm hover-lift"
@@ -390,9 +391,9 @@ export function AdvancedSearch({
                 ))}
               </div>
             </div>
-            
+
             <Separator />
-            
+
             {/* Special Tags */}
             <div>
               <h4 className="font-medium mb-3">Special Categories</h4>
@@ -403,11 +404,11 @@ export function AdvancedSearch({
                     <Button
                       key={option.value}
                       size="sm"
-                      variant={selectedTags.includes(option.value) ? 'default' : 'outline'}
+                      variant={selectedTags && selectedTags.includes(option.value) ? 'default' : 'outline'}
                       onClick={() => handleTagToggle(option.value)}
                       className={cn(
                         "justify-start text-sm gap-2 hover-lift transition-all duration-200",
-                        selectedTags.includes(option.value) ? '' : option.color
+                        selectedTags && selectedTags.includes(option.value) ? '' : option.color
                       )}
                     >
                       {Icon && <Icon size={16} />}
@@ -417,9 +418,9 @@ export function AdvancedSearch({
                 })}
               </div>
             </div>
-            
+
             <Separator />
-            
+
             {/* Sort Options */}
             <div>
               <h4 className="font-medium mb-3">Sort By</h4>
@@ -458,9 +459,9 @@ export function AdvancedSearch({
                 </Button>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             {/* Action Buttons */}
             <div className="flex items-center gap-3 pt-4">
               <Button

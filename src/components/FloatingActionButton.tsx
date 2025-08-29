@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
-import { 
-  DotsThreeVertical, 
-  X, 
-  GoogleLogo, 
-  InstagramLogo, 
+import {
+  DotsThreeVertical,
+  X,
+  GoogleLogo,
+  InstagramLogo,
   ShoppingCart,
   MapPin,
   Phone,
@@ -21,9 +21,9 @@ interface FloatingActionButtonProps {
   onCartClick?: () => void
 }
 
-export function FloatingActionButton({ 
+export function FloatingActionButton({
   cartItemCount = 0,
-  onCartClick 
+  onCartClick
 }: FloatingActionButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [showLocationDialog, setShowLocationDialog] = useState(false)
@@ -33,11 +33,11 @@ export function FloatingActionButton({
   // Auto-animate main button when idle (no interaction for 5 seconds)
   useEffect(() => {
     let idleTimer: NodeJS.Timeout
-    
+
     const resetIdleTimer = () => {
       clearTimeout(idleTimer)
       setIsIdle(false)
-      
+
       if (!isExpanded) {
         idleTimer = setTimeout(() => {
           setIsIdle(true)
@@ -46,7 +46,7 @@ export function FloatingActionButton({
     }
 
     resetIdleTimer()
-    
+
     // Reset idle timer on user interaction
     const events = ['click', 'touchstart', 'scroll', 'mousemove']
     events.forEach(event => {
@@ -60,7 +60,7 @@ export function FloatingActionButton({
       })
     }
   }, [isExpanded])
-  
+
   // Restaurant details
   const restaurantDetails = {
     name: 'Paradise Family Restaurant & Bake Shop',
@@ -139,13 +139,12 @@ export function FloatingActionButton({
           {isExpanded && (
             <div className="flex flex-col gap-3">
               {/* Google Review Button */}
-              <div 
-                className={`relative group transition-all duration-500 ease-out ${
-                  animateButtons 
-                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+              <div
+                className={`relative group transition-all duration-500 ease-out ${animateButtons
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75'
                     : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
-                }`}
-                style={{ 
+                  }`}
+                style={{
                   animationDelay: animateButtons ? '50ms' : '0ms',
                   animationFillMode: 'both'
                 }}
@@ -158,10 +157,10 @@ export function FloatingActionButton({
                   onClick={handleGoogleReviewClick}
                   aria-label="Leave a Google Review"
                 >
-                  <GoogleLogo 
-                    size={20} 
-                    weight="bold" 
-                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12 group-hover:animate-pulse" 
+                  <GoogleLogo
+                    size={20}
+                    weight="bold"
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12 group-hover:animate-pulse"
                   />
                 </Button>
                 {/* Enhanced Tooltip */}
@@ -175,13 +174,12 @@ export function FloatingActionButton({
               </div>
 
               {/* Instagram Button */}
-              <div 
-                className={`relative group transition-all duration-500 ease-out ${
-                  animateButtons 
-                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+              <div
+                className={`relative group transition-all duration-500 ease-out ${animateButtons
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75'
                     : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
-                }`}
-                style={{ 
+                  }`}
+                style={{
                   animationDelay: animateButtons ? '100ms' : '0ms',
                   animationFillMode: 'both'
                 }}
@@ -195,10 +193,10 @@ export function FloatingActionButton({
                   onClick={handleInstagramClick}
                   aria-label="Follow us on Instagram"
                 >
-                  <InstagramLogo 
-                    size={20} 
-                    weight="fill" 
-                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12" 
+                  <InstagramLogo
+                    size={20}
+                    weight="fill"
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12"
                   />
                 </Button>
                 {/* Enhanced Tooltip */}
@@ -212,13 +210,12 @@ export function FloatingActionButton({
               </div>
 
               {/* Cart Button */}
-              <div 
-                className={`relative group transition-all duration-500 ease-out ${
-                  animateButtons 
-                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+              <div
+                className={`relative group transition-all duration-500 ease-out ${animateButtons
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75'
                     : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
-                }`}
-                style={{ 
+                  }`}
+                style={{
                   animationDelay: animateButtons ? '150ms' : '0ms',
                   animationFillMode: 'both'
                 }}
@@ -231,15 +228,15 @@ export function FloatingActionButton({
                   onClick={handleCartClick}
                   aria-label={`Shopping cart${cartItemCount > 0 ? ` (${cartItemCount} items)` : ''}`}
                 >
-                  <ShoppingCart 
-                    size={20} 
-                    weight="bold" 
-                    className="transition-transform duration-200 group-hover:scale-110" 
+                  <ShoppingCart
+                    size={20}
+                    weight="bold"
+                    className="transition-transform duration-200 group-hover:scale-110"
                   />
                 </Button>
                 {cartItemCount > 0 && (
-                  <Badge 
-                    variant="destructive" 
+                  <Badge
+                    variant="destructive"
                     className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-5 w-5 sm:h-6 sm:w-6 rounded-full p-0 
                              flex items-center justify-center text-xs font-bold animate-bounce shadow-lg"
                   >
@@ -259,13 +256,12 @@ export function FloatingActionButton({
               </div>
 
               {/* Phone Call Button */}
-              <div 
-                className={`relative group transition-all duration-500 ease-out ${
-                  animateButtons 
-                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+              <div
+                className={`relative group transition-all duration-500 ease-out ${animateButtons
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75'
                     : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
-                }`}
-                style={{ 
+                  }`}
+                style={{
                   animationDelay: animateButtons ? '200ms' : '0ms',
                   animationFillMode: 'both'
                 }}
@@ -278,10 +274,10 @@ export function FloatingActionButton({
                   onClick={handlePhoneClick}
                   aria-label="Call for reservations"
                 >
-                  <Phone 
-                    size={20} 
-                    weight="bold" 
-                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12" 
+                  <Phone
+                    size={20}
+                    weight="bold"
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:rotate-12"
                   />
                 </Button>
                 {/* Enhanced Tooltip */}
@@ -295,13 +291,12 @@ export function FloatingActionButton({
               </div>
 
               {/* Location Button */}
-              <div 
-                className={`relative group transition-all duration-500 ease-out ${
-                  animateButtons 
-                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75' 
+              <div
+                className={`relative group transition-all duration-500 ease-out ${animateButtons
+                    ? 'animate-in slide-in-from-right-8 fade-in-0 zoom-in-75'
                     : 'animate-out slide-out-to-right-8 fade-out-0 zoom-out-75'
-                }`}
-                style={{ 
+                  }`}
+                style={{
                   animationDelay: animateButtons ? '250ms' : '0ms',
                   animationFillMode: 'both'
                 }}
@@ -314,10 +309,10 @@ export function FloatingActionButton({
                   onClick={handleLocationClick}
                   aria-label="View location and get directions"
                 >
-                  <MapPin 
-                    size={20} 
-                    weight="bold" 
-                    className="transition-transform duration-200 group-hover:scale-110 group-hover:animate-pulse" 
+                  <MapPin
+                    size={20}
+                    weight="bold"
+                    className="transition-transform duration-200 group-hover:scale-110 group-hover:animate-pulse"
                   />
                 </Button>
                 {/* Enhanced Tooltip */}
@@ -337,34 +332,32 @@ export function FloatingActionButton({
             size="icon"
             className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-xl transition-all duration-500 ease-out touch-target
                        hover:shadow-2xl floating-button-ripple button-press-effect backdrop-blur-sm border-2 border-white/20
-                       focus:ring-4 focus:ring-primary/30 focus:outline-none relative group ${
-              isExpanded 
-                ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground scale-110 rotate-45' 
+                       focus:ring-4 focus:ring-primary/30 focus:outline-none relative group ${isExpanded
+                ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground scale-110 rotate-45'
                 : `bg-gradient-to-br from-accent via-accent to-accent/90 hover:from-accent/90 hover:via-accent hover:to-accent 
-                   text-accent-foreground hover:scale-110 hover:rotate-12 ${
-                    isIdle ? 'floating-bounce pulse-glow' : ''
-                  } ${cartItemCount > 0 && !isExpanded ? 'pulse-glow' : ''}`
-            }`}
+                   text-accent-foreground hover:scale-110 hover:rotate-12 ${isIdle ? 'floating-bounce pulse-glow' : ''
+                } ${cartItemCount > 0 && !isExpanded ? 'pulse-glow' : ''}`
+              }`}
             onClick={toggleExpanded}
             aria-label={isExpanded ? 'Close menu' : 'Open quick actions menu'}
           >
             {/* Enhanced background gradient overlay */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-            
+
             {/* Main button content with enhanced indicators */}
             <div className="relative flex items-center justify-center z-10">
               {isExpanded ? (
-                <X 
-                  size={24} 
-                  weight="bold" 
-                  className="transition-all duration-300 ease-out" 
+                <X
+                  size={24}
+                  weight="bold"
+                  className="transition-all duration-300 ease-out"
                 />
               ) : (
                 <div className="relative">
-                  <DotsThreeVertical 
-                    size={24} 
-                    weight="bold" 
-                    className="transition-all duration-300 ease-out group-hover:rotate-90" 
+                  <DotsThreeVertical
+                    size={24}
+                    weight="bold"
+                    className="transition-all duration-300 ease-out group-hover:rotate-90"
                   />
                   {/* Enhanced cart indicator */}
                   {cartItemCount > 0 && (
@@ -392,7 +385,7 @@ export function FloatingActionButton({
 
         {/* Enhanced Backdrop for mobile */}
         {isExpanded && (
-          <div 
+          <div
             className={`fixed inset-0 bg-black/20 backdrop-blur-sm -z-10 sm:hidden
                        animate-in fade-in-0 duration-300`}
             onClick={() => setIsExpanded(false)}
@@ -406,20 +399,20 @@ export function FloatingActionButton({
         <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] p-0 overflow-hidden">
           <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-border/50">
             <DialogTitle className="text-lg sm:text-xl font-semibold flex items-center gap-2">
-              <MapPin className="text-primary" size={20} sm:size={24} weight="bold" />
+              <MapPin className="text-primary" size={20} weight="bold" />
               <span className="text-sm sm:text-base lg:text-lg break-words">
                 {restaurantDetails.name}
               </span>
             </DialogTitle>
           </DialogHeader>
-          
+
           <div className="flex flex-col lg:flex-row h-[60vh] sm:h-[70vh] lg:h-[600px]">
             {/* Map Section */}
             <div className="flex-1 relative min-h-[300px] lg:min-h-0">
-              <iframe 
+              <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3925.3796772112187!2d76.3343773754989!3d10.311468467596864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b08026c4ef1c919%3A0x576cd8a7cb411d6d!2sParadise%20Family%20Restaurant%20%26%20Bake%20shop!5e0!3m2!1sen!2sin!4v1756316430948!5m2!1sen!2sin"
                 width="100%"
-                height="100%" 
+                height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
@@ -450,7 +443,7 @@ export function FloatingActionButton({
                         </Button>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       <Phone size={16} className="text-muted-foreground flex-shrink-0" />
                       <span className="break-all">{restaurantDetails.phone}</span>
@@ -468,7 +461,7 @@ export function FloatingActionButton({
                       <NavigationArrow size={16} weight="bold" />
                       Get Directions
                     </Button>
-                    
+
                     <Button
                       onClick={handlePhoneClick}
                       variant="outline"
@@ -477,7 +470,7 @@ export function FloatingActionButton({
                       <Phone size={16} weight="bold" />
                       Call Restaurant
                     </Button>
-                    
+
                     <Button
                       onClick={() => {
                         handleGoogleReviewClick()
@@ -491,7 +484,7 @@ export function FloatingActionButton({
                         Google Reviews
                       </span>
                     </Button>
-                    
+
                     <Button
                       onClick={() => {
                         handleInstagramClick()
