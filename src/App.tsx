@@ -13,6 +13,7 @@ import { CartDialog, useCart } from './components/CartDialog'
 import { OffersSection } from './components/OffersSection'
 import { FeaturedMenuSection, PopularMenuSection } from './components/HorizontalMenuSection'
 import { LoadingSkeleton } from './components/LoadingSkeleton'
+import { Footer } from './components/Footer'
 import { Button } from './components/ui/button'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
@@ -476,6 +477,8 @@ function AppContent() {
             <LoadingSkeleton type="menu-grid" count={8} />
           </div>
         </main>
+
+        <Footer />
       </div>
     )
   }
@@ -510,6 +513,8 @@ function AppContent() {
             onDeleteItem={handleDeleteItem}
           />
         </main>
+
+        <Footer />
 
         {showLoginDialog && (
           <LoginDialog 
@@ -637,6 +642,8 @@ function AppContent() {
           </div>
         )}
       </main>
+
+      <Footer />
 
       {/* Floating Action Button - only show for non-admin users */}
       {!safeIsAdmin && (
