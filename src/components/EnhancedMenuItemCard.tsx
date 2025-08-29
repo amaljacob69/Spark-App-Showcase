@@ -28,7 +28,7 @@ import {
 } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
-import { useKV } from '@github/spark/hooks'
+import { useKV } from '@/hooks/useKV'
 
 interface EnhancedMenuItemCardProps {
   item: MenuItem

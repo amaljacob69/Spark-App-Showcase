@@ -3,7 +3,7 @@ import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
 import { Textarea } from './ui/textarea'
-import { useKV } from '@github/spark/hooks'
+import { useKV } from '@/hooks/useKV'
 import { MenuItem } from '../App'
 import { 
   Download, 

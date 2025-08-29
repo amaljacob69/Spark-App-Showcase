@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { Badge } from './ui/badge'
-import { useKV } from '@github/spark/hooks'
+import { useKV } from '@/hooks/useKV'
 import { MenuItem, MenuType } from '../App'
 import { 
   TrendUp, 

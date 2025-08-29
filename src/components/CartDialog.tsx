@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useKV } from '@github/spark/hooks'
+import { useKV } from '@/hooks/useKV'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'

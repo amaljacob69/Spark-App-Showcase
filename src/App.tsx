@@ -1,6 +1,6 @@
 import { usePWA } from '@/hooks/usePWA'
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useKV } from '@github/spark/hooks'
+import { useKV } from './hooks/useKV'
 import { Header } from './components/Header'
 import { MenuGrid } from './components/MenuGrid'
 import { AdminPanel } from './components/AdminPanel'
@@ -846,8 +846,6 @@ function App() {
       {/* PWA Install Prompt and Status - Outside main content for global access */}
       <PWAInstallPrompt />
       <PWAStatusIndicator />
-    </ErrorBoundary>
-  )
     </ErrorBoundary>
   )
 }
