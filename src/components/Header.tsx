@@ -1,4 +1,4 @@
-import { ChefHat, UserCheck, SignOut, House, Snowflake, Package, Palette, ArrowLeft, ChartBar } from '@phosphor-icons/react'
+import { ChefHat, UserCheck, SignOut, House, Snowflake, Package, Palette } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { CategoryFilter } from './CategoryFilter'
 import { MenuTypeSelector } from './MenuTypeSelector'
@@ -19,8 +19,6 @@ interface HeaderProps {
   isDirectLink: boolean
   onSearch: (query: string) => void
   searchQuery: string
-  showBackToDashboard?: boolean
-  onBackToDashboard?: () => void
 }
 
 export function Header({ 
@@ -34,9 +32,7 @@ export function Header({
   onMenuTypeSelect,
   isDirectLink,
   onSearch,
-  searchQuery,
-  showBackToDashboard = false,
-  onBackToDashboard
+  searchQuery
 }: HeaderProps) {
 
   const getMenuTypeIcon = (type: MenuType) => {
@@ -90,30 +86,6 @@ export function Header({
             <div className="flex items-center gap-2 flex-shrink-0">
               {isAdmin ? (
                 <div className="flex items-center gap-2 sm:gap-3">
-                  {showBackToDashboard && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={onBackToDashboard}
-                      className="gap-2 px-3 sm:px-4 touch-target-sm hover-lift transition-all duration-200"
-                    >
-                      <ArrowLeft size={14} className="sm:size-4" />
-                      <span className="hidden sm:inline">Back to Menu</span>
-                      <span className="sm:hidden">Menu</span>
-                    </Button>
-                  )}
-                  {!showBackToDashboard && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={onAdminLogin}
-                      className="gap-2 px-3 sm:px-4 touch-target-sm hover-lift transition-all duration-200"
-                    >
-                      <ChartBar size={14} className="sm:size-4" />
-                      <span className="hidden sm:inline">Dashboard</span>
-                      <span className="sm:hidden">Dash</span>
-                    </Button>
-                  )}
                   <div className="hidden lg:flex items-center gap-2 text-sm text-muted-foreground px-2 py-1 bg-green-50 rounded-md border border-green-200">
                     <UserCheck size={16} className="text-green-600" />
                     <span className="text-green-700">Admin Access</span>

@@ -3,7 +3,7 @@ import { useKV } from '@github/spark/hooks'
 import { Header } from './components/Header'
 import { MenuGrid } from './components/MenuGrid'
 import { AdminPanel } from './components/AdminPanel'
-import { AdminDashboard } from './components/AdminDashboard'
+
 import { LoginDialog } from './components/LoginDialog'
 import { ThemePreview } from './components/ThemePreview'
 import { DietaryFilter, type DietaryPreference } from './components/DietaryFilter'
@@ -14,7 +14,6 @@ import { OffersSection } from './components/OffersSection'
 import { FeaturedMenuSection, PopularMenuSection } from './components/HorizontalMenuSection'
 import { LoadingSkeleton } from './components/LoadingSkeleton'
 import { Footer } from './components/Footer'
-import { Button } from './components/ui/button'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
 import { useTheme } from './hooks/useTheme'
@@ -275,7 +274,6 @@ function AppContent() {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [selectedDietaryFilters, setSelectedDietaryFilters] = useKV<DietaryPreference[]>('dietary-filters', [])
   const [showCartDialog, setShowCartDialog] = useState(false)
-  const [showAdminDashboard, setShowAdminDashboard] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
   // Cart functionality
@@ -303,7 +301,6 @@ function AppContent() {
     if (password === 'admin123') {
       setIsAdmin(true)
       setShowLoginDialog(false)
-      setShowAdminDashboard(true)
       toast.success('Admin access granted')
       return true
     } else {
@@ -314,7 +311,6 @@ function AppContent() {
 
   const handleAdminLogout = useCallback(() => {
     setIsAdmin(false)
-    setShowAdminDashboard(false)
     toast.success('Admin logged out')
   }, [setIsAdmin])
 
@@ -454,8 +450,7 @@ function AppContent() {
   const showHorizontalSections = !searchQuery && 
     (!selectedDietaryFilters || selectedDietaryFilters.length === 0) && 
     selectedCategory === 'all' && 
-    !safeIsAdmin && 
-    !showAdminDashboard
+    !safeIsAdmin
 
   // Show loading state on first load
   if (isLoading) {
@@ -484,7 +479,7 @@ function AppContent() {
   }
 
   // Show Admin Dashboard if admin is logged in
-  if (safeIsAdmin && showAdminDashboard) {
+  if (safeIsAdmin) {
     return (
       <div className="min-h-screen bg-background safe-area-top safe-area-bottom">
         <ThemePreview menuType={safeSelectedMenuType} />
@@ -501,17 +496,23 @@ function AppContent() {
           isDirectLink={isDirectLink}
           onSearch={setSearchQuery}
           searchQuery={searchQuery}
-          showBackToDashboard={true}
-          onBackToDashboard={() => setShowAdminDashboard(false)}
         />
         
         <main className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
-          <AdminDashboard
-            items={safeMenuItems}
-            onAddItem={handleAddItem}
-            onEditItem={handleEditItem}
-            onDeleteItem={handleDeleteItem}
-          />
+          <div className="space-y-6">
+            <AdminPanel onAddItem={handleAddItem} />
+            
+            <MenuGrid 
+              items={filteredItems}
+              menuType={safeSelectedMenuType}
+              getItemPrice={getItemPrice}
+              isAdmin={safeIsAdmin}
+              onEditItem={handleEditItem}
+              onDeleteItem={handleDeleteItem}
+              searchQuery={searchQuery}
+              selectedCategory={selectedCategory}
+            />
+          </div>
         </main>
 
         <Footer />
@@ -542,7 +543,7 @@ function AppContent() {
       <ThemePreview menuType={safeSelectedMenuType} />
       <Header 
         isAdmin={safeIsAdmin}
-        onAdminLogin={() => safeIsAdmin ? setShowAdminDashboard(true) : setShowLoginDialog(true)}
+        onAdminLogin={() => safeIsAdmin ? {} : setShowLoginDialog(true)}
         onAdminLogout={handleAdminLogout}
         categories={categories}
         selectedCategory={selectedCategory}
@@ -626,18 +627,8 @@ function AppContent() {
           onAddToCart={!safeIsAdmin ? handleAddToCart : undefined}
         />
         
-        {safeIsAdmin && !showAdminDashboard && (
+        {safeIsAdmin && (
           <div className="mt-8 sm:mt-10 lg:mt-12 space-y-6">
-            <div className="flex items-center justify-center">
-              <Button
-                onClick={() => setShowAdminDashboard(true)}
-                variant="outline"
-                size="lg"
-                className="gap-2 hover-lift"
-              >
-                📊 Open Admin Dashboard
-              </Button>
-            </div>
             <AdminPanel onAddItem={handleAddItem} />
           </div>
         )}
