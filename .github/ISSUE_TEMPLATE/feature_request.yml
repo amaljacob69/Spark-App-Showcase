@@ -1,0 +1,124 @@
+name: Feature Request
+description: Suggest an idea for the Paradise Restaurant Menu System
+title: "[Feature]: "
+labels: ["enhancement", "feature-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please provide as much detail as possible about your idea.
+
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear description of what the problem is.
+      placeholder: I'm always frustrated when...
+    validations:
+      required: false
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+      placeholder: I would like to see...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: Feature Category
+      description: What area of the application does this feature relate to?
+      multiple: false
+      options:
+        - Menu Display & Navigation
+        - Search & Filtering
+        - Cart & Ordering
+        - Admin Panel
+        - PWA & Mobile Experience
+        - Performance & Analytics
+        - Social Media Integration
+        - Accessibility
+        - Multi-language Support
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      multiple: false
+      options:
+        - Nice to have
+        - Would be helpful
+        - Important
+        - Critical
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-type
+    attributes:
+      label: Who would benefit from this feature?
+      description: Select all that apply
+      multiple: true
+      options:
+        - Restaurant customers
+        - Restaurant staff/admin
+        - Mobile users
+        - Desktop users
+        - Accessibility users
+        - International users
+        - All users
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative solutions
+      description: Describe any alternative solutions or features you've considered.
+      placeholder: Alternatively, we could...
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context, screenshots, or examples about the feature request.
+      placeholder: This feature would be similar to...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation Considerations
+      description: Check any that apply to your feature request
+      options:
+        - label: This feature should work well on mobile devices
+        - label: This feature should work offline (PWA)
+        - label: This feature should be accessible to users with disabilities
+        - label: This feature should maintain fast performance
+        - label: This feature should work across all menu types (Non-AC, A/C, Take Away)
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

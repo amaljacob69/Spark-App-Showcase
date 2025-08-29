@@ -1,284 +1,260 @@
-# 🤝 Contributing to Paradise Family Restaurant
+# Contributing to Paradise Family Restaurant Menu System
 
-Thank you for your interest in contributing to Paradise Family Restaurant's digital menu system! This guide will help you get started with contributing to this project.
+Thank you for your interest in contributing to the Paradise Family Restaurant menu application! This document provides guidelines for contributing to this project.
 
-## 🍽️ Project Overview
+## 🤝 How to Contribute
 
-Paradise Family Restaurant & Bake Shop is a modern, mobile-first PWA menu application serving authentic Kerala, Arabic, and Chinese cuisine. The app features dynamic pricing for different dining contexts and a comprehensive admin panel for menu management.
+### Reporting Issues
 
-## 🚀 Quick Start
+1. **Check existing issues** first to avoid duplicates
+2. **Use the issue template** when creating new issues
+3. **Provide clear descriptions** with steps to reproduce
+4. **Include screenshots** for UI-related issues
+5. **Specify device/browser** information for compatibility issues
 
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-- Git
-- VS Code (recommended)
+### Submitting Changes
 
-### Setup
-```bash
-# Fork and clone the repository
-git clone https://github.com/YOUR_USERNAME/paradise-family-restaurant.git
-cd paradise-family-restaurant
+1. **Fork the repository**
+2. **Create a feature branch** from `main`
+3. **Make your changes** following our coding standards
+4. **Test thoroughly** on multiple devices
+5. **Submit a pull request** with clear description
 
-# Install dependencies
-npm install
+## 🎯 Development Guidelines
 
-# Start development server
-npm run dev
+### Code Style
 
-# Open in browser
-# http://localhost:5173
-```
+- **TypeScript**: Use strict typing, avoid `any` types
+- **React**: Use functional components with hooks
+- **CSS**: Use Tailwind utilities, custom CSS only when necessary
+- **Mobile-First**: Always consider mobile experience first
+- **Accessibility**: Ensure all features are accessible
 
-## 🎯 How to Contribute
+### Component Structure
 
-### 1. 🐛 Reporting Bugs
-- Use the [Bug Report template](.github/ISSUE_TEMPLATE/bug_report.md)
-- Include device/browser information
-- Specify which menu type is affected
-- Provide clear reproduction steps
+```typescript
+// Good component structure
+import { useState, useCallback } from 'react'
+import { Button } from '@/components/ui/button'
 
-### 2. ✨ Suggesting Features  
-- Use the [Feature Request template](.github/ISSUE_TEMPLATE/feature_request.md)
-- Explain how it benefits customers or restaurant operations
-- Consider mobile-first design implications
-- Think about PWA/offline functionality
+interface ComponentProps {
+  title: string
+  onAction: () => void
+}
 
-### 3. 🔧 Code Contributions
+export function Component({ title, onAction }: ComponentProps) {
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const handleClick = useCallback(() => {
+    setIsLoading(true)
+    onAction()
+    setIsLoading(false)
+  }, [onAction])
 
-#### Branch Naming Convention
-```bash
-# Feature branches
-feature/add-dessert-category
-feature/improve-mobile-search
-
-# Bug fix branches  
-fix/cart-total-calculation
-fix/mobile-touch-responsiveness
-
-# Documentation branches
-docs/update-setup-guide
-docs/add-api-documentation
-```
-
-#### Commit Message Format
-```bash
-# Format: type(scope): description
-
-feat(menu): add dessert category with pricing tiers
-fix(cart): resolve quantity update bug on mobile  
-docs(readme): update installation instructions
-style(components): improve button hover states
-perf(images): optimize menu item photos
-```
-
-#### Pull Request Process
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test across devices (mobile priority)
-5. Update documentation if needed
-6. Submit PR with detailed description
-
-## 🎨 Design Guidelines
-
-### Mobile-First Approach
-- Design for mobile screens first (320px+)
-- Ensure touch targets are 44px minimum
-- Test on real devices when possible
-- Consider thumb navigation patterns
-
-### Theme Consistency
-- **Non-AC Theme**: Warm orange tones (cozy atmosphere)
-- **A/C Theme**: Cool blue tones (premium experience)  
-- **Takeaway Theme**: Fresh green tones (quick service)
-
-### Typography
-- **Headers**: Playfair Display (elegant, readable)
-- **Body**: Inter (clean, mobile-optimized)
-- **Sizes**: Responsive scale 14px-18px base
-
-### Component Standards
-- Use shadcn/ui components when possible
-- Follow existing component patterns
-- Ensure accessibility (WCAG AA)
-- Include loading and error states
-
-## 📱 Testing Requirements
-
-### Device Testing Matrix
-| Device Type | Priority | Browsers |
-|------------|----------|----------|
-| **Mobile Phones** | 🔴 Critical | Chrome, Safari |
-| **Tablets** | 🟡 Medium | Chrome, Safari |  
-| **Desktop** | 🟢 Low | Chrome, Safari, Firefox |
-
-### Testing Checklist
-- [ ] All three menu types work correctly
-- [ ] QR code access functions properly
-- [ ] Search and filters operate smoothly
-- [ ] Cart functionality works offline
-- [ ] Admin panel is secure and functional
-- [ ] PWA installation works
-- [ ] Performance remains optimal
-
-## 🏗️ Code Standards
-
-### File Organization
-```
-src/
-├── components/
-│   ├── ui/              # shadcn components (don't modify)
-│   ├── Header.tsx       # Main navigation
-│   ├── MenuGrid.tsx     # Menu item display
-│   └── ...
-├── hooks/               # Custom React hooks
-├── lib/                 # Utilities and configurations
-└── assets/              # Images, icons, media
-```
-
-### TypeScript Guidelines
-- Use strict type checking
-- Define interfaces for data structures
-- Avoid `any` types
-- Document complex type definitions
-
-### Component Guidelines
-```tsx
-// Good: Mobile-first responsive component
-const MenuCard = ({ item, menuType }: MenuCardProps) => {
   return (
-    <Card className="w-full touch-target themed-card">
-      <CardContent className="p-3 sm:p-4 lg:p-6">
-        {/* Mobile-optimized content */}
-      </CardContent>
-    </Card>
+    <Button onClick={handleClick} disabled={isLoading}>
+      {title}
+    </Button>
   )
 }
-
-// Good: Accessible button with proper touch target
-<Button 
-  className="touch-target w-full sm:w-auto"
-  aria-label="Add to cart"
->
-  Add to Cart
-</Button>
 ```
 
-### Performance Guidelines
-- Use React.memo() for expensive components
-- Implement lazy loading for images
-- Optimize bundle size with code splitting
-- Cache API responses appropriately
+### Testing Guidelines
 
-## 🔒 Security Guidelines
+- **Test on multiple screen sizes** (320px to 1920px)
+- **Test touch interactions** on mobile devices
+- **Verify PWA functionality** works correctly
+- **Check theme consistency** across all menu types
+- **Validate accessibility** with screen readers
 
-### Input Validation
-- Sanitize all user inputs
-- Validate menu item data structures
-- Check pricing ranges (0-10,000 INR)
-- Prevent XSS and injection attacks
+## 📱 Mobile-First Development
 
-### Admin Panel Security
-- Never log sensitive information
-- Validate admin permissions
-- Use secure session management
-- Implement rate limiting
+### Essential Considerations
 
-## 🌟 Restaurant-Specific Considerations
+1. **Touch Targets**: Minimum 44px height/width
+2. **Safe Areas**: Respect device notches and home indicators
+3. **Viewport**: Use proper viewport meta tag
+4. **Performance**: Optimize images and animations
+5. **Offline**: Ensure graceful offline behavior
 
-### Cuisine Categories
-- **Kerala Cuisine**: Traditional local dishes
-- **Arabic Cuisine**: Middle Eastern specialties  
-- **Chinese Cuisine**: Indo-Chinese favorites
-- **Bakery**: Fresh baked goods
+### Responsive Breakpoints
 
-### Pricing Structure
-```typescript
-// All items must have three price points
-interface MenuPricing {
-  'dinein-non-ac': number  // Base pricing
-  'dinein-ac': number      // Premium pricing (+10-20%)
-  'takeaway': number       // Discounted pricing (-10%)
+```css
+/* Mobile-first approach */
+.component {
+  /* Mobile styles (default) */
+  font-size: 14px;
+}
+
+@media (min-width: 640px) {
+  .component {
+    /* Small tablets and up */
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .component {
+    /* Desktop and up */
+    font-size: 18px;
+  }
 }
 ```
 
-### Dietary Filters
-- Vegetarian (🥬)
-- Egg (🥚) 
-- Chicken (🐔)
-- Meat (🥩)
-- Fish (🐟)
+## 🎨 Theme Development
 
-## 🎭 User Experience Priorities
+### Adding New Themes
 
-1. **Mobile Performance**: Fast loading on 3G/4G
-2. **Offline Functionality**: Browse menu without connection
-3. **Intuitive Navigation**: Easy food discovery
-4. **Visual Appeal**: Appetizing food presentation
-5. **Quick Actions**: Fast cart and ordering
+1. Define color palette in `src/index.css`
+2. Add theme class to body element
+3. Create themed components
+4. Test across all menu types
 
-## 📊 Performance Targets
+### Color Guidelines
 
-- **Lighthouse Score**: 90+ (all metrics)
-- **Load Time**: <2s on 3G
-- **Bundle Size**: <500KB initial
-- **Accessibility**: WCAG AA compliance
+- Use OKLCH color space for better consistency
+- Maintain WCAG AA contrast ratios (4.5:1 minimum)
+- Test colors with colorblind accessibility tools
 
-## 🤝 Community Guidelines
+## 🔧 Feature Development
 
-### Be Respectful
-- Welcome newcomers warmly
-- Provide constructive feedback
-- Help others learn and grow
-- Celebrate contributions
+### Menu System
 
-### Restaurant Context
-- Remember this serves real customers
-- Consider cultural sensitivity
-- Think about accessibility needs
-- Prioritize user experience
+- **Menu Items**: Use the `MenuItem` interface consistently
+- **Pricing**: Always handle all three price types
+- **Categories**: Ensure new categories work with filtering
+- **Images**: Optimize images for mobile (WebP preferred)
+
+### PWA Features
+
+- **Service Worker**: Update caching strategies for new features
+- **Manifest**: Keep app manifest current with features
+- **Offline**: Test offline functionality thoroughly
+
+## 🐛 Bug Fixes
+
+### Priority Levels
+
+1. **Critical**: App crashes, data loss, security issues
+2. **High**: Major feature broken, poor UX
+3. **Medium**: Minor feature issues, cosmetic problems
+4. **Low**: Enhancement requests, nice-to-have fixes
+
+### Bug Fix Process
+
+1. **Reproduce** the issue consistently
+2. **Identify root cause** before making changes
+3. **Fix minimally** - don't over-engineer
+4. **Test thoroughly** to avoid regressions
+5. **Document** the fix in commit messages
+
+## 📊 Performance Guidelines
+
+### Core Web Vitals Targets
+
+- **Largest Contentful Paint (LCP)**: < 2.5 seconds
+- **First Input Delay (FID)**: < 100 milliseconds
+- **Cumulative Layout Shift (CLS)**: < 0.1
+
+### Optimization Techniques
+
+- Use `React.memo` for expensive components
+- Implement proper loading states
+- Optimize images and assets
+- Minimize bundle size
+- Use efficient data structures
+
+## 🔒 Security Considerations
+
+### Input Validation
+
+```typescript
+// Always sanitize user input
+const sanitizeInput = (input: string): string => {
+  return input.trim().replace(/[<>]/g, '')
+}
+```
+
+### Admin Features
+
+- Validate admin permissions before operations
+- Use secure password practices
+- Implement rate limiting
+- Log security-related events
+
+## 📝 Documentation
+
+### Code Comments
+
+```typescript
+/**
+ * Calculates the price for a menu item based on menu type
+ * @param item - Menu item with pricing information
+ * @param menuType - Type of menu (dinein-non-ac, dinein-ac, takeaway)
+ * @returns Formatted price with currency symbol
+ */
+export function formatPrice(item: MenuItem, menuType: MenuType): string {
+  // Implementation details...
+}
+```
+
+### README Updates
+
+- Keep feature lists current
+- Update screenshots when UI changes
+- Maintain accurate setup instructions
+- Include new configuration options
+
+## 🚀 Release Process
+
+### Version Management
+
+- Use semantic versioning (MAJOR.MINOR.PATCH)
+- Update version in `package.json`
+- Create release notes
+- Tag releases in Git
+
+### Deployment Checklist
+
+- [ ] All tests passing
+- [ ] Performance benchmarks met
+- [ ] Mobile testing complete
+- [ ] PWA functionality verified
+- [ ] Security review completed
+
+## 💡 Enhancement Ideas
+
+### Potential Contributions
+
+- **Multi-language support** (Malayalam, Hindi, Arabic)
+- **Voice ordering** integration
+- **Table booking** system
+- **Loyalty program** features
+- **Nutritional information** display
+- **Allergen warnings** system
 
 ## 📞 Getting Help
 
-### Development Questions
-- Check existing issues first
-- Create detailed bug reports
-- Include code snippets
-- Test on mobile devices
+### Resources
 
-### Design Questions  
-- Reference existing patterns
-- Consider mobile-first approach
-- Think about theme consistency
-- Ask about accessibility
+- **React Documentation**: https://react.dev
+- **Tailwind CSS**: https://tailwindcss.com
+- **TypeScript**: https://typescriptlang.org
+- **PWA Guide**: https://web.dev/progressive-web-apps/
+
+### Contact
+
+- Create an issue for technical questions
+- Use discussions for feature ideas
+- Check existing documentation first
 
 ## 🏆 Recognition
 
 Contributors will be:
-- Listed in project README
-- Credited in release notes  
-- Invited to provide feedback on future features
-- Recognized in the Paradise Restaurant community
-
-## 📋 Review Process
-
-### Code Review Criteria
-- Mobile responsiveness
-- Performance impact
-- Security considerations  
-- Design consistency
-- Documentation updates
-
-### Review Timeline
-- Initial feedback: 1-2 days
-- Detailed review: 3-5 days
-- Final approval: 1-2 days
+- Listed in the project README
+- Credited in release notes
+- Invited to join the maintainers team (for significant contributions)
 
 ---
 
-## 🙏 Thank You!
-
-Your contributions help Paradise Family Restaurant provide an exceptional digital dining experience. Every bug fix, feature, and improvement makes a difference for our customers enjoying authentic Kerala, Arabic, and Chinese cuisine.
-
-**🍛 Happy coding and bon appétit! 🥖**
+Thank you for helping make Paradise Family Restaurant's digital menu system better! 🍴
