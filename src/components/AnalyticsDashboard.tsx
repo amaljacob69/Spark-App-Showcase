@@ -4,7 +4,7 @@ import { Button } from './ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { Badge } from './ui/badge'
 import { useKV } from '@/hooks/useKV'
-import { MenuItem, MenuType } from '../App'
+import { MenuItem, MenuType } from '@/types'
 import { 
   TrendUp, 
   TrendDown, 

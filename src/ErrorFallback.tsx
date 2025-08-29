@@ -1,44 +1,65 @@
-import { Alert, AlertTitle, AlertDescription } from "./components/ui/alert";
-import { Button } from "./components/ui/button";
-import { Warning, ArrowClockwise } from "@phosphor-icons/react";
+import { Button } from '@/components/ui/button'
 
 interface ErrorFallbackProps {
-  error: Error;
-  resetErrorBoundary: () => void;
+  error?: Error
+  resetErrorBoundary?: () => void
 }
 
-export const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
-  // When encountering an error in the development mode, rethrow it and don't display the boundary.
-  // The parent UI will take care of showing a more helpful dialog.
-  if (import.meta.env.DEV) throw error;
-
+export function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <Alert variant="destructive" className="mb-6">
-          <Warning className="h-4 w-4" />
-          <AlertTitle>This spark has encountered a runtime error</AlertTitle>
-          <AlertDescription>
-            Something unexpected happened while running the application. The error details are shown below. Contact the spark author and let them know about this issue.
-          </AlertDescription>
-        </Alert>
-        
-        <div className="bg-card border rounded-lg p-4 mb-6">
-          <h3 className="font-semibold text-sm text-muted-foreground mb-2">Error Details:</h3>
-          <pre className="text-xs text-destructive bg-muted/50 p-3 rounded border overflow-auto max-h-32">
-            {error.message}
-          </pre>
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="max-w-md mx-auto text-center p-6">
+        <div className="mb-4">
+          <h2 className="text-2xl font-bold text-foreground mb-2">
+            Oops! Something went wrong
+          </h2>
+          <p className="text-muted-foreground mb-4">
+            We apologize for the inconvenience. Please try refreshing the page.
+          </p>
+          {error && (
+            <details className="text-left bg-muted p-3 rounded-md mb-4">
+              <summary className="cursor-pointer font-medium mb-2">
+                Error Details
+              </summary>
+              <pre className="text-sm text-destructive whitespace-pre-wrap">
+                {error.message}
+              </pre>
+            </details>
+          )}
         </div>
         
-        <Button 
-          onClick={resetErrorBoundary} 
-          className="w-full"
-          variant="outline"
-        >
-          <ArrowClockwise className="h-4 w-4 mr-2" />
-          Try Again
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Button 
+            onClick={() => window.location.reload()}
+            variant="default"
+            className="flex-1 sm:flex-none"
+          >
+            Refresh Page
+          </Button>
+          
+          {resetErrorBoundary && (
+            <Button 
+              onClick={resetErrorBoundary}
+              variant="outline"
+              className="flex-1 sm:flex-none"
+            >
+              Try Again
+            </Button>
+          )}
+        </div>
+        
+        <div className="mt-6 pt-4 border-t border-border">
+          <p className="text-sm text-muted-foreground">
+            If this problem persists, please contact us at{' '}
+            <a 
+              href="mailto:support@paradise-family.com" 
+              className="text-primary hover:underline"
+            >
+              support@paradise-family.com
+            </a>
+          </p>
+        </div>
       </div>
     </div>
-  );
+  )
 }

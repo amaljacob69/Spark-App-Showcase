@@ -7,7 +7,7 @@ import {
   subscribeToMenuItems,
   initializeSampleData
 } from '../lib/firebaseService'
-import { MenuItem } from '../App'
+import { MenuItem } from '@/types'
 import { toast } from 'sonner'
 
 interface UseFirebaseMenuReturn {

@@ -4,7 +4,7 @@ import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { AddItemDialog } from './AddItemDialog'
 import { QRCodeManager } from './QRCodeManager'
-import { MenuItem } from '../App'
+import { MenuItem } from '@/types'
 
 interface AdminPanelProps {
   onAddItem: (item: Omit<MenuItem, 'id'>) => void

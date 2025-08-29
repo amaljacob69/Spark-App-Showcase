@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { MenuType } from '../App'
+import { MenuType } from '@/types'
 import { menuThemes } from '../hooks/useTheme'
 import { Card } from './ui/card'
 import { cn } from '@/lib/utils'

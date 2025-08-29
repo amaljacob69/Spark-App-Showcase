@@ -10,7 +10,7 @@ import { Textarea } from './ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { Switch } from './ui/switch'
 import { Percent, Clock, Star, Gift, Plus, Edit2, Trash2, Calendar, Tag } from '@phosphor-icons/react'
-import { MenuType } from '../App'
+import { MenuType } from '@/types'
 import { toast } from 'sonner'
 
 export interface SpecialOffer {

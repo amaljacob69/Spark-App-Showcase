@@ -6,8 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Separator } from './ui/separator'
 import { HorizontalScroll } from './HorizontalScroll'
 import { cn } from '@/lib/utils'
-
-export type DietaryPreference = 'vegetarian' | 'egg' | 'chicken' | 'meat' | 'fish'
+import { DietaryPreference } from '@/types'
 
 interface DietaryFilterProps {
   selectedFilters: DietaryPreference[]

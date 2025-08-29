@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { MenuItem, MenuType } from '../App'
+import { MenuItem, MenuType } from '@/types'
 import { MenuItemCard } from './MenuItemCard'
 import { HorizontalScroll } from './HorizontalScroll'
 import { Button } from './ui/button'

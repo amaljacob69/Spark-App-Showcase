@@ -3,7 +3,7 @@ import { Snowflake, Package, Link, Check, QrCode, Thermometer } from '@phosphor-
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { toast } from 'sonner'
-import { MenuType } from '../App'
+import { MenuType } from '@/types'
 
 interface QRCodeManagerProps {
   isVisible?: boolean

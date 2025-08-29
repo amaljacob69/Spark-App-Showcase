@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { MenuItem, MenuType } from '../App'
-import { DietaryPreference } from './DietaryFilter'
+import { MenuItem, MenuType, DietaryPreference } from '@/types'
 import { Card, CardContent } from './ui/card'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'

@@ -3,7 +3,7 @@ import { Button } from './ui/button'
 import { CategoryFilter } from './CategoryFilter'
 import { MenuTypeSelector } from './MenuTypeSelector'
 import { SearchBar } from './SearchBar'
-import { MenuType } from '../App'
+import { MenuType } from '@/types'
 import { toast } from 'sonner'
 import { menuThemes } from '../hooks/useTheme'
 

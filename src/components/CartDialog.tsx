@@ -15,7 +15,8 @@ import {
   Receipt,
   X
 } from '@phosphor-icons/react'
-import { MenuItem, MenuType, getItemPrice } from '../App'
+import { MenuItem, MenuType } from '@/types'
+import { getItemPrice } from '@/lib/menuUtils'
 import { formatCurrency, formatAmountWithGST } from '@/lib/currency'
 
 export interface CartItem extends MenuItem {

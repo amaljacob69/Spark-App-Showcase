@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { MenuItem } from '../App'
-import { DietaryPreference } from './DietaryFilter'
+import { MenuItem, DietaryPreference } from '@/types'
 import {
   Dialog,
   DialogContent,

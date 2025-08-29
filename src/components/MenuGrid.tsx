@@ -1,5 +1,5 @@
 import { ChefHat } from '@phosphor-icons/react'
-import { MenuItem, MenuType } from '../App'
+import { MenuItem, MenuType } from '@/types'
 import { MenuItemCard } from './MenuItemCard'
 
 interface MenuGridProps {

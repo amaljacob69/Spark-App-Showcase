@@ -15,7 +15,7 @@ import {
   Calendar,
   Filter
 } from '@phosphor-icons/react'
-import { MenuItem } from '../App'
+import { MenuItem } from '@/types'
 
 interface MenuAnalyticsProps {
   items: MenuItem[]

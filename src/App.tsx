@@ -7,7 +7,7 @@ import { AdminPanel } from '@/components/AdminPanel'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { LoginDialog } from '@/components/LoginDialog'
 import { ThemePreview } from '@/components/ThemePreview'
-import { DietaryFilter, type DietaryPreference } from '@/components/DietaryFilter'
+import { DietaryFilter } from '@/components/DietaryFilter'
 import { AdvancedSearch } from '@/components/AdvancedSearch'
 import { FloatingActionButton } from '@/components/FloatingActionButton'
 import { CartDialog, useCart } from '@/components/CartDialog'
@@ -28,28 +28,10 @@ import performanceMonitor from '@/lib/performance'
 import config from '@/config/environment'
 import '@/lib/errorHandler' // Initialize global error handling
 
-export interface MenuItem {
-  id: string
-  name: string
-  description: string
-  prices: {
-    'dinein-non-ac': number
-    'dinein-ac': number
-    'takeaway': number
-  }
-  category: string
-  available: boolean
-  image?: string
-  dietary: DietaryPreference[]
-}
+import type { MenuItem, MenuType, MenuPricing, DietaryPreference } from '@/types'
+import { getItemPrice } from '@/lib/menuUtils'
 
-export type MenuType = 'dinein-non-ac' | 'dinein-ac' | 'takeaway'
-
-export interface MenuPricing {
-  'dinein-non-ac': number
-  'dinein-ac': number
-  'takeaway': number
-}
+export type { MenuItem, MenuType, MenuPricing, DietaryPreference }
 
 const sampleMenuItems: MenuItem[] = [
   // Kerala Specialties
@@ -267,12 +249,7 @@ const sampleMenuItems: MenuItem[] = [
   }
 ]
 
-const getItemPrice = (item: MenuItem, menuType: MenuType): number => {
-  if (!item?.prices || typeof item.prices[menuType] !== 'number' || isNaN(item.prices[menuType])) {
-    return 0
-  }
-  return item.prices[menuType]
-}
+
 
 function AppContent() {
   const [isAdmin, setIsAdmin] = useKV<boolean>("is-admin", false)
@@ -828,6 +805,6 @@ function App() {
   )
 }
 
-export { getItemPrice }
+export { getItemPrice } from '@/lib/menuUtils'
 
 export default App

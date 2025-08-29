@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 export default defineConfig({
-  base: '/paradise-restaurant-menu/',
+  base: './',
   plugins: [
     react(),
     VitePWA({
@@ -18,16 +18,16 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
-        scope: '/paradise-restaurant-menu/',
-        start_url: '/paradise-restaurant-menu/',
+        scope: './',
+        start_url: './',
         icons: [
           {
-            src: '/paradise-restaurant-menu/icons/pwa-192x192.png',
+            src: '/icons/pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/paradise-restaurant-menu/icons/pwa-512x512.png',
+            src: '/icons/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }
@@ -38,22 +38,22 @@ export default defineConfig({
             name: 'Non-AC Menu',
             short_name: 'Non-AC',
             description: 'View Non-AC dining menu',
-            url: '/paradise-restaurant-menu/?menu=dinein-non-ac',
-            icons: [{ src: '/paradise-restaurant-menu/icons/pwa-96x96.png', sizes: '96x96' }]
+            url: '/?menu=dinein-non-ac',
+            icons: [{ src: '/icons/pwa-96x96.png', sizes: '96x96' }]
           },
           {
             name: 'A/C Menu',
             short_name: 'A/C',
             description: 'View A/C dining menu', 
-            url: '/paradise-restaurant-menu/?menu=dinein-ac',
-            icons: [{ src: '/paradise-restaurant-menu/icons/pwa-96x96.png', sizes: '96x96' }]
+            url: '/?menu=dinein-ac',
+            icons: [{ src: '/icons/pwa-96x96.png', sizes: '96x96' }]
           },
           {
             name: 'Take Away',
             short_name: 'Takeaway',
             description: 'View take away menu',
-            url: '/paradise-restaurant-menu/?menu=takeaway',
-            icons: [{ src: '/paradise-restaurant-menu/icons/pwa-96x96.png', sizes: '96x96' }]
+            url: '/?menu=takeaway',
+            icons: [{ src: '/icons/pwa-96x96.png', sizes: '96x96' }]
           }
         ]
       },

@@ -1,6 +1,6 @@
 import { House, Snowflake, Package, Palette } from '@phosphor-icons/react'
 import { Button } from './ui/button'
-import { MenuType } from '../App'
+import { MenuType } from '@/types'
 import { menuThemes } from '../hooks/useTheme'
 import { HorizontalScroll } from './HorizontalScroll'
 import { cn } from '@/lib/utils'

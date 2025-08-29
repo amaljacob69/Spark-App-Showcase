@@ -12,7 +12,7 @@ import {
   serverTimestamp
 } from 'firebase/firestore'
 import { db } from './firebase'
-import { MenuItem } from '../App'
+import { MenuItem } from '@/types'
 
 const COLLECTION_NAME = 'menuItems'
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { MenuType } from '../App'
+import { MenuType } from '../types'
 
 export const menuThemes = {
   'dinein-non-ac': {
