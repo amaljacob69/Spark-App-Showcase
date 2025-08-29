@@ -6,7 +6,7 @@ const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/src/main.tsx',
-  '/src/main.css',
+  '/src/index.css',
   '/manifest.json',
   'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap'
 ]
