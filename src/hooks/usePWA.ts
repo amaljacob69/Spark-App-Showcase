@@ -20,6 +20,9 @@ export interface PWAHookReturn {
   isInstalled: boolean
   isInstallable: boolean
   isOnline: boolean
+  isIOS: boolean
+  isAndroid: boolean
+  isMobile: boolean
   installApp: () => Promise<void>
   updateAvailable: boolean
   updateApp: () => Promise<void>
@@ -32,6 +35,16 @@ export function usePWA(): PWAHookReturn {
   const [installPrompt, setInstallPrompt] = useState<PWAInstallPrompt | null>(null)
   const [updateAvailable, setUpdateAvailable] = useState(false)
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null)
+  
+  // Platform detection
+  const [platform] = useState(() => {
+    const userAgent = navigator.userAgent.toLowerCase()
+    const isIOS = /iphone|ipad|ipod/.test(userAgent)
+    const isAndroid = /android/.test(userAgent)
+    const isMobile = isIOS || isAndroid
+    
+    return { isIOS, isAndroid, isMobile }
+  })
 
   // Check if app is already installed
   useEffect(() => {
@@ -145,16 +158,34 @@ export function usePWA(): PWAHookReturn {
   }, [])
 
   const installApp = useCallback(async () => {
-    if (!installPrompt) {
-      // For iOS Safari, show instructions
-      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        toast.info('📱 To install: Tap Share → Add to Home Screen', {
-          duration: 8000
-        })
-        return
-      }
+    // Handle iOS install instructions
+    if (platform.isIOS) {
+      const isInSafari = /safari/.test(navigator.userAgent.toLowerCase()) && !/chrome|crios|fxios/.test(navigator.userAgent.toLowerCase())
       
-      toast.error('Installation not available')
+      if (isInSafari) {
+        toast.success('🍎 Install Instructions', {
+          description: '1. Tap the Share button (📤)\n2. Scroll and tap "Add to Home Screen"\n3. Tap "Add" to install!',
+          duration: 10000,
+        })
+      } else {
+        toast.info('📱 To install on iOS:', {
+          description: 'Please open this website in Safari browser, then follow the installation steps.',
+          duration: 8000,
+        })
+      }
+      return
+    }
+    
+    // Handle Android/Chrome install
+    if (!installPrompt) {
+      if (platform.isAndroid) {
+        toast.info('📱 To install on Android:', {
+          description: 'Open Chrome browser → Menu (⋮) → "Add to Home screen"',
+          duration: 8000,
+        })
+      } else {
+        toast.error('Installation not available on this browser')
+      }
       return
     }
 
@@ -163,17 +194,20 @@ export function usePWA(): PWAHookReturn {
       const { outcome } = await installPrompt.userChoice
       
       if (outcome === 'accepted') {
-        toast.success('🎉 Paradise Restaurant app installed successfully!')
+        toast.success('🎉 Paradise Restaurant app installed successfully!', {
+          description: 'You can now access the app from your home screen!',
+          duration: 5000,
+        })
         setIsInstallable(false)
         setInstallPrompt(null)
       } else {
-        toast.info('Installation cancelled')
+        toast.info('Installation cancelled - you can install anytime later!')
       }
     } catch (error) {
       console.error('Installation failed:', error)
-      toast.error('Installation failed. Please try again.')
+      toast.error('Installation failed. Please try again or use your browser menu.')
     }
-  }, [installPrompt])
+  }, [installPrompt, platform])
 
   const updateApp = useCallback(async () => {
     if (!registration) return
@@ -200,6 +234,9 @@ export function usePWA(): PWAHookReturn {
     isInstalled,
     isInstallable,
     isOnline,
+    isIOS: platform.isIOS,
+    isAndroid: platform.isAndroid,
+    isMobile: platform.isMobile,
     installApp,
     updateAvailable,
     updateApp

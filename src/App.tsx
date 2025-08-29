@@ -16,6 +16,7 @@ import { FeaturedMenuSection, PopularMenuSection } from './components/Horizontal
 import { LoadingSkeleton } from './components/LoadingSkeleton'
 import { Footer } from './components/Footer'
 import { PWAInstallPrompt, PWAStatusIndicator } from './components/PWAInstallPrompt'
+import { PWAFloatingNotification } from './components/PWAFloatingNotification'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
 import { useTheme } from './hooks/useTheme'
@@ -834,6 +835,7 @@ function AppContent() {
       {/* PWA Install Prompt and Status */}
       <PWAInstallPrompt />
       <PWAStatusIndicator />
+      <PWAFloatingNotification />
     </div>
   )
 }
@@ -846,6 +848,7 @@ function App() {
       {/* PWA Install Prompt and Status - Outside main content for global access */}
       <PWAInstallPrompt />
       <PWAStatusIndicator />
+      <PWAFloatingNotification />
     </ErrorBoundary>
   )
 }
