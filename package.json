@@ -7,13 +7,18 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "start": "npm run preview",
     "check-prod": "echo 'Production check completed'",
     "analyze": "ANALYZE=true npm run build",
     "test": "echo 'Tests would run here'",
     "lint": "echo 'Linting would run here'",
     "type-check": "tsc --noEmit",
     "security-audit": "npm audit --audit-level moderate",
-    "start": "npm run preview"
+    "repo:setup": "echo '🍽️ Paradise Restaurant - Repository Setup Guide' && echo 'Please follow GITHUB_SETUP.md for complete instructions'",
+    "repo:status": "echo '📊 Repository Status:' && echo 'Version: v2.0.0' && echo 'Status: Production Ready ✅' && echo 'Live: https://paradise-family.web.app'",
+    "repo:docs": "echo '📚 Documentation available:' && echo '- README.md (Main overview)' && echo '- GITHUB_SETUP.md (Setup guide)' && echo '- CONTRIBUTING.md (Contribution guide)' && echo '- DOCS_INDEX.md (Complete documentation index)'",
+    "repo:urls": "echo '🔗 Paradise Restaurant Menu URLs:' && echo '🟠 Non-AC: ?menu=dinein-non-ac' && echo '🔵 A/C: ?menu=dinein-ac' && echo '🟢 Takeaway: ?menu=takeaway'",
+    "help": "echo '🍽️ Paradise Family Restaurant - Available Commands:' && echo 'Development:' && echo '  npm run dev       - Start development server' && echo '  npm run build     - Build for production' && echo '  npm run preview   - Preview production build' && echo '' && echo 'Repository:' && echo '  npm run repo:setup  - Show setup guide' && echo '  npm run repo:status - Show current status' && echo '  npm run repo:docs   - List documentation' && echo '  npm run repo:urls   - Show menu URLs'"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.0.0",

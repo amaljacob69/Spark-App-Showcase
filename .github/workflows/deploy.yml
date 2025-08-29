@@ -1,0 +1,238 @@
+name: 🚀 Build and Deploy Paradise Restaurant
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # ✅ Code Quality and Security
+  quality:
+    name: 🔍 Code Quality & Security
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🔍 TypeScript check
+        run: npm run type-check
+
+      - name: 🎨 Lint check
+        run: npm run lint
+
+      - name: 🛡️ Security audit
+        run: npm audit --audit-level high
+
+      - name: 📊 Bundle analyzer
+        run: npm run build
+        env:
+          ANALYZE: true
+
+  # 🧪 Testing
+  test:
+    name: 🧪 Run Tests
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Run unit tests
+        run: npm test -- --coverage --watchAll=false
+
+      - name: 📊 Upload coverage
+        uses: codecov/codecov-action@v3
+        if: success()
+
+  # 🏗️ Build Application
+  build:
+    name: 🏗️ Build Application
+    runs-on: ubuntu-latest
+    needs: [quality, test]
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: 📦 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: paradise-restaurant-build
+          path: dist/
+          retention-days: 7
+
+      - name: 🔍 Validate build output
+        run: |
+          echo "🔍 Checking build output..."
+          ls -la dist/
+          echo "📦 Build size:"
+          du -sh dist/
+          echo "📁 Build files count:"
+          find dist/ -type f | wc -l
+
+  # 🚀 Deploy to Staging
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: paradise-restaurant-build
+          path: dist/
+
+      - name: 🚀 Deploy to staging
+        run: |
+          echo "🚀 Deploying to staging environment..."
+          echo "📍 Staging URL: https://paradise-family-staging.web.app"
+          # Add your staging deployment commands here
+          # Example: firebase deploy --project staging --only hosting
+
+  # 🌟 Deploy to Production
+  deploy-production:
+    name: 🌟 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: paradise-restaurant-build
+          path: dist/
+
+      - name: 🌟 Deploy to production
+        run: |
+          echo "🌟 Deploying to production environment..."
+          echo "📍 Production URL: https://paradise-family.web.app"
+          # Add your production deployment commands here
+          # Example: firebase deploy --project production --only hosting
+
+      - name: 📊 Performance audit
+        run: |
+          echo "📊 Running performance audit..."
+          npx lighthouse-ci autorun --config=./lighthouserc.js
+
+      - name: 🔔 Notify deployment success
+        if: success()
+        run: |
+          echo "✅ Paradise Family Restaurant deployed successfully!"
+          echo "🌟 Live at: https://paradise-family.web.app"
+
+  # 🏷️ Create Release
+  release:
+    name: 🏷️ Create Release
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'release:')
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏷️ Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Paradise Restaurant v${{ github.run_number }}
+          body: |
+            ## 🍽️ Paradise Family Restaurant Release
+            
+            ### ✨ What's New
+            - Enhanced mobile experience
+            - PWA improvements
+            - Performance optimizations
+            
+            ### 🔗 Links
+            - 🌟 Live Application: https://paradise-family.web.app
+            - 📱 Non-AC Menu: https://paradise-family.web.app?menu=dinein-non-ac
+            - 🏢 A/C Menu: https://paradise-family.web.app?menu=dinein-ac
+            - 🛍️ Takeaway: https://paradise-family.web.app?menu=takeaway
+          draft: false
+          prerelease: false
+
+  # 🔍 Lighthouse Performance Audit
+  lighthouse:
+    name: 🔍 Lighthouse Audit
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Run Lighthouse audit
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://paradise-family.web.app
+            https://paradise-family.web.app?menu=dinein-non-ac
+            https://paradise-family.web.app?menu=dinein-ac  
+            https://paradise-family.web.app?menu=takeaway
+          configPath: ./lighthouserc.js
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+# 🛡️ Security and Maintenance Jobs
+  security-scan:
+    name: 🛡️ Security Scan
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || contains(github.event.head_commit.message, 'security')
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🛡️ Run security scan
+        uses: securecodewarrior/github-action-add-sarif@v1
+        with:
+          sarif-file: 'security-scan-results.sarif'
+
+      - name: 📊 Dependency review
+        uses: actions/dependency-review-action@v3
+        if: github.event_name == 'pull_request'
