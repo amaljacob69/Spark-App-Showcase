@@ -112,12 +112,25 @@ export function CategoryFilter({ categories, selectedCategory, onCategorySelect 
             <span>{categories.length}</span>
           </div>
         </h3>
+        
+        {/* Scroll hint for mobile and tablet users */}
+        <div className="mt-2 flex items-center justify-center sm:justify-start">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="flex gap-1">
+              <div className="w-1 h-1 bg-primary rounded-full animate-pulse" />
+              <div className="w-1 h-1 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+              <div className="w-1 h-1 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+            </div>
+            <span>Scroll horizontally to browse all categories</span>
+          </div>
+        </div>
       </div>
 
       {/* Enhanced category buttons with horizontal scroll */}
       <HorizontalScroll
         showIndicators={true}
         showArrows={false}
+        showScrollBar={true}
         cardWidth={120}
         gap={12}
         itemCount={categories.length}
