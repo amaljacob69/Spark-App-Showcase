@@ -63,62 +63,77 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
     <>
       <Card className={cn(
         "group overflow-hidden themed-card themed-hover theme-transition hover-glow",
-        "border-2 border-transparent hover:border-primary/20",
+        "border-2 transition-all duration-300 rounded-xl",
+        "shadow-sm hover:shadow-xl",
+        "bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-sm",
+        "hover:border-primary/30 border-border/60",
         !item.available && "opacity-60 grayscale"
       )}>
-        <CardContent className="p-4 sm:p-5 lg:p-6">
+        <CardContent className="p-5 sm:p-6 lg:p-7">
           {/* Header section with title and price */}
-          <div className="flex justify-between items-start mb-3 sm:mb-4 gap-3">
+          <div className="flex justify-between items-start mb-4 gap-4">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-base sm:text-lg lg:text-xl text-foreground mb-2 break-words leading-tight text-balance">
+              <h3 className="font-display font-bold text-lg sm:text-xl lg:text-2xl text-foreground mb-3 break-words leading-tight text-balance">
                 {item.name}
               </h3>
-              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed break-words line-clamp-3">
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed break-words line-clamp-2 font-medium opacity-90">
                 {item.description}
               </p>
             </div>
             <div className="flex-shrink-0 text-right">
-              <div className="font-bold text-accent text-xl sm:text-2xl drop-shadow-sm">
-                {formatCurrency(item.prices ? getItemPrice(item, menuType) : 0)}
+              <div className="relative">
+                <div className="font-display font-bold text-primary text-2xl sm:text-3xl lg:text-4xl drop-shadow-lg">
+                  {formatCurrency(item.prices ? getItemPrice(item, menuType) : 0)}
+                </div>
+                <div className="absolute -inset-1 bg-primary/10 rounded-lg blur-sm -z-10" />
               </div>
               {isAdmin && (
-                <div className="text-xs text-muted-foreground mt-1 space-y-0.5">
-                  <div>A/C: {formatCurrency(item.prices ? item.prices['dinein-ac'] : 0)}</div>
-                  <div>Non-A/C: {formatCurrency(item.prices ? item.prices['dinein-non-ac'] : 0)}</div>
-                  <div>Takeaway: {formatCurrency(item.prices ? item.prices['takeaway'] : 0)}</div>
+                <div className="text-xs text-muted-foreground mt-2 space-y-1 bg-muted/50 rounded-lg p-2 backdrop-blur-sm">
+                  <div className="flex justify-between">
+                    <span className="font-medium">A/C:</span>
+                    <span className="font-mono">{formatCurrency(item.prices ? item.prices['dinein-ac'] : 0)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Non-A/C:</span>
+                    <span className="font-mono">{formatCurrency(item.prices ? item.prices['dinein-non-ac'] : 0)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Takeaway:</span>
+                    <span className="font-mono">{formatCurrency(item.prices ? item.prices['takeaway'] : 0)}</span>
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
           {/* Meta information section */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {/* Category and availability badges */}
             <div className="flex items-center gap-2 flex-wrap">
               <Badge 
                 variant="secondary"
-                className="text-xs font-medium px-2 py-1"
+                className="text-xs font-semibold px-3 py-1.5 rounded-full bg-gradient-to-r from-secondary to-secondary/80 border border-border/50"
               >
                 {item.category}
               </Badge>
               <Badge 
                 variant={item.available ? "default" : "secondary"}
                 className={cn(
-                  "text-xs font-medium px-2 py-1",
+                  "text-xs font-semibold px-3 py-1.5 rounded-full",
                   item.available 
-                    ? "bg-green-100 text-green-800 border-green-200 hover:bg-green-200" 
-                    : "bg-gray-100 text-gray-600 border-gray-200"
+                    ? "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-green-500/25 shadow-lg border-green-400" 
+                    : "bg-gradient-to-r from-gray-400 to-gray-500 text-white"
                 )}
               >
-                {item.available ? 'Available' : 'Unavailable'}
+                {item.available ? '✨ Available' : '⏸️ Unavailable'}
               </Badge>
             </div>
             
             {/* Dietary preferences indicators */}
             {item.dietary && item.dietary.length > 0 && (
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-muted-foreground font-medium">Contains:</span>
-                <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="text-sm text-muted-foreground font-semibold">Contains:</span>
+                <div className="flex items-center gap-2">
                   {item.dietary.map((dietary) => {
                     const iconInfo = dietaryIcons[dietary]
                     if (!iconInfo) return null
@@ -128,14 +143,16 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
                       <div
                         key={dietary}
                         className={cn(
-                          "flex items-center justify-center w-7 h-7 rounded-full border-2 transition-all duration-200 touch-target-sm",
+                          "flex items-center justify-center w-9 h-9 rounded-full border-2 transition-all duration-300 touch-target-sm",
+                          "shadow-lg hover:shadow-xl",
                           iconInfo.bg,
                           iconInfo.border,
-                          "hover:scale-110 active:scale-95 cursor-help"
+                          "hover:scale-110 active:scale-95 cursor-help transform-gpu",
+                          "bg-gradient-to-br"
                         )}
                         title={`Contains ${dietary.charAt(0).toUpperCase() + dietary.slice(1)}`}
                       >
-                        <Icon size={14} className={iconInfo.color} weight="duotone" />
+                        <Icon size={16} className={cn(iconInfo.color, "drop-shadow-sm")} weight="duotone" />
                       </div>
                     )
                   })}
@@ -145,14 +162,19 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
 
             {/* Add to Cart button for customers */}
             {!isAdmin && onAddToCart && (
-              <div className="pt-3 border-t border-border/50">
+              <div className="pt-4 border-t border-border/50">
                 <Button
                   onClick={handleAddToCart}
                   disabled={!item.available}
-                  className="w-full touch-target hover-lift"
-                  size="sm"
+                  className={cn(
+                    "w-full touch-target hover-lift rounded-xl font-semibold text-base py-3",
+                    "bg-gradient-to-r from-primary to-primary/90 hover:from-primary hover:to-primary",
+                    "shadow-lg hover:shadow-xl transition-all duration-300 transform-gpu",
+                    "disabled:from-gray-300 disabled:to-gray-400"
+                  )}
+                  size="lg"
                 >
-                  <Plus size={16} className="mr-2" />
+                  <Plus size={20} className="mr-2" />
                   Add to Cart
                 </Button>
               </div>
@@ -160,42 +182,43 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
 
             {/* Admin controls */}
             {isAdmin && (
-              <div className="flex items-center justify-end gap-1.5 pt-2 border-t border-border/50 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-border/50 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleToggleAvailability}
                   className={cn(
-                    "h-8 w-8 p-0 touch-target-sm hover-lift",
+                    "h-10 w-10 p-0 touch-target-sm hover-lift rounded-xl",
+                    "shadow-md hover:shadow-lg transition-all duration-300",
                     item.available 
-                      ? "hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200"
-                      : "hover:bg-green-50 hover:text-green-600 hover:border-green-200"
+                      ? "hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 hover:shadow-orange-200"
+                      : "hover:bg-green-50 hover:text-green-600 hover:border-green-300 hover:shadow-green-200"
                   )}
                   title={item.available ? 'Mark as unavailable' : 'Mark as available'}
                 >
                   {item.available ? (
-                    <EyeSlash size={16} />
+                    <EyeSlash size={18} />
                   ) : (
-                    <Eye size={16} />
+                    <Eye size={18} />
                   )}
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => setShowEditDialog(true)}
-                  className="h-8 w-8 p-0 touch-target-sm hover-lift hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200"
+                  className="h-10 w-10 p-0 touch-target-sm hover-lift rounded-xl shadow-md hover:shadow-lg hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 hover:shadow-blue-200 transition-all duration-300"
                   title="Edit item"
                 >
-                  <PencilSimple size={16} />
+                  <PencilSimple size={18} />
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleDelete}
-                  className="h-8 w-8 p-0 touch-target-sm hover-lift hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+                  className="h-10 w-10 p-0 touch-target-sm hover-lift rounded-xl shadow-md hover:shadow-lg hover:bg-red-50 hover:text-red-600 hover:border-red-300 hover:shadow-red-200 transition-all duration-300"
                   title="Delete item"
                 >
-                  <Trash size={16} />
+                  <Trash size={18} />
                 </Button>
               </div>
             )}

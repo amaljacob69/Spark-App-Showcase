@@ -58,24 +58,26 @@ export function Header({
   }
 
   return (
-    <header className="bg-card/80 backdrop-blur-lg border-b border-border/50 sticky top-0 z-50 theme-transition safe-area-top">
-      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
+    <header className="bg-gradient-to-r from-card/95 via-card/90 to-card/95 backdrop-blur-xl border-b border-border/30 sticky top-0 z-50 theme-transition safe-area-top shadow-lg">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-5">
         {/* Top row with branding and admin controls */}
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+        <div className="flex items-center justify-between mb-4 sm:mb-5">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
             <div className="relative">
-              <ChefHat size={28} className="text-primary flex-shrink-0 sm:size-8 drop-shadow-sm" />
-              <div className="absolute -inset-1 bg-primary/20 rounded-full blur-sm -z-10 animate-pulse" />
+              <div className="relative p-2 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 shadow-lg">
+                <ChefHat size={32} className="text-primary flex-shrink-0 sm:size-10 drop-shadow-lg" />
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 to-accent/30 rounded-2xl blur-md -z-10 animate-pulse" />
+              </div>
             </div>
             <div className="min-w-0 flex-1">
-              <h1 className="font-display font-bold text-lg sm:text-2xl xl:text-3xl text-foreground truncate text-balance">
+              <h1 className="font-display font-bold text-xl sm:text-3xl xl:text-4xl text-foreground truncate text-balance bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                 Paradise Family Restaurant & Bake Shop
               </h1>
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                <span className="hidden sm:block">Famous for Kerala, Arabic & Chinese Cuisine</span>
-                <div className="flex items-center gap-1">
-                  <Palette size={12} className="sm:size-3" />
-                  <span className="font-medium text-primary">{menuThemes[menuType].name}</span>
+              <div className="flex items-center gap-3 text-sm sm:text-base text-muted-foreground mt-1">
+                <span className="hidden sm:block font-medium">Famous for Kerala, Arabic & Chinese Cuisine</span>
+                <div className="flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                  <Palette size={14} className="sm:size-4 text-primary" />
+                  <span className="font-semibold text-primary text-xs sm:text-sm">{menuThemes[menuType].name}</span>
                 </div>
               </div>
             </div>
@@ -86,17 +88,17 @@ export function Header({
             <div className="flex items-center gap-2 flex-shrink-0">
               {isAdmin ? (
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="hidden lg:flex items-center gap-2 text-sm text-muted-foreground px-2 py-1 bg-green-50 rounded-md border border-green-200">
-                    <UserCheck size={16} className="text-green-600" />
+                  <div className="hidden lg:flex items-center gap-2 text-sm font-medium px-4 py-2 bg-gradient-to-r from-green-50 to-green-100 rounded-xl border border-green-200 shadow-md">
+                    <UserCheck size={18} className="text-green-600" />
                     <span className="text-green-700">Admin Access</span>
                   </div>
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={onAdminLogout}
-                    className="gap-1 sm:gap-2 px-3 sm:px-4 touch-target-sm hover-lift transition-all duration-200"
+                    className="gap-2 px-4 sm:px-5 py-2.5 touch-target hover-lift transition-all duration-300 font-semibold rounded-xl shadow-md hover:shadow-lg"
                   >
-                    <SignOut size={14} className="sm:size-4" />
+                    <SignOut size={16} className="sm:size-5" />
                     <span className="hidden sm:inline">Logout</span>
                     <span className="sm:hidden">Out</span>
                   </Button>
@@ -105,10 +107,10 @@ export function Header({
                 <Button 
                   variant="outline"
                   onClick={onAdminLogin}
-                  className="gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 touch-target hover-lift"
+                  className="gap-2 text-sm sm:text-base font-semibold px-4 sm:px-5 py-2.5 touch-target hover-lift rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
                   size="sm"
                 >
-                  <UserCheck size={14} className="sm:size-4" />
+                  <UserCheck size={16} className="sm:size-5" />
                   <span className="hidden sm:inline">Admin Login</span>
                   <span className="sm:hidden">Login</span>
                 </Button>
