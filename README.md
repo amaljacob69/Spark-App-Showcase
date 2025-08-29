@@ -1,243 +1,145 @@
-# Paradise Family Restaurant & Bake Shop 🍽️
+# 🍽️ Paradise Family Restaurant - Digital Menu System
 
-<div align="center">
+A comprehensive restaurant menu application with admin panel, featuring three distinct pricing tiers and Firebase integration for secure data management.
 
-![Paradise Family Restaurant](https://img.shields.io/badge/Paradise_Family-Restaurant_&_Bake_Shop-orange?style=for-the-badge)
-![React](https://img.shields.io/badge/React-18.3.1-blue?style=for-the-badge&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.5.4-blue?style=for-the-badge&logo=typescript)
-![PWA Ready](https://img.shields.io/badge/PWA-Ready-green?style=for-the-badge)
-![Mobile Responsive](https://img.shields.io/badge/Mobile-Responsive-purple?style=for-the-badge)
+## 🌟 Features
 
-**A modern, production-ready restaurant menu web application featuring multiple dining options with different pricing tiers, PWA capabilities, and mobile-first design.**
+### 🍴 Multi-Tier Menu System
+- **Dine-in Non-AC**: Pricing for non-air-conditioned dining area
+- **Dine-in AC**: Premium pricing for air-conditioned dining area  
+- **Takeaway**: Optimized pricing for pickup orders
 
-[🔗 Live Demo](https://amaljacob69.github.io/paradise-restaurant-menu/) | [📖 Documentation](./DOCS_INDEX.md) | [🚀 Deployment Guide](./DEPLOYMENT.md)
+### 👑 Admin Management
+- Secure Firebase Authentication with Google Sign-In
+- Complete menu item management (add, edit, delete)
+- Multi-admin support with role management
+- Real-time synchronization across devices
 
-</div>
+### 🔒 Enterprise Security
+- Production-ready Firestore security rules
+- Comprehensive data validation
+- Admin access controls and protection
+- Email verification requirements
 
-## ✨ Features
+### 📱 Customer Experience
+- Direct QR code access to specific menu types
+- Mobile-responsive design
+- Clean, elegant interface with Playfair Display typography
+- Real-time menu updates
 
-### 🎯 Core Features
-- **Multi-Menu System**: Three distinct menu types with different pricing
-  - 🌡️ **Dine-in Non-A/C**: Cozy warmth theme with budget-friendly pricing
-  - ❄️ **Dine-in A/C**: Premium cool theme with enhanced pricing
-  - 📦 **Take Away**: Eco-friendly theme optimized for pickup orders
-- **QR Code Access**: Direct menu links for seamless customer experience
-- **Advanced Search & Filters**: Search by name, description, or dietary preferences
-- **Dietary Preferences**: Filter by Vegetarian, Egg, Chicken, Meat, Fish
-- **Shopping Cart**: Add items to cart with quantity management
+## 🚀 Live Application
 
-### 🏗️ Technical Excellence
-- **Progressive Web App (PWA)**: Install on mobile devices like a native app
-- **Mobile-First Design**: Optimized for all screen sizes with touch-friendly UI
-- **Offline Support**: Works without internet connection
-- **Performance Optimized**: Fast loading with lazy loading and optimizations
-- **SEO Enhanced**: Rich meta tags and structured data for search engines
-- **Accessibility Compliant**: WCAG 2.1 AA standards
+- **Main Application**: https://paradise-family.web.app
+- **Non-AC Menu**: https://paradise-family.web.app?menu=dinein-non-ac
+- **AC Menu**: https://paradise-family.web.app?menu=dinein-ac
+- **Takeaway Menu**: https://paradise-family.web.app?menu=takeaway
 
-### 🎨 User Experience
-- **Dynamic Theming**: Each menu type has its own visual identity
-- **Floating Action Menu**: Quick access to cart, reviews, and social links
-- **Horizontal Menu Sections**: Featured and popular items showcase
-- **Special Offers Banner**: Highlight daily specials and promotions
-- **Smooth Animations**: Delightful micro-interactions and transitions
+## 🔧 Technical Stack
 
-### 🔐 Admin Panel
-- **Menu Management**: Add, edit, and delete menu items
-- **Price Management**: Set different prices for each menu type
-- **Category Organization**: Organize items by cuisine type
-- **Real-time Updates**: Changes reflect immediately across all menu types
+- **Frontend**: React 18 + TypeScript + Vite
+- **UI Components**: shadcn/ui v4 + Tailwind CSS
+- **Backend**: Firebase (Firestore + Authentication)
+- **Hosting**: Firebase Hosting
+- **Icons**: Phosphor Icons
+- **Fonts**: Playfair Display + Inter
 
-## 🚀 Quick Start
+## 📋 Security Documentation
 
-### Prerequisites
-- Node.js 18+ 
-- npm 9+
+### 🔒 Security Features
+- **Authentication**: Google OAuth with email verification
+- **Data Validation**: Complete menu item and pricing validation
+- **Access Control**: Role-based admin permissions
+- **Rate Limiting**: Protection against abuse
+- **Audit Trails**: Timestamped data changes
 
-### Installation
+### 📚 Security Resources
+- [`FIRESTORE-SECURITY.md`](FIRESTORE-SECURITY.md) - Comprehensive security rules documentation
+- [`SECURITY-DEPLOYMENT-CHECKLIST.md`](SECURITY-DEPLOYMENT-CHECKLIST.md) - Production deployment guide
+- [`validate-security-rules.js`](validate-security-rules.js) - Security testing and validation
 
+## 🛠️ Development
+
+### Local Setup
 ```bash
-# Clone the repository
-git clone https://github.com/amaljacob69/paradise-restaurant-menu.git
-cd paradise-restaurant-menu
-
 # Install dependencies
 npm install
 
 # Start development server
 npm run dev
 
-# Open http://localhost:5173
+# Start Firebase emulators (optional)
+firebase emulators:start
 ```
 
-### Direct Menu Access
-Access specific menus directly via URL parameters:
-- Non-A/C: `?menu=dinein-non-ac`
-- A/C: `?menu=dinein-ac`  
-- Take Away: `?menu=takeaway`
-
-## 📱 PWA Installation
-
-### Android Users
-1. Open the website in Chrome
-2. Look for the "Add to Home Screen" prompt
-3. Tap "Install" to add the app to your home screen
-
-### iOS Users
-1. Open the website in Safari
-2. Tap the Share button
-3. Select "Add to Home Screen"
-4. Tap "Add" to install
-
-## 🏢 Restaurant Information
-
-**Paradise Family Restaurant & Bake Shop** is located in Chalakudy, Kerala, and is famous for:
-
-- 🍛 **Kerala Specialties**: Traditional fish curry, biriyani, beef fry
-- 🥙 **Arabic Cuisine**: Shawarma, kabsa, hummus, grilled specialties  
-- 🥢 **Chinese Dishes**: Fried rice, noodles, sweet & sour preparations
-- 🍰 **Fresh Bakery**: Daily baked croissants, cakes, pastries, and bread
-
-### Contact & Location
-- 📍 **Address**: Chalakudy, Kerala, India
-- 📞 **Phone**: [Contact for reservations]
-- 🌍 **Location**: [10.311468, 76.334377](https://maps.google.com/?q=10.311468,76.334377)
-- 📱 **Instagram**: [@chalakudy_paradise_restaurant](https://www.instagram.com/explore/locations/1026441532/chalakudy-paradise-restaurant/)
-- ⭐ **Google Reviews**: [Paradise Family Restaurant](https://maps.google.com/?cid=6174519835693953645)
-
-## 💻 Technology Stack
-
-### Frontend
-- **React 18.3.1** with TypeScript for type-safe development
-- **Vite 5.4.1** for fast build tooling and development
-- **Tailwind CSS 3.4.10** for utility-first styling
-- **Framer Motion 11.3.28** for smooth animations
-- **Shadcn/ui** for consistent component library
-
-### PWA & Performance  
-- **Workbox** for service worker and caching strategies
-- **Web App Manifest** for native app-like installation
-- **Intersection Observer** for lazy loading
-- **Performance monitoring** with custom hooks
-
-### Development Tools
-- **ESLint & Prettier** for code quality
-- **Phosphor Icons** for consistent iconography
-- **Sonner** for toast notifications
-- **Local Storage** for data persistence
-
-## 📁 Project Structure
-
-```
-paradise-family-restaurant/
-├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── ui/             # Shadcn/ui components
-│   │   ├── AdminPanel.tsx  # Admin management interface
-│   │   ├── MenuGrid.tsx    # Menu items display
-│   │   ├── Header.tsx      # Navigation header
-│   │   └── ...
-│   ├── hooks/              # Custom React hooks
-│   ├── lib/                # Utility functions
-│   ├── config/             # Configuration files
-│   ├── assets/             # Images, icons, etc.
-│   └── App.tsx             # Main application component
-├── public/                 # Static assets
-├── docs/                   # Documentation
-└── deployment/             # Deployment configurations
-```
-
-## 🎨 Theme System
-
-The application features three distinct themes:
-
-### 🌡️ Dine-in Non-A/C (Cozy Warmth)
-- **Primary Color**: Warm Orange (#fb923c)
-- **Atmosphere**: Cozy, traditional, budget-friendly
-- **Pricing**: Most affordable options
-
-### ❄️ Dine-in A/C (Premium Cool) 
-- **Primary Color**: Cool Blue (#3b82f6)
-- **Atmosphere**: Modern, premium, comfortable
-- **Pricing**: Enhanced pricing for A/C comfort
-
-### 📦 Take Away (Eco-Friendly)
-- **Primary Color**: Fresh Green (#22c55e) 
-- **Atmosphere**: Quick, efficient, eco-conscious
-- **Pricing**: Optimized for pickup orders
-
-## 🔧 Configuration
-
-### Environment Setup
-Copy `.env.example` to `.env.local` and configure:
-
+### Firebase Configuration
 ```bash
-# PWA Configuration
-VITE_APP_NAME="Paradise Family Restaurant"
-VITE_APP_SHORT_NAME="Paradise Restaurant"
-VITE_APP_DESCRIPTION="Authentic Kerala, Arabic & Chinese Cuisine"
+# Login to Firebase
+firebase login
 
-# Restaurant Information
-VITE_RESTAURANT_PHONE="+91-XXX-XXX-XXXX"
-VITE_GOOGLE_PLACE_ID="ChIJGcnxTmwCCDsRbR1By6fYbFc"
-VITE_INSTAGRAM_URL="https://www.instagram.com/explore/locations/1026441532/chalakudy-paradise-restaurant/"
+# Deploy application
+firebase deploy
+
+# Deploy security rules only  
+firebase deploy --only firestore:rules
 ```
 
-### Menu Configuration
-Menu items are stored in `src/App.tsx` as sample data. For production, integrate with your preferred backend or CMS.
+## 🏗️ Architecture
 
-## 📊 Performance
+### Data Structure
+```typescript
+interface MenuItem {
+  id: string
+  name: string
+  description: string
+  prices: {
+    'dinein-non-ac': number
+    'dinein-ac': number
+    'takeaway': number
+  }
+  category: string
+  available: boolean
+}
+```
 
-- **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
-- **First Contentful Paint**: < 1.5s
-- **Time to Interactive**: < 3s  
-- **PWA Compliant**: ✅
-- **Mobile Optimized**: ✅
+### Security Rules Summary
+- Public read access to menu data
+- Admin-only write access with validation
+- Comprehensive data structure validation
+- Price range validation (0-10,000)
+- Admin self-protection (cannot delete own account)
 
-## 🛡️ Security
+## 📱 QR Code Integration
 
-- Input sanitization and validation
-- Rate limiting for admin operations  
-- Secure session management
-- XSS and CSRF protection
-- Content Security Policy headers
+The application supports direct menu access via QR codes:
+1. Generate QR codes pointing to specific menu URLs
+2. Place QR codes in respective dining areas
+3. Customers scan to access area-specific pricing
+4. No menu switching - focused experience per location
 
-## 🤝 Contributing
+## 🎨 Design System
 
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+### Color Palette
+- **Background**: Light warm tones for comfortable reading
+- **Primary**: Deep blue for admin actions and navigation
+- **Accent**: Warm gold for highlights and call-to-action
+- **Text**: High contrast dark colors for accessibility
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Typography
+- **Headers**: Playfair Display (elegant serif)
+- **Body**: Inter (clean sans-serif)
+- **Hierarchy**: Clear size and weight relationships
+
+## 📄 Additional Documentation
+
+- [`PRD.md`](PRD.md) - Product Requirements Document
+- [`ADMIN-SETUP.md`](ADMIN-SETUP.md) - Admin user management guide
+- [`FIREBASE-SETUP.md`](FIREBASE-SETUP.md) - Firebase configuration guide
+- [`DEPLOYMENT.md`](DEPLOYMENT.md) - Deployment instructions
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Design inspiration from modern restaurant websites
-- Shadcn/ui for the component library
-- React community for excellent tooling
-- Tailwind CSS team for utility-first CSS
-
-## 📞 Support
-
-For technical support or business inquiries:
-
-- 📧 Email: [Your contact email]
-- 📱 WhatsApp: [Your WhatsApp business number]  
-- 💬 GitHub Issues: [Report bugs or request features](https://github.com/your-username/paradise-family-restaurant/issues)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-<div align="center">
-
-**Made with ❤️ for Paradise Family Restaurant & Bake Shop**
-
-⭐ Star us on GitHub if you find this project helpful!
-
-[🔗 Visit Website](https://paradise-family.web.app) | [📱 Install PWA](https://paradise-family.web.app) | [🍽️ View Menu](https://paradise-family.web.app?menu=dinein-ac)
-
-</div>
+**Paradise Family Restaurant** - Bringing fine dining experiences to the digital age with secure, scalable menu management.
