@@ -3,13 +3,16 @@ import { useKV } from '@github/spark/hooks'
 import { Header } from './components/Header'
 import { MenuGrid } from './components/MenuGrid'
 import { AdminPanel } from './components/AdminPanel'
+import { AdminDashboard } from './components/AdminDashboard'
 import { LoginDialog } from './components/LoginDialog'
 import { ThemePreview } from './components/ThemePreview'
 import { DietaryFilter, type DietaryPreference } from './components/DietaryFilter'
+import { AdvancedSearch } from './components/AdvancedSearch'
 import { FloatingActionButton } from './components/FloatingActionButton'
 import { CartDialog, useCart } from './components/CartDialog'
 import { OffersSection } from './components/OffersSection'
 import { FeaturedMenuSection, PopularMenuSection } from './components/HorizontalMenuSection'
+import { LoadingSkeleton } from './components/LoadingSkeleton'
 import { Button } from './components/ui/button'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
@@ -271,6 +274,8 @@ function AppContent() {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [selectedDietaryFilters, setSelectedDietaryFilters] = useKV<DietaryPreference[]>('dietary-filters', [])
   const [showCartDialog, setShowCartDialog] = useState(false)
+  const [showAdminDashboard, setShowAdminDashboard] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   // Cart functionality
   const { cartItems, addToCart, updateQuantity, removeFromCart, clearCart, getCartItemCount } = useCart()
@@ -283,12 +288,21 @@ function AppContent() {
   const safeSelectedMenuType = selectedMenuType || 'dinein-ac'
   const safeIsAdmin = isAdmin || false
 
+  // Simulate loading for better UX
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1200)
+    return () => clearTimeout(timer)
+  }, [])
+
   // Simple admin authentication with password
   const handleAdminLogin = useCallback((password: string) => {
     // Simple password check - in production, use proper authentication
     if (password === 'admin123') {
       setIsAdmin(true)
       setShowLoginDialog(false)
+      setShowAdminDashboard(true)
       toast.success('Admin access granted')
       return true
     } else {
@@ -299,6 +313,7 @@ function AppContent() {
 
   const handleAdminLogout = useCallback(() => {
     setIsAdmin(false)
+    setShowAdminDashboard(false)
     toast.success('Admin logged out')
   }, [setIsAdmin])
 
@@ -438,14 +453,91 @@ function AppContent() {
   const showHorizontalSections = !searchQuery && 
     (!selectedDietaryFilters || selectedDietaryFilters.length === 0) && 
     selectedCategory === 'all' && 
-    !safeIsAdmin
+    !safeIsAdmin && 
+    !showAdminDashboard
+
+  // Show loading state on first load
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background safe-area-top safe-area-bottom">
+        <ThemePreview menuType={safeSelectedMenuType} />
+        
+        {/* Header Loading */}
+        <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border/50">
+          <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4">
+            <LoadingSkeleton type="header" />
+          </div>
+        </div>
+
+        {/* Content Loading */}
+        <main className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+          <div className="space-y-6">
+            <LoadingSkeleton type="text" count={2} />
+            <LoadingSkeleton type="menu-grid" count={8} />
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  // Show Admin Dashboard if admin is logged in
+  if (safeIsAdmin && showAdminDashboard) {
+    return (
+      <div className="min-h-screen bg-background safe-area-top safe-area-bottom">
+        <ThemePreview menuType={safeSelectedMenuType} />
+        
+        <Header 
+          isAdmin={safeIsAdmin}
+          onAdminLogin={() => setShowLoginDialog(true)}
+          onAdminLogout={handleAdminLogout}
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategorySelect={handleCategorySelect}
+          menuType={safeSelectedMenuType}
+          onMenuTypeSelect={setSelectedMenuType}
+          isDirectLink={isDirectLink}
+          onSearch={setSearchQuery}
+          searchQuery={searchQuery}
+          showBackToDashboard={true}
+          onBackToDashboard={() => setShowAdminDashboard(false)}
+        />
+        
+        <main className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+          <AdminDashboard
+            items={safeMenuItems}
+            onAddItem={handleAddItem}
+            onEditItem={handleEditItem}
+            onDeleteItem={handleDeleteItem}
+          />
+        </main>
+
+        {showLoginDialog && (
+          <LoginDialog 
+            open={showLoginDialog}
+            onOpenChange={setShowLoginDialog}
+            onLogin={handleAdminLogin}
+          />
+        )}
+
+        <Toaster 
+          position="top-center"
+          toastOptions={{
+            style: {
+              fontSize: '14px',
+            },
+            className: 'sm:text-base text-sm',
+          }}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background safe-area-top safe-area-bottom">
       <ThemePreview menuType={safeSelectedMenuType} />
       <Header 
         isAdmin={safeIsAdmin}
-        onAdminLogin={() => setShowLoginDialog(true)}
+        onAdminLogin={() => safeIsAdmin ? setShowAdminDashboard(true) : setShowLoginDialog(true)}
         onAdminLogout={handleAdminLogout}
         categories={categories}
         selectedCategory={selectedCategory}
@@ -461,73 +553,22 @@ function AppContent() {
         {/* Special Offers Section */}
         <OffersSection isAdmin={safeIsAdmin} menuType={safeSelectedMenuType} />
 
-        {/* Search and Filter Results Display */}
-        {(searchQuery || (selectedDietaryFilters && selectedDietaryFilters.length > 0)) && (
-          <div className="mb-4 sm:mb-6 lg:mb-8">
-            <div className="flex flex-col gap-3 sm:gap-4 p-4 sm:p-5 bg-muted/50 rounded-xl border border-border/50 backdrop-blur-sm">
-              {/* Search Results */}
-              {searchQuery && (
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
-                      Search results for: 
-                    </span>
-                    <span className="font-semibold text-foreground text-sm sm:text-base">"{searchQuery}"</span>
-                  </div>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => setSearchQuery('')}
-                    className="text-xs h-8 px-3 whitespace-nowrap hover-lift touch-target-sm"
-                  >
-                    Clear search
-                  </Button>
-                </div>
-              )}
-              
-              {/* Dietary Filter Results */}
-              {selectedDietaryFilters && selectedDietaryFilters.length > 0 && (
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
-                      Filtered by dietary preferences
-                    </span>
-                  </div>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => setSelectedDietaryFilters([])}
-                    className="text-xs h-8 px-3 whitespace-nowrap hover-lift touch-target-sm"
-                  >
-                    Clear filters
-                  </Button>
-                </div>
-              )}
-              
-              {/* Results count and clear all */}
-              <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                <span className="text-xs sm:text-sm bg-primary/15 text-primary px-3 py-1.5 rounded-full font-medium">
-                  {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'} found
-                </span>
-                {(searchQuery || (selectedDietaryFilters && selectedDietaryFilters.length > 0)) && (
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => {
-                      setSearchQuery('')
-                      setSelectedDietaryFilters([])
-                    }}
-                    className="text-xs h-8 px-3 hover-lift"
-                  >
-                    Clear all
-                  </Button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Advanced Search and Filter Results Display */}
+        <div className="mb-6 sm:mb-8 lg:mb-10">
+          <AdvancedSearch
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            selectedFilters={selectedDietaryFilters || []}
+            onFiltersChange={setSelectedDietaryFilters}
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onCategoryChange={handleCategorySelect}
+            totalItems={safeMenuItems.length}
+            filteredItemsCount={filteredItems.length}
+          />
+        </div>
 
-        {/* Dietary Filters */}
+        {/* Enhanced Dietary Filters */}
         <div className="mb-6 sm:mb-8 lg:mb-10">
           <DietaryFilter
             selectedFilters={selectedDietaryFilters || []}
@@ -580,8 +621,18 @@ function AppContent() {
           onAddToCart={!safeIsAdmin ? handleAddToCart : undefined}
         />
         
-        {safeIsAdmin && (
-          <div className="mt-8 sm:mt-10 lg:mt-12">
+        {safeIsAdmin && !showAdminDashboard && (
+          <div className="mt-8 sm:mt-10 lg:mt-12 space-y-6">
+            <div className="flex items-center justify-center">
+              <Button
+                onClick={() => setShowAdminDashboard(true)}
+                variant="outline"
+                size="lg"
+                className="gap-2 hover-lift"
+              >
+                📊 Open Admin Dashboard
+              </Button>
+            </div>
             <AdminPanel onAddItem={handleAddItem} />
           </div>
         )}
