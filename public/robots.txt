@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://paradise-family.web.app/sitemap.xml
+
+# Specific pages
+Allow: /?menu=dinein-non-ac
+Allow: /?menu=dinein-ac  
+Allow: /?menu=takeaway
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Additional information
+# Paradise Family Restaurant & Bake Shop
+# Authentic Kerala, Arabic & Chinese Cuisine
+# Located in Chalakudy, Kerala

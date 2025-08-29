@@ -4,18 +4,81 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <title>Paradise Family Restaurant - Menu</title>
-    <meta name="description" content="Paradise Family Restaurant menu with different pricing for dine-in AC, non-AC, and takeaway options. Admin panel for menu management." />
-    <meta name="keywords" content="restaurant, menu, fine dining, food, dine-in, takeaway" />
-    <meta name="author" content="Savory Restaurant" />
+    <title>Paradise Family Restaurant & Bake Shop - Authentic Kerala, Arabic & Chinese Cuisine</title>
+    <meta name="description" content="Paradise Family Restaurant & Bake Shop in Chalakudy - Famous for authentic Kerala, Arabic & Chinese cuisine with fresh bakery items. AC/Non-AC dining & takeaway available with different pricing." />
+    <meta name="keywords" content="Paradise Family Restaurant, Chalakudy restaurant, Kerala food, Arabic cuisine, Chinese food, bakery shop, bake shop, Kerala restaurant, Chalakudy bakery, dine-in restaurant, takeaway food, AC restaurant, non-AC dining, family restaurant, authentic Kerala dishes, Arabic specialties, Chinese menu" />
+    <meta name="author" content="Paradise Family Restaurant & Bake Shop" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>" />
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Paradise Family Restaurant - Menu" />
-    <meta property="og:description" content="Experience fine dining with our curated menu featuring different pricing for dine-in and takeaway options." />
-    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Paradise Family Restaurant & Bake Shop - Kerala, Arabic & Chinese Cuisine" />
+    <meta property="og:description" content="Authentic Kerala, Arabic & Chinese cuisine with fresh bakery items at Paradise Family Restaurant, Chalakudy. AC/Non-AC dining and takeaway options available." />
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:url" content="https://paradise-family.web.app" />
+    <meta property="og:image" content="https://paradise-family.web.app/og-image.jpg" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:site_name" content="Paradise Family Restaurant & Bake Shop" />
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Paradise Family Restaurant & Bake Shop - Kerala, Arabic & Chinese Cuisine" />
+    <meta name="twitter:description" content="Famous for authentic Kerala, Arabic & Chinese dishes plus fresh bakery items in Chalakudy" />
+    <meta name="twitter:image" content="https://paradise-family.web.app/og-image.jpg" />
+    
+    <!-- Local Business Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Paradise Family Restaurant & Bake Shop",
+      "description": "Famous restaurant in Chalakudy specializing in authentic Kerala, Arabic, and Chinese cuisine with fresh bakery items",
+      "url": "https://paradise-family.web.app",
+      "telephone": "+91-XXX-XXX-XXXX",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Chalakudy",
+        "addressLocality": "Chalakudy",
+        "addressRegion": "Kerala",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "10.311468467596864",
+        "longitude": "76.3343773754989"
+      },
+      "openingHours": "Mo-Su 08:00-22:00",
+      "servesCuisine": ["Kerala", "Arabic", "Chinese", "Indian", "Bakery"],
+      "priceRange": "₹₹",
+      "image": "https://paradise-family.web.app/restaurant-image.jpg",
+      "hasMenu": "https://paradise-family.web.app",
+      "acceptsReservations": true,
+      "paymentAccepted": ["Cash", "Credit Card", "UPI"],
+      "currenciesAccepted": "INR"
+    }
+    </script>
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <link rel="canonical" href="https://paradise-family.web.app" />
+    
+    <!-- Geo location tags for local SEO -->
+    <meta name="geo.region" content="IN-KL" />
+    <meta name="geo.placename" content="Chalakudy, Kerala" />
+    <meta name="geo.position" content="10.311468;76.334377" />
+    <meta name="ICBM" content="10.311468, 76.334377" />
+    
+    <!-- Additional local SEO -->
+    <meta name="city" content="Chalakudy" />
+    <meta name="state" content="Kerala" />
+    <meta name="country" content="India" />
+    
+    <!-- Language and audience -->
+    <meta http-equiv="content-language" content="en-IN" />
+    <meta name="language" content="English" />
+    <meta name="audience" content="all" />
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +91,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
                 window.showMenuLinks = function() {
-                    console.log('🍽️ Paradise Family Restaurant - Menu Links');
+                    console.log('🍽️ Paradise Family Restaurant & Bake Shop - Famous for Kerala, Arabic & Chinese Cuisine');
                     console.log('Direct menu URLs:');
                     console.log('- Dine-in Non-AC:', window.location.origin + '?menu=dinein-non-ac'); 
                     console.log('- Dine-in A/C:', window.location.origin + '?menu=dinein-ac');

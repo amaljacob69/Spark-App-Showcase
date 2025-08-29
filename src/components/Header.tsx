@@ -69,10 +69,10 @@ export function Header({
             </div>
             <div className="min-w-0 flex-1">
               <h1 className="font-display font-bold text-lg sm:text-2xl xl:text-3xl text-foreground truncate text-balance">
-                Paradise Family Restaurant
+                Paradise Family Restaurant & Bake Shop
               </h1>
               <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                <span className="hidden sm:block">Fine Dining Experience</span>
+                <span className="hidden sm:block">Famous for Kerala, Arabic & Chinese Cuisine</span>
                 <div className="flex items-center gap-1">
                   <Palette size={12} className="sm:size-3" />
                   <span className="font-medium text-primary">{menuThemes[menuType].name}</span>

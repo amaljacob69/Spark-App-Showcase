@@ -42,218 +42,218 @@ export interface MenuPricing {
 }
 
 const sampleMenuItems: MenuItem[] = [
-  // Chicken Dishes
+  // Kerala Specialties
   {
     id: "1",
-    name: "Grilled Chicken Breast",
-    description: "Herb-marinated chicken breast with rosemary potatoes and seasonal vegetables",
+    name: "Kerala Fish Curry",
+    description: "Traditional Kerala fish curry with coconut milk, curry leaves, and steamed rice",
     prices: {
-      'dinein-non-ac': 18,
-      'dinein-ac': 20,
-      'takeaway': 16
+      'dinein-non-ac': 220,
+      'dinein-ac': 240,
+      'takeaway': 200
     },
-    category: "Chicken",
+    category: "Kerala Cuisine",
     available: true,
-    dietary: ["chicken"]
+    dietary: ["fish"]
   },
   {
     id: "2",
-    name: "Chicken Tikka Masala",
-    description: "Tender chicken in rich tomato-based curry sauce with basmati rice and naan",
+    name: "Chicken Biriyani Kerala Style",
+    description: "Aromatic Kerala-style chicken biriyani with fragrant spices and basmati rice",
     prices: {
-      'dinein-non-ac': 22,
-      'dinein-ac': 24,
-      'takeaway': 20
+      'dinein-non-ac': 250,
+      'dinein-ac': 280,
+      'takeaway': 230
     },
-    category: "Chicken",
+    category: "Kerala Cuisine",
     available: true,
     dietary: ["chicken"]
   },
   {
     id: "3",
-    name: "Buffalo Chicken Wings",
-    description: "Crispy wings tossed in spicy buffalo sauce with celery sticks and blue cheese dip",
+    name: "Kerala Beef Fry",
+    description: "Spicy Kerala beef fry with coconut slices, curry leaves, and traditional spices",
     prices: {
-      'dinein-non-ac': 15,
-      'dinein-ac': 17,
-      'takeaway': 13
+      'dinein-non-ac': 180,
+      'dinein-ac': 200,
+      'takeaway': 160
     },
-    category: "Chicken",
-    available: true,
-    dietary: ["chicken"]
-  },
-  // Meat Dishes
-  {
-    id: "4",
-    name: "Wagyu Beef Tenderloin",
-    description: "Premium wagyu with roasted fingerling potatoes, seasonal vegetables, and red wine jus",
-    prices: {
-      'dinein-non-ac': 43,
-      'dinein-ac': 48,
-      'takeaway': 38
-    },
-    category: "Meat",
+    category: "Kerala Cuisine",
     available: true,
     dietary: ["meat"]
   },
+  // Arabic Specialties
+  {
+    id: "4",
+    name: "Chicken Shawarma",
+    description: "Authentic Arabic chicken shawarma with garlic sauce, pickles, and pita bread",
+    prices: {
+      'dinein-non-ac': 120,
+      'dinein-ac': 140,
+      'takeaway': 100
+    },
+    category: "Arabic Cuisine",
+    available: true,
+    dietary: ["chicken"]
+  },
   {
     id: "5",
-    name: "Lamb Rack with Mint Sauce",
-    description: "New Zealand lamb rack with herb crust, mint sauce, and roasted root vegetables",
+    name: "Arabic Mutton Kabsa",
+    description: "Traditional Arabic rice dish with tender mutton, aromatic spices, and almonds",
     prices: {
-      'dinein-non-ac': 38,
-      'dinein-ac': 42,
-      'takeaway': 34
+      'dinein-non-ac': 320,
+      'dinein-ac': 350,
+      'takeaway': 290
     },
-    category: "Meat",
+    category: "Arabic Cuisine",
     available: true,
     dietary: ["meat"]
   },
   {
     id: "6",
-    name: "Pork Belly Confit",
-    description: "Slow-cooked pork belly with apple compote, mashed potatoes, and crispy crackling",
+    name: "Hummus with Pita",
+    description: "Creamy hummus served with warm pita bread, olive oil, and Arabic spices",
     prices: {
-      'dinein-non-ac': 26,
-      'dinein-ac': 28,
-      'takeaway': 24
+      'dinein-non-ac': 80,
+      'dinein-ac': 90,
+      'takeaway': 70
     },
-    category: "Meat",
+    category: "Arabic Cuisine",
     available: true,
-    dietary: ["meat"]
+    dietary: ["vegetarian"]
   },
-  // Fish & Seafood
+  // Chinese Specialties
   {
     id: "7", 
-    name: "Pan-Seared Salmon",
-    description: "Atlantic salmon with lemon herb butter, roasted vegetables, and quinoa pilaf",
+    name: "Chicken Fried Rice",
+    description: "Wok-fried rice with tender chicken pieces, vegetables, and Chinese soy sauce",
     prices: {
-      'dinein-non-ac': 29,
-      'dinein-ac': 32,
-      'takeaway': 26
+      'dinein-non-ac': 160,
+      'dinein-ac': 180,
+      'takeaway': 140
     },
-    category: "Fish",
+    category: "Chinese Cuisine",
     available: true,
-    dietary: ["fish"]
+    dietary: ["chicken"]
   },
   {
     id: "8",
-    name: "Grilled Sea Bass",
-    description: "Mediterranean sea bass with olive tapenade, cherry tomatoes, and lemon risotto",
+    name: "Sweet & Sour Pork",
+    description: "Crispy pork in traditional Chinese sweet and sour sauce with pineapple and peppers",
     prices: {
-      'dinein-non-ac': 32,
-      'dinein-ac': 35,
-      'takeaway': 29
+      'dinein-non-ac': 200,
+      'dinein-ac': 220,
+      'takeaway': 180
     },
-    category: "Fish",
+    category: "Chinese Cuisine",
     available: true,
-    dietary: ["fish"]
+    dietary: ["meat"]
   },
   {
     id: "9",
-    name: "Lobster Thermidor",
-    description: "Fresh lobster in creamy cognac sauce, gratinated with cheese and herbs",
+    name: "Hakka Noodles",
+    description: "Stir-fried noodles with mixed vegetables and Indo-Chinese flavors",
     prices: {
-      'dinein-non-ac': 45,
-      'dinein-ac': 50,
-      'takeaway': 40
+      'dinein-non-ac': 120,
+      'dinein-ac': 140,
+      'takeaway': 100
     },
-    category: "Fish",
+    category: "Chinese Cuisine",
     available: true,
-    dietary: ["fish"]
+    dietary: ["vegetarian", "egg"]
   },
   {
     id: "10",
-    name: "Fish & Chips",
-    description: "Beer-battered cod with hand-cut chips, mushy peas, and tartar sauce",
+    name: "Chilli Chicken",
+    description: "Spicy Indo-Chinese chicken with bell peppers, onions, and chili sauce",
     prices: {
-      'dinein-non-ac': 19,
-      'dinein-ac': 21,
-      'takeaway': 17
+      'dinein-non-ac': 180,
+      'dinein-ac': 200,
+      'takeaway': 160
     },
-    category: "Fish",
+    category: "Chinese Cuisine",
     available: true,
-    dietary: ["fish"]
+    dietary: ["chicken"]
   },
-  // Vegetarian & Other Categories
+  // Bakery Items
   {
     id: "11",
-    name: "Truffle Risotto",
-    description: "Creamy Arborio rice with wild mushrooms, black truffle shavings, and aged Parmesan",
+    name: "Fresh Croissants",
+    description: "Buttery, flaky croissants baked fresh daily in our bakery",
     prices: {
-      'dinein-non-ac': 25,
-      'dinein-ac': 28,
-      'takeaway': 22
+      'dinein-non-ac': 40,
+      'dinein-ac': 45,
+      'takeaway': 35
     },
-    category: "Vegetarian",
+    category: "Bakery",
     available: true,
-    dietary: ["vegetarian"]
+    dietary: ["vegetarian", "egg"]
   },
   {
     id: "12",
-    name: "Burrata Caprese",
-    description: "Fresh burrata cheese with heirloom tomatoes, basil oil, and balsamic reduction",
+    name: "Chocolate Cake Slice",
+    description: "Rich chocolate cake with chocolate ganache, baked fresh in our bakery",
     prices: {
-      'dinein-non-ac': 16,
-      'dinein-ac': 18,
-      'takeaway': 14
+      'dinein-non-ac': 80,
+      'dinein-ac': 90,
+      'takeaway': 70
     },
-    category: "Appetizers",
+    category: "Bakery",
     available: true,
-    dietary: ["vegetarian"]
+    dietary: ["vegetarian", "egg"]
   },
   {
     id: "13",
-    name: "Craft Caesar Salad",
-    description: "Crisp romaine lettuce, house-made croutons, aged Parmesan, and garlic aioli",
+    name: "Garlic Bread",
+    description: "Freshly baked garlic bread with herbs and butter from our bakery",
     prices: {
-      'dinein-non-ac': 13,
-      'dinein-ac': 14,
-      'takeaway': 11
+      'dinein-non-ac': 60,
+      'dinein-ac': 70,
+      'takeaway': 50
     },
-    category: "Salads",
+    category: "Bakery",
     available: true,
-    dietary: ["vegetarian", "egg"]
+    dietary: ["vegetarian"]
   },
   {
     id: "14",
-    name: "Chocolate Lava Cake",
-    description: "Warm chocolate cake with molten center, vanilla bean ice cream, and berry coulis",
+    name: "Fruit Pastry",
+    description: "Assorted fresh fruit pastries made daily in our bake shop",
     prices: {
-      'dinein-non-ac': 11,
-      'dinein-ac': 12,
-      'takeaway': 10
+      'dinein-non-ac': 70,
+      'dinein-ac': 80,
+      'takeaway': 60
     },
-    category: "Desserts",
+    category: "Bakery",
     available: true,
     dietary: ["vegetarian", "egg"]
   },
-  // Additional items to showcase variety
+  // Additional Popular Items
   {
     id: "15",
-    name: "Chicken Carbonara",
-    description: "Creamy pasta with grilled chicken, bacon, parmesan, and fresh herbs",
+    name: "Prawns Masala Kerala Style",
+    description: "Fresh prawns in coconut-based Kerala curry with curry leaves and spices",
     prices: {
-      'dinein-non-ac': 20,
-      'dinein-ac': 22,
-      'takeaway': 18
+      'dinein-non-ac': 280,
+      'dinein-ac': 310,
+      'takeaway': 250
     },
-    category: "Pasta",
+    category: "Kerala Cuisine",
     available: true,
-    dietary: ["chicken", "egg", "meat"]
+    dietary: ["fish"]
   },
   {
     id: "16",
-    name: "Vegetable Spring Rolls",
-    description: "Crispy spring rolls filled with fresh vegetables, served with sweet and sour sauce",
+    name: "Arabic Grilled Fish",
+    description: "Fresh fish marinated in Arabic spices and grilled to perfection",
     prices: {
-      'dinein-non-ac': 12,
-      'dinein-ac': 13,
-      'takeaway': 10
+      'dinein-non-ac': 240,
+      'dinein-ac': 260,
+      'takeaway': 220
     },
-    category: "Appetizers",
+    category: "Arabic Cuisine",
     available: true,
-    dietary: ["vegetarian"]
+    dietary: ["fish"]
   }
 ]
 
@@ -435,7 +435,7 @@ function AppContent() {
   // Get featured and popular items for horizontal sections
   const featuredItems = useMemo(() => {
     return safeMenuItems
-      .filter(item => item.available && (item.category === 'Chicken' || item.category === 'Fish'))
+      .filter(item => item.available && (item.category === 'Kerala Cuisine' || item.category === 'Arabic Cuisine'))
       .slice(0, 6)
   }, [safeMenuItems])
 
@@ -593,7 +593,7 @@ function AppContent() {
                 onAddToCart={handleAddToCart}
                 maxItems={6}
                 onViewAll={() => {
-                  setSelectedCategory('Chicken')
+                  setSelectedCategory('Kerala Cuisine')
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
               />
