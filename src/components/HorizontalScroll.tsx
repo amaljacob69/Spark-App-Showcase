@@ -48,8 +48,10 @@ export function HorizontalScroll({
     // Calculate visible items with safety checks
     if (cardWidth && itemCount > 0 && typeof cardWidth === 'number' && typeof itemCount === 'number' && typeof gap === 'number') {
       const containerWidth = clientWidth
-      const itemsVisible = Math.floor(containerWidth / (cardWidth + gap))
-      setVisibleItems(Math.max(1, Math.min(itemsVisible, itemCount)))
+      if (containerWidth > 0 && cardWidth > 0) {
+        const itemsVisible = Math.floor(containerWidth / (cardWidth + Math.max(0, gap || 0)))
+        setVisibleItems(Math.max(1, Math.min(itemsVisible || 1, itemCount || 1)))
+      }
     }
   }, [cardWidth, gap, itemCount])
 

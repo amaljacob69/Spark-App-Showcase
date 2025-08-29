@@ -112,9 +112,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="/src/index.css" rel="stylesheet" />
     
-    <!-- QR Code Access Helper -->
+    <!-- QR Code Access Helper and Spark Mock -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Mock spark object for development
+            if (!window.spark) {
+                window.spark = {
+                    llmPrompt: function(strings, ...values) {
+                        return strings.reduce((result, string, i) => {
+                            return result + string + (values[i] || '');
+                        }, '');
+                    },
+                    llm: async function(prompt, modelName, jsonMode) {
+                        console.warn('LLM functionality not available in production mode');
+                        return jsonMode ? '{}' : 'LLM functionality not available';
+                    },
+                    user: async function() {
+                        console.warn('User functionality not available in production mode');
+                        return { isOwner: false, login: 'anonymous' };
+                    },
+                    kv: {
+                        keys: async () => [],
+                        get: async (key) => undefined,
+                        set: async (key, value) => {},
+                        delete: async (key) => {}
+                    }
+                };
+            }
+            
             if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
                 window.showMenuLinks = function() {
                     console.log('🍽️ Paradise Family Restaurant & Bake Shop - Famous for Kerala, Arabic & Chinese Cuisine');
