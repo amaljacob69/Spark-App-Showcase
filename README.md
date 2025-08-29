@@ -10,7 +10,7 @@
 
 **A modern, production-ready restaurant menu web application featuring multiple dining options with different pricing tiers, PWA capabilities, and mobile-first design.**
 
-[🔗 Live Demo](https://paradise-family.web.app) | [📖 Documentation](./DOCS_INDEX.md) | [🚀 Deployment Guide](./DEPLOYMENT.md)
+[🔗 Live Demo](https://amaljacob69.github.io/paradise-restaurant-menu/) | [📖 Documentation](./DOCS_INDEX.md) | [🚀 Deployment Guide](./DEPLOYMENT.md)
 
 </div>
 
@@ -57,8 +57,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/paradise-family-restaurant.git
-cd paradise-family-restaurant
+git clone https://github.com/amaljacob69/paradise-restaurant-menu.git
+cd paradise-restaurant-menu
 
 # Install dependencies
 npm install

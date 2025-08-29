@@ -1,83 +1,93 @@
 {
-  "name": "paradise-restaurant-app",
-  "version": "2.0.0",
-  "description": "Paradise Family Restaurant & Bake Shop - Production-ready menu application",
+  "name": "paradise-restaurant-menu",
+  "private": false,
+  "version": "1.0.0",
+  "homepage": "https://amaljacob69.github.io/paradise-restaurant-menu",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "start": "npm run preview",
-    "check-prod": "echo 'Production check completed'",
-    "analyze": "ANALYZE=true npm run build",
-    "test": "echo 'Tests would run here'",
-    "lint": "echo 'Linting would run here'",
-    "type-check": "tsc --noEmit",
-    "security-audit": "npm audit --audit-level moderate",
-    "repo:setup": "echo '🍽️ Paradise Restaurant - Repository Setup Guide' && echo 'Please follow GITHUB_SETUP.md for complete instructions'",
-    "repo:status": "echo '📊 Repository Status:' && echo 'Version: v2.0.0' && echo 'Status: Production Ready ✅' && echo 'Live: https://paradise-family.web.app'",
-    "repo:docs": "echo '📚 Documentation available:' && echo '- README.md (Main overview)' && echo '- GITHUB_SETUP.md (Setup guide)' && echo '- CONTRIBUTING.md (Contribution guide)' && echo '- DOCS_INDEX.md (Complete documentation index)'",
-    "repo:urls": "echo '🔗 Paradise Restaurant Menu URLs:' && echo '🟠 Non-AC: ?menu=dinein-non-ac' && echo '🔵 A/C: ?menu=dinein-ac' && echo '🟢 Takeaway: ?menu=takeaway'",
-    "help": "echo '🍽️ Paradise Family Restaurant - Available Commands:' && echo 'Development:' && echo '  npm run dev       - Start development server' && echo '  npm run build     - Build for production' && echo '  npm run preview   - Preview production build' && echo '' && echo 'Repository:' && echo '  npm run repo:setup  - Show setup guide' && echo '  npm run repo:status - Show current status' && echo '  npm run repo:docs   - List documentation' && echo '  npm run repo:urls   - Show menu URLs'"
-  },
-  "dependencies": {
-    "@phosphor-icons/react": "^2.0.0",
-    "@radix-ui/react-dialog": "^1.0.0",
-    "@radix-ui/react-dropdown-menu": "^2.0.0",
-    "@radix-ui/react-select": "^2.0.0",
-    "@radix-ui/react-separator": "^1.0.0",
-    "@radix-ui/react-slot": "^1.0.0",
-    "@radix-ui/react-tabs": "^1.0.0",
-    "@tailwindcss/vite": "^4.1.12",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.0.0",
-    "framer-motion": "^10.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-error-boundary": "^4.0.0",
-    "react-qr-code": "^2.0.0",
-    "sonner": "^1.0.0",
-    "tailwind-merge": "^2.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "@vitejs/plugin-react": "^4.0.0",
-    "tsx": "^4.0.0",
-    "typescript": "^5.0.0",
-    "vite": "^5.0.0",
-    "vite-plugin-pwa": "^0.17.0"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
-  ],
+  "description": "Mobile-responsive restaurant menu system for Paradise Family Restaurant & Bake Shop - Kerala, Arabic & Chinese cuisine with QR code access",
   "keywords": [
-    "restaurant",
-    "menu",
+    "restaurant-menu",
     "pwa",
+    "mobile-first", 
     "kerala-cuisine",
-    "arabic-food",
-    "chinese-food",
-    "bakery",
+    "arabic-cuisine",
+    "chinese-cuisine",
+    "react",
+    "typescript",
+    "tailwind-css",
+    "responsive-design",
+    "qr-menu",
+    "contactless-dining",
     "chalakudy",
-    "paradise-restaurant"
+    "kerala-restaurant"
   ],
-  "author": "Paradise Family Restaurant & Bake Shop",
-  "license": "MIT",
+  "author": {
+    "name": "amaljacob69",
+    "url": "https://github.com/amaljacob69"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/paradise-restaurant/menu-app"
+    "url": "https://github.com/amaljacob69/paradise-restaurant-menu.git"
   },
   "bugs": {
-    "url": "https://github.com/paradise-restaurant/menu-app/issues"
+    "url": "https://github.com/amaljacob69/paradise-restaurant-menu/issues"
   },
-  "homepage": "https://paradise-family.web.app"
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173",
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.2",
+    "@radix-ui/react-aspect-ratio": "^1.1.0",
+    "@radix-ui/react-avatar": "^1.1.1",
+    "@radix-ui/react-checkbox": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-dropdown-menu": "^2.1.2",
+    "@radix-ui/react-hover-card": "^1.1.2",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-popover": "^1.1.2",
+    "@radix-ui/react-progress": "^1.1.0",
+    "@radix-ui/react-select": "^2.1.2",
+    "@radix-ui/react-separator": "^1.1.0",
+    "@radix-ui/react-slider": "^1.2.1",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.1",
+    "@radix-ui/react-tabs": "^1.1.1",
+    "@radix-ui/react-toast": "^1.2.2",
+    "@radix-ui/react-toggle": "^1.1.0",
+    "@radix-ui/react-toggle-group": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.3",
+    "@phosphor-icons/react": "^2.1.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.11.17",
+    "lucide-react": "^0.453.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sonner": "^1.5.0",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.15.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "gh-pages": "^6.1.1",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.14",
+    "typescript": "~5.6.2",
+    "vite": "^5.4.10",
+    "vite-plugin-pwa": "^0.20.5"
+  }
 }
