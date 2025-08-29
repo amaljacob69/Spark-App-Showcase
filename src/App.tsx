@@ -1,33 +1,32 @@
-import TestComponent from './TestComponent'
 import { usePWA } from '@/hooks/usePWA'
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { useKV } from './hooks/useKV'
-import { Header } from './components/Header'
-import { MenuGrid } from './components/MenuGrid'
-import { AdminPanel } from './components/AdminPanel'
-import ErrorBoundary from './components/ErrorBoundary'
-import { LoginDialog } from './components/LoginDialog'
-import { ThemePreview } from './components/ThemePreview'
-import { DietaryFilter, type DietaryPreference } from './components/DietaryFilter'
-import { AdvancedSearch } from './components/AdvancedSearch'
-import { FloatingActionButton } from './components/FloatingActionButton'
-import { CartDialog, useCart } from './components/CartDialog'
-import { OffersSection } from './components/OffersSection'
-import { FeaturedMenuSection, PopularMenuSection } from './components/HorizontalMenuSection'
-import { LoadingSkeleton } from './components/LoadingSkeleton'
-import { Footer } from './components/Footer'
-import { PWAInstallPrompt, PWAStatusIndicator } from './components/PWAInstallPrompt'
-import { PWAFloatingNotification } from './components/PWAFloatingNotification'
-import { Toaster } from './components/ui/sonner'
+import { useKV } from '@/hooks/useKV'
+import { Header } from '@/components/Header'
+import { MenuGrid } from '@/components/MenuGrid'
+import { AdminPanel } from '@/components/AdminPanel'
+import ErrorBoundary from '@/components/ErrorBoundary'
+import { LoginDialog } from '@/components/LoginDialog'
+import { ThemePreview } from '@/components/ThemePreview'
+import { DietaryFilter, type DietaryPreference } from '@/components/DietaryFilter'
+import { AdvancedSearch } from '@/components/AdvancedSearch'
+import { FloatingActionButton } from '@/components/FloatingActionButton'
+import { CartDialog, useCart } from '@/components/CartDialog'
+import { OffersSection } from '@/components/OffersSection'
+import { FeaturedMenuSection, PopularMenuSection } from '@/components/HorizontalMenuSection'
+import { LoadingSkeleton } from '@/components/LoadingSkeleton'
+import { Footer } from '@/components/Footer'
+import { PWAInstallPrompt, PWAStatusIndicator } from '@/components/PWAInstallPrompt'
+import { PWAFloatingNotification } from '@/components/PWAFloatingNotification'
+import { Toaster } from '@/components/ui/sonner'
 import { toast } from 'sonner'
-import { useTheme } from './hooks/useTheme'
-import { usePerformanceMonitoring } from './lib/performance'
-import { useOfflineStatus } from './lib/offline'
-import securityManager from './lib/security'
-import offlineManager from './lib/offline'
-import performanceMonitor from './lib/performance'
-import config from './config/environment'
-import './lib/errorHandler' // Initialize global error handling
+import { useTheme } from '@/hooks/useTheme'
+import { usePerformanceMonitoring } from '@/lib/performance'
+import { useOfflineStatus } from '@/lib/offline'
+import securityManager from '@/lib/security'
+import offlineManager from '@/lib/offline'
+import performanceMonitor from '@/lib/performance'
+import config from '@/config/environment'
+import '@/lib/errorHandler' // Initialize global error handling
 
 export interface MenuItem {
   id: string
@@ -699,9 +698,119 @@ function AppContent() {
     )
   }
 
+  // Show Customer Menu Interface (non-admin view)
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <TestComponent />
+    <div className="min-h-screen bg-background safe-area-top safe-area-bottom">
+      <ThemePreview menuType={safeSelectedMenuType} />
+      
+      <Header 
+        isAdmin={safeIsAdmin}
+        onAdminLogin={() => setShowLoginDialog(true)}
+        onAdminLogout={handleAdminLogout}
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategorySelect={handleCategorySelect}
+        menuType={safeSelectedMenuType}
+        onMenuTypeSelect={setSelectedMenuType}
+        isDirectLink={isDirectLink}
+        onSearch={setSearchQuery}
+        searchQuery={searchQuery}
+      />
+
+      <main className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+        <div className="space-y-6">
+          {/* Special Offers Section */}
+          {showHorizontalSections && (
+            <OffersSection />
+          )}
+
+          {/* Featured Menu Section */}
+          {showHorizontalSections && featuredItems.length > 0 && (
+            <FeaturedMenuSection 
+              items={featuredItems}
+              menuType={safeSelectedMenuType}
+              getItemPrice={getItemPrice}
+              onAddToCart={handleAddToCart}
+            />
+          )}
+
+          {/* Dietary Filter */}
+          <DietaryFilter 
+            selectedFilters={selectedDietaryFilters || []}
+            onFiltersChange={setSelectedDietaryFilters}
+          />
+
+          {/* Advanced Search */}
+          <AdvancedSearch 
+            onSearch={setSearchQuery}
+            searchQuery={searchQuery}
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onCategorySelect={handleCategorySelect}
+          />
+
+          {/* Popular Menu Section */}
+          {showHorizontalSections && popularItems.length > 0 && (
+            <PopularMenuSection 
+              items={popularItems}
+              menuType={safeSelectedMenuType}
+              getItemPrice={getItemPrice}
+              onAddToCart={handleAddToCart}
+            />
+          )}
+
+          {/* Menu Grid */}
+          <MenuGrid 
+            items={filteredItems}
+            menuType={safeSelectedMenuType}
+            getItemPrice={getItemPrice}
+            isAdmin={safeIsAdmin}
+            searchQuery={searchQuery}
+            selectedCategory={selectedCategory}
+            onAddToCart={handleAddToCart}
+          />
+        </div>
+      </main>
+
+      {/* Floating Action Button */}
+      <FloatingActionButton 
+        onCartClick={handleCartClick}
+        cartItemCount={getCartItemCount()}
+        menuType={safeSelectedMenuType}
+      />
+
+      <Footer />
+
+      {/* Cart Dialog */}
+      <CartDialog
+        open={showCartDialog}
+        onOpenChange={setShowCartDialog}
+        items={cartItems}
+        menuType={safeSelectedMenuType}
+        getItemPrice={getItemPrice}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeFromCart}
+        onClearCart={clearCart}
+      />
+
+      {/* Login Dialog for Admin Access */}
+      {showLoginDialog && (
+        <LoginDialog 
+          open={showLoginDialog}
+          onOpenChange={setShowLoginDialog}
+          onLogin={handleAdminLogin}
+        />
+      )}
+
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          style: {
+            fontSize: '14px',
+          },
+          className: 'sm:text-base text-sm',
+        }}
+      />
     </div>
   )
 }
