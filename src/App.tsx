@@ -1,3 +1,4 @@
+import { usePWA } from '@/hooks/usePWA'
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useKV } from '@github/spark/hooks'
 import { Header } from './components/Header'
@@ -14,6 +15,7 @@ import { OffersSection } from './components/OffersSection'
 import { FeaturedMenuSection, PopularMenuSection } from './components/HorizontalMenuSection'
 import { LoadingSkeleton } from './components/LoadingSkeleton'
 import { Footer } from './components/Footer'
+import { PWAInstallPrompt, PWAStatusIndicator } from './components/PWAInstallPrompt'
 import { Toaster } from './components/ui/sonner'
 import { toast } from 'sonner'
 import { useTheme } from './hooks/useTheme'
@@ -284,8 +286,11 @@ function AppContent() {
   const [isLoading, setIsLoading] = useState(true)
   const [loginAttempts, setLoginAttempts] = useState(0)
   
+  // PWA functionality
+  const { isInstalled, isInstallable, isOnline, installApp, updateAvailable, updateApp } = usePWA()
+  
   // Production-ready hooks
-  const { isOnline, offlineStatus } = useOfflineStatus()
+  const { offlineStatus } = useOfflineStatus()
   const { startTiming } = usePerformanceMonitoring('AppContent')
 
   // Cart functionality
@@ -825,6 +830,10 @@ function AppContent() {
           className: 'sm:text-base text-sm',
         }}
       />
+
+      {/* PWA Install Prompt and Status */}
+      <PWAInstallPrompt />
+      <PWAStatusIndicator />
     </div>
   )
 }
@@ -833,6 +842,12 @@ function App() {
   return (
     <ErrorBoundary>
       <AppContent />
+      
+      {/* PWA Install Prompt and Status - Outside main content for global access */}
+      <PWAInstallPrompt />
+      <PWAStatusIndicator />
+    </ErrorBoundary>
+  )
     </ErrorBoundary>
   )
 }

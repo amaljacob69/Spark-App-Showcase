@@ -1,132 +1,129 @@
 {
   "name": "Paradise Family Restaurant & Bake Shop",
   "short_name": "Paradise Restaurant",
-  "description": "Authentic Kerala, Arabic & Chinese cuisine with fresh bakery items. AC/Non-AC dining and takeaway options available.",
-  "version": "2.0.0",
+  "description": "Authentic Kerala, Arabic & Chinese cuisine with fresh bakery items in Chalakudy",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
   "theme_color": "#3b82f6",
-  "background_color": "#f1f5f9",
-  "categories": ["food", "restaurant", "dining"],
-  "lang": "en-IN",
+  "orientation": "portrait-primary",
   "scope": "/",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["food", "restaurants", "lifestyle"],
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>",
+      "src": "/icons/icon-72x72.png",
       "sizes": "72x72",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>",
+      "src": "/icons/icon-96x96.png",
       "sizes": "96x96",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>",
+      "src": "/icons/icon-128x128.png",
       "sizes": "128x128",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>",
+      "src": "/icons/icon-144x144.png",
       "sizes": "144x144",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>",
+      "src": "/icons/icon-152x152.png",
       "sizes": "152x152",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>",
+      "src": "/icons/icon-384x384.png",
       "sizes": "384x384",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍴</text></svg>",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshot-mobile.png",
-      "type": "image/png",
-      "sizes": "375x812",
-      "form_factor": "narrow",
-      "label": "Mobile menu view"
-    },
-    {
-      "src": "/screenshot-desktop.png", 
-      "type": "image/png",
-      "sizes": "1920x1080",
-      "form_factor": "wide",
-      "label": "Desktop menu view"
     }
   ],
   "shortcuts": [
     {
       "name": "Dine-in Non-AC Menu",
       "short_name": "Non-AC Menu",
-      "description": "View non-AC dining menu with special pricing",
+      "description": "Browse our non-AC dine-in menu with comfortable pricing",
       "url": "/?menu=dinein-non-ac",
       "icons": [
         {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>",
-          "sizes": "96x96"
+          "src": "/icons/shortcut-non-ac.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
     {
       "name": "Dine-in A/C Menu",
-      "short_name": "A/C Menu", 
-      "description": "View A/C dining menu with comfort pricing",
+      "short_name": "A/C Menu",
+      "description": "Browse our air-conditioned dine-in menu",
       "url": "/?menu=dinein-ac",
       "icons": [
         {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>",
-          "sizes": "96x96"
+          "src": "/icons/shortcut-ac.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
     {
       "name": "Take Away Menu",
-      "short_name": "Takeaway",
-      "description": "View takeaway menu with special prices",
-      "url": "/?menu=takeaway", 
+      "short_name": "Take Away",
+      "description": "Order for takeaway with special pricing",
+      "url": "/?menu=takeaway",
       "icons": [
         {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>",
-          "sizes": "96x96"
+          "src": "/icons/shortcut-takeaway.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     }
   ],
-  "related_applications": [
+  "screenshots": [
     {
-      "platform": "web",
-      "url": "https://paradise-family.web.app"
+      "src": "/screenshots/desktop-home.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Paradise Restaurant Menu - Desktop View"
+    },
+    {
+      "src": "/screenshots/mobile-menu.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Paradise Restaurant Menu - Mobile View"
     }
   ],
+  "related_applications": [],
   "prefer_related_applications": false,
   "edge_side_panel": {
     "preferred_width": 400
   },
-  "handle_links": "preferred",
   "launch_handler": {
-    "client_mode": "focus-existing"
+    "client_mode": "navigate-existing"
   }
 }

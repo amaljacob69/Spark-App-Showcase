@@ -182,20 +182,20 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Pricing ($) *</Label>
+              <Label className="text-sm font-medium">Pricing (₹) *</Label>
               <div className="grid grid-cols-1 gap-3">
                 <div className="space-y-1">
                   <Label htmlFor="price-dinein-non-ac" className="text-xs text-muted-foreground">
-                    Dine-in (Non-AC)
+                    Dine-in (Non-A/C)
                   </Label>
                   <Input
                     id="price-dinein-non-ac"
                     type="number"
-                    step="0.01"
+                    step="1"
                     min="0"
                     value={formData.prices['dinein-non-ac']}
                     onChange={(e) => handleChange('price-dinein-non-ac', e.target.value)}
-                    placeholder="22.99"
+                    placeholder="220"
                     required
                   />
                 </div>
@@ -206,11 +206,11 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
                   <Input
                     id="price-dinein-ac"
                     type="number"
-                    step="0.01"
+                    step="1"
                     min="0"
                     value={formData.prices['dinein-ac']}
                     onChange={(e) => handleChange('price-dinein-ac', e.target.value)}
-                    placeholder="24.99"
+                    placeholder="250"
                     required
                   />
                 </div>
@@ -221,11 +221,11 @@ export function AddItemDialog({ open, onOpenChange, onAddItem }: AddItemDialogPr
                   <Input
                     id="price-takeaway"
                     type="number"
-                    step="0.01"
+                    step="1"
                     min="0"
                     value={formData.prices['takeaway']}
                     onChange={(e) => handleChange('price-takeaway', e.target.value)}
-                    placeholder="19.99"
+                    placeholder="200"
                     required
                   />
                 </div>

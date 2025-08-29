@@ -16,6 +16,7 @@ import {
   X
 } from '@phosphor-icons/react'
 import { MenuItem, MenuType, getItemPrice } from '../App'
+import { formatCurrency, formatAmountWithGST } from '@/lib/currency'
 
 export interface CartItem extends MenuItem {
   quantity: number
@@ -63,21 +64,20 @@ export function CartDialog({
       return
     }
 
-    // Create order summary
+    const totalAmount = getTotalPrice()
+    const amountWithGST = formatAmountWithGST(totalAmount)
+    const itemCount = getTotalItems()
+    
+    // Create order summary with Indian Rupee
     const orderSummary = cartItems.map(item => 
-      `${item.quantity}x ${item.name} (${item.selectedMenuType.replace('-', ' ').toUpperCase()}) - $${(getItemPrice(item, item.selectedMenuType) * item.quantity).toFixed(2)}`
+      `${item.quantity}x ${item.name} (${item.selectedMenuType.replace('-', ' ').toUpperCase()}) - ${formatCurrency(getItemPrice(item, item.selectedMenuType) * item.quantity)}`
     ).join('\n')
 
-    const total = getTotalPrice().toFixed(2)
-    const itemCount = getTotalItems()
-
-    // Create WhatsApp message
-    const message = `*Paradise Family Restaurant - Order*\n\n${orderSummary}\n\n*Total: $${total}* (${itemCount} items)\n\nPlease confirm this order. Thank you!`
+    // Create WhatsApp message with GST breakdown
+    const message = `*Paradise Family Restaurant - Order*\n\n${orderSummary}\n\n*Subtotal: ${amountWithGST.base}*\n*GST (${amountWithGST.gstRate}): ${amountWithGST.gst}*\n*Total: ${amountWithGST.total}* (${itemCount} items)\n\nPlease confirm this order. Thank you!`
     
-    // WhatsApp URL (replace with restaurant's actual WhatsApp number)
-    const whatsappNumber = '+1234567890' // Replace with actual number (format: +countrycodephone)
-    // Example: +1234567890 for US number (123) 456-7890
-    // Example: +919876543210 for Indian number
+    // WhatsApp URL with Indian number format
+    const whatsappNumber = '+919876543210' // Replace with actual restaurant WhatsApp number
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
@@ -133,7 +133,7 @@ export function CartDialog({
                                 {item.selectedMenuType.replace('-', ' ').toUpperCase()}
                               </Badge>
                               <span className="font-bold text-sm">
-                                ${getItemPrice(item, item.selectedMenuType).toFixed(2)}
+                                {formatCurrency(getItemPrice(item, item.selectedMenuType))}
                               </span>
                             </div>
                           </div>
@@ -172,7 +172,7 @@ export function CartDialog({
                             </Button>
                           </div>
                           <span className="font-bold">
-                            ${(getItemPrice(item, item.selectedMenuType) * item.quantity).toFixed(2)}
+                            {formatCurrency(getItemPrice(item, item.selectedMenuType) * item.quantity)}
                           </span>
                         </div>
                       </CardContent>
@@ -182,12 +182,30 @@ export function CartDialog({
               </ScrollArea>
 
               <div className="border-t bg-card p-6 space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold">Total:</span>
-                  <span className="text-2xl font-bold text-primary">
-                    ${getTotalPrice().toFixed(2)}
-                  </span>
-                </div>
+                {(() => {
+                  const totalAmount = getTotalPrice()
+                  const amountWithGST = formatAmountWithGST(totalAmount)
+                  
+                  return (
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center text-sm">
+                        <span>Subtotal:</span>
+                        <span>{amountWithGST.base}</span>
+                      </div>
+                      <div className="flex justify-between items-center text-sm">
+                        <span>GST ({amountWithGST.gstRate}):</span>
+                        <span>{amountWithGST.gst}</span>
+                      </div>
+                      <Separator />
+                      <div className="flex justify-between items-center">
+                        <span className="text-lg font-semibold">Total:</span>
+                        <span className="text-2xl font-bold text-primary">
+                          {amountWithGST.total}
+                        </span>
+                      </div>
+                    </div>
+                  )
+                })()}
 
                 <div className="flex gap-3">
                   <Button 

@@ -8,6 +8,7 @@ import { EditItemDialog } from './EditItemDialog'
 import { PencilSimple, Trash, Eye, EyeSlash, Leaf, Egg, Bird, Cow, Fish, Plus } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { formatCurrency } from '@/lib/currency'
 
 interface MenuItemCardProps {
   item: MenuItem
@@ -79,13 +80,13 @@ export function MenuItemCard({ item, menuType, getItemPrice, isAdmin, onEdit, on
             </div>
             <div className="flex-shrink-0 text-right">
               <div className="font-bold text-accent text-xl sm:text-2xl drop-shadow-sm">
-                ${item.prices ? getItemPrice(item, menuType).toFixed(2) : '0.00'}
+                {formatCurrency(item.prices ? getItemPrice(item, menuType) : 0)}
               </div>
               {isAdmin && (
                 <div className="text-xs text-muted-foreground mt-1 space-y-0.5">
-                  <div>AC: ${item.prices ? item.prices['dinein-ac'].toFixed(2) : '0.00'}</div>
-                  <div>Non-AC: ${item.prices ? item.prices['dinein-non-ac'].toFixed(2) : '0.00'}</div>
-                  <div>Takeaway: ${item.prices ? item.prices['takeaway'].toFixed(2) : '0.00'}</div>
+                  <div>A/C: {formatCurrency(item.prices ? item.prices['dinein-ac'] : 0)}</div>
+                  <div>Non-A/C: {formatCurrency(item.prices ? item.prices['dinein-non-ac'] : 0)}</div>
+                  <div>Takeaway: {formatCurrency(item.prices ? item.prices['takeaway'] : 0)}</div>
                 </div>
               )}
             </div>

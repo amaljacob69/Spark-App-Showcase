@@ -30,7 +30,7 @@ export function Footer() {
           <div className="text-sm sm:text-base text-foreground/80 font-medium">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/10 border border-accent/20">
               <span className="text-lg">💰</span>
-              <span>Additional 5% GST will be applicable on all orders</span>
+              <span>Additional 5% GST applicable on all orders • Prices in Indian Rupees (₹)</span>
             </div>
           </div>
           
